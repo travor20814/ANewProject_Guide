@@ -5,25 +5,21 @@
     <meta name="viewport" content="width=device-width, initial-scale=0.5" />
     <title>校園導覽</title>
     <style type="text/css">
-      html, body {
+      html,body {
+        height: 100%;
+        padding: 0;
+        margin: 0;
+      }
+      #container {
         width: 100%;
         height: 100%;
-        margin: 0;
-        padding: 0;
       }
-      #searchBar {
-        width: 100%;
-        height: 10%;
-        min-height: 60px;
-      }
-      #map {
-        width: 100%;
-        height: 90%;
-      }
-      .formWrapper{
-        width: 100%;
-        height: 55px;
-        overflow: hidden;
+      #upperBlock{
+        min-width: 240px;
+        min-height: 32px;
+        display: flex;
+        flex-wrap: nowrap;
+        text-align: center;
         background-color: #f6f6f6;
       	background-image: -webkit-gradient(linear, left top, left bottom, from(#f6f6f6), to(#eae8e8));
       	background-image: -webkit-linear-gradient(top, #f6f6f6, #eae8e8);
@@ -39,10 +35,21 @@
       	-moz-box-shadow: 0 3px 3px rgba(255,255,255,.1), 0 3px 0 #bbb, 0 4px 0 #aaa, 0 5px 5px #444;
       	box-shadow: 0 3px 3px rgba(255,255,255,.1), 0 3px 0 #bbb, 0 4px 0 #aaa, 0 5px 5px #444;
       }
+
+      .formWrapper{
+        height: 55px;
+        flex: 0.9;
+        min-width: 240px;
+        display: flex;
+        margin: 0px auto;
+        overflow: hidden;
+
+      }
       .searchInput{
-        float: left;
-        width: 70%;
+        flex: 7;
         height: 20px;
+        min-width: 168px;
+        max-width: 512px;
         padding-left: 40px;
         padding-top: 10px;
         padding-bottom: 10px;
@@ -64,10 +71,10 @@
         background-repeat: no-repeat;
       }
       .searchSubmit{
-        float: right;
+        flex: 3;
         height: 40px;
-        width: 10%;
-        min-width: 50px;
+        min-width: 72px;
+        max-width: 100px;
         margin: 2px;
         margin-top: 5px;
         padding-top: 10px;
@@ -91,16 +98,36 @@
         font: 15px Arial, Helvetica;
       }
 
+      #lowerBlock{
+        position: absolute;
+        top: 57px;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        min-width: 240px;
+        min-height: 288px;
+        display: flex;
+        flex-wrap: nowrap;
+        margin: 0px auto;
+      }
+      #map {
+        flex: 1;
+        height: 100%;
+        min-width: 240px;
+        min-height: 288px;
+      }
+
     </style>
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAOuz5xFsq3pIkk_kZxEXDMEr6UpzKnlro&callback=initMap"
             async defer></script>
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
     <script type="text/javascript">
         var map;
-        var end = new google.maps.LatLng("24.945151","121.373030");
-        var directionsService = new google.maps.DirectionsService();
-        var directionsDisplay = new google.maps.DirectionsRenderer();
+
         function initMap() {
+          var end = new google.maps.LatLng("24.945151","121.373030");
+          var directionsService = new google.maps.DirectionsService();
+          var directionsDisplay = new google.maps.DirectionsRenderer();
           map = new google.maps.Map(document.getElementById('map'), {
             center: end,
             zoom: 19,
@@ -133,13 +160,16 @@
 </head>
 <!--program start on initMap() function-->
 <body onload=initMap()>
-    <div id="searchBar">
-        <form class="formWrapper">
-          <input class="searchInput" type="text" name="search" placeholder="想去哪裡?" onkeyup="showResult(this.value)">
-          <input class="searchSubmit" type="submit" name="submit" value="出發">
-        </form>
+  <div id="container">
+    <div id="upperBlock">
+      <form class="formWrapper">
+        <input class="searchInput" type="text" name="search" placeholder="想去哪裡?" onkeyup="showResult(this.value)">
+        <input class="searchSubmit" type="submit" name="submit" value="出發">
+      </form>
     </div>
-    <div id="map"></div>
-
+    <div id="lowerBlock">
+      <div id="map"></div>
+    </div>
+  </div>
 </body>
 </html>
