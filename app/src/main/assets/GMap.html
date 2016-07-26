@@ -23,14 +23,34 @@
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
     <script type="text/javascript">
         var map;
-
+        var end = new google.maps.LatLng("24.945151","121.373030");
+        var directionsService = new google.maps.DirectionsService();
+        var directionsDisplay = new google.maps.DirectionsRenderer();
         function initMap() {
           map = new google.maps.Map(document.getElementById('map'), {
-            center: {lat: 24.945114977249386, lng: 121.3731429358444},
+            center: end,
             zoom: 19,
             disableDefaultUI: true
           });
         }
+
+
+        function direct(lat,lon){
+
+      		directionsDisplay.setMap(map);
+      		var request = {
+         				origin: new google.maps.LatLng(lat,lon),
+         				destination: end,
+         				travelMode: google.maps.TravelMode.WALKING
+         		};
+         		directionsService.route(request,
+         				function(result, status){
+         			  		if (status == google.maps.DirectionsStatus.OK){
+         						directionsDisplay.setDirections(result);
+         					}
+
+         		});
+      	}
 
     </script>
 </head>
