@@ -156,6 +156,15 @@
         font-weight: bolder;
         color: black;
       }
+      ul.ui-autocomplete {
+        width: 150px;
+        height: 50px;
+        list-style:none;
+        background-color: rgba(255, 255, 255, 0.9);
+        color: black;
+        -moz-border-radius: 5px;
+        border-radius: 5px;
+      }
 
     </style>
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAOuz5xFsq3pIkk_kZxEXDMEr6UpzKnlro&callback=initMap"
@@ -164,7 +173,7 @@
     <script src="https://code.jquery.com/ui/1.12.0/jquery-ui.js"></script>
     <script type="text/javascript">
         var map;
-
+        var setTimer;
         var end ;
         var directionsService ;
         var directionsDisplay ;
@@ -188,7 +197,7 @@
             lowerBlock.style.top = top;
             list.style.display = listDisplay;
           }else {
-            var top = "90px";
+            var top = "120px";
             var listDisplay = "none";
             var lowerBlock = document.getElementById("lowerBlock");
             var list = document.getElementById("list");
@@ -203,6 +212,7 @@
           var lowerBlock = document.getElementById("lowerBlock");
           var middleBlock = document.getElementById("middleBlock");
           var list = document.getElementById("list");
+          setTimer = setTimeout(hideList, 5000);
           list.style.display = display;
           middleBlock.style.display = display;
           lowerBlock.style.top = top;
@@ -212,6 +222,7 @@
           var top = "57px";
           var lowerBlock = document.getElementById("lowerBlock");
           lowerBlock.style.top = top;
+          clearTimeout(setTimer);
         }
 
         function direct(lat,lon){
@@ -240,6 +251,11 @@
           ];
           $( "#tags" ).autocomplete({
             source: availableTags,
+            select: function( event, ui) {
+              $("#tags").val(ui.item.label);
+              hideList();
+              return false;
+            }
           });
         });
     </script>
