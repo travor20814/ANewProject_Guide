@@ -187,6 +187,11 @@
             zoom: 19,
             disableDefaultUI: true
           });
+
+          map.addListener('click' , function() {
+            //console.log("map click");
+            document.getElementById("tags").onblur();
+          });
         }
         function showResult(str) {
           if (str.length === 0) {
@@ -212,6 +217,7 @@
           var lowerBlock = document.getElementById("lowerBlock");
           var middleBlock = document.getElementById("middleBlock");
           var list = document.getElementById("list");
+
           setTimer = setTimeout(hideList, 5000);
           list.style.display = display;
           middleBlock.style.display = display;
@@ -219,6 +225,7 @@
         }
 
         function hideList() {
+          //console.log("hide trigger");
           var top = "57px";
           var lowerBlock = document.getElementById("lowerBlock");
           lowerBlock.style.top = top;
@@ -268,7 +275,8 @@
         <input id="tags" class="searchInput" type="text" name="search" placeholder="想去哪裡?"
           onfocus="showList()"
           onblur="hideList()"
-          onkeyup="showResult(this.value)">
+          onkeyup="showResult(this.value)"
+          onchange="hideList()">
         <input class="searchSubmit" type="submit" name="submit" value="出發">
       </form>
     </div>
