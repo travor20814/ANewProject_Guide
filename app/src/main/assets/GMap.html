@@ -118,6 +118,10 @@
         min-width: 240px;
         min-height: 288px;
       }
+
+      #map:focus{
+        height: 50%;
+      }
       #middleBlock{
         display: none;
         position: absolute;
@@ -187,12 +191,26 @@
             zoom: 19,
             disableDefaultUI: true
           });
-
+          //map listener 
           map.addListener('click' , function() {
             //console.log("map click");
             document.getElementById("tags").onblur();
+            document.getElementById("lowerBlock").focus();
+          });
+          // download from database and do something here
+          downloadUrl("http://dmcl.twbbs.org/NTPU_guidance/search_sql.php", function(data) {
+            var xml = data.responseXML;
+            var markers = xml.documentElement.getElementsByTagName("marker");
+            //grab all the data here
+            for (var i = 0; i < markers.length; i++) {
+              var name = markers[i].getAttribute("name");
+              var point = new google.maps.LatLng(parseFloat(markers[i].getAttribute("latitude")),parseFloat(markers[i].getAttribute("longitude")));
+              var description = markers[i].getAttribute("description");
+
+            }
           });
         }
+        //show autocomplete tags
         function showResult(str) {
           if (str.length === 0) {
             var top = "57px";
@@ -210,7 +228,7 @@
             list.style.display = listDisplay;
           }
         }
-
+        //show information
         function showList() {
           var top = "120px";
           var display = "block";
@@ -223,7 +241,7 @@
           middleBlock.style.display = display;
           lowerBlock.style.top = top;
         }
-
+        //hide information
         function hideList() {
           //console.log("hide trigger");
           var top = "57px";
@@ -246,7 +264,23 @@
          					}
          		});
       	}
-
+        //for downloading database
+        function downloadUrl(url, callback) {
+            var request = window.ActiveXObject ?
+            new ActiveXObject('Microsoft.XMLHTTP') :
+            new XMLHttpRequest;
+            request.onreadystatechange = function() {
+                if (request.readyState == 4) {
+                    request.onreadystatechange = doNothing;
+                    callback(request, request.status);
+                }
+            };
+            request.open('GET', url, true);
+            request.send(null);
+        }
+        function doNothing() {
+        }
+        //auto complete for searching tags
         $( function() {
           var availableTags = [
             "總務處",
@@ -271,7 +305,7 @@
 <body onload=initMap()>
   <div id="container">
     <div id="upperBlock">
-      <form class="formWrapper">
+      <form class="formWrapper" action="">
         <input id="tags" class="searchInput" type="text" name="search" placeholder="想去哪裡?"
           onfocus="showList()"
           onblur="hideList()"
