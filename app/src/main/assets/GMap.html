@@ -119,9 +119,6 @@
         min-height: 288px;
       }
 
-      #map:focus{
-        height: 50%;
-      }
       #middleBlock{
         display: none;
         position: absolute;
@@ -191,7 +188,7 @@
             zoom: 19,
             disableDefaultUI: true
           });
-          //map listener 
+          //map listener
           map.addListener('click' , function() {
             //console.log("map click");
             document.getElementById("tags").onblur();
