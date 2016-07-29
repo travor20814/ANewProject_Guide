@@ -14,7 +14,29 @@
         width: 100%;
         height: 100%;
       }
+      #mapBlock{
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        min-width: 240px;
+        min-height: 288px;
+        display: flex;
+        flex-wrap: nowrap;
+        margin: 0px auto;
+        z-index: 0;
+        transition: 0.3s ease-in-out;
+      }
+      #map {
+        flex: 1;
+        height: 100%;
+        min-width: 240px;
+        min-height: 288px;
+      }
+
       #upperBlock{
+        display: none;
         min-width: 240px;
         min-height: 32px;
         display: flex;
@@ -37,15 +59,16 @@
       }
 
       .formWrapper{
+        display: none;
         height: 55px;
         flex: 0.9;
         min-width: 240px;
         display: flex;
         margin: 0px auto;
         overflow: hidden;
-
       }
       .searchInput{
+        display: none;
         flex: 7;
         height: 20px;
         min-width: 168px;
@@ -71,6 +94,7 @@
         background-repeat: no-repeat;
       }
       .searchSubmit{
+        display: none;
         flex: 3;
         height: 40px;
         min-width: 72px;
@@ -97,28 +121,6 @@
       	cursor: pointer;
         font: 15px Arial, Helvetica;
       }
-
-      #lowerBlock{
-        position: absolute;
-        top: 57px;
-        bottom: 0;
-        left: 0;
-        right: 0;
-        min-width: 240px;
-        min-height: 288px;
-        display: flex;
-        flex-wrap: nowrap;
-        margin: 0px auto;
-        z-index: 0;
-        transition: 0.3s ease-in-out;
-      }
-      #map {
-        flex: 1;
-        height: 100%;
-        min-width: 240px;
-        min-height: 288px;
-      }
-
       #middleBlock{
         display: none;
         position: absolute;
@@ -143,6 +145,7 @@
       	box-shadow: 0 3px 3px rgba(255,255,255,.1), 0 3px 0 #bbb, 0 4px 0 #aaa, 0 5px 5px #444;
       }
       #searchList{
+        display: none;
         height: 55px;
         flex: 0.9;
         min-width: 240px;
@@ -152,6 +155,7 @@
         overflow: hidden;
       }
       #list{
+        display: none;
         text-decoration: none;
         font-size: 16px;
         font-weight: bolder;
@@ -328,22 +332,7 @@
 <!--program start on initMap() function-->
 <body onload=initMap()>
   <div id="container">
-    <div id="upperBlock">
-      <form class="formWrapper" action="javascript:findPlaceToDirect();">
-        <input id="tags" class="searchInput" type="text" name="search" placeholder="想去哪裡?"
-          onfocus="showList()"
-          onblur="hideList()"
-          onkeyup="showResult(this.value)"
-          onchange="hideList()">
-        <input class="searchSubmit" type="submit" name="submit" value="出發">
-      </form>
-    </div>
-    <div id="middleBlock">
-      <div id="searchList">
-        <div id="list">熱門關鍵字： 總務處，行政大樓，資訊工程學系，電機資訊學院</div>
-      </div>
-    </div>
-    <div id="lowerBlock">
+    <div id="mapBlock">
       <div id="map"></div>
     </div>
   </div>
