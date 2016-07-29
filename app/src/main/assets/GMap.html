@@ -280,6 +280,7 @@
         function refreshTrigger() {
           //refresh button click
         }
+
         //for downloading database
         function downloadUrl(url, callback) {
             var request = window.ActiveXObject ?
@@ -310,7 +311,6 @@
             source: availableTags,
             select: function( event, ui) {
               $("#tags").val(ui.item.label);
-              hideList();
               return false;
             }
           });
