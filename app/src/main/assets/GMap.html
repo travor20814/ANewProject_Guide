@@ -14,29 +14,7 @@
         width: 100%;
         height: 100%;
       }
-      #mapBlock{
-        position: absolute;
-        top: 0;
-        bottom: 0;
-        left: 0;
-        right: 0;
-        min-width: 240px;
-        min-height: 288px;
-        display: flex;
-        flex-wrap: nowrap;
-        margin: 0px auto;
-        z-index: 0;
-        transition: 0.3s ease-in-out;
-      }
-      #map {
-        flex: 1;
-        height: 100%;
-        min-width: 240px;
-        min-height: 288px;
-      }
-
       #upperBlock{
-        display: none;
         min-width: 240px;
         min-height: 32px;
         display: flex;
@@ -57,21 +35,26 @@
       	-moz-box-shadow: 0 3px 3px rgba(255,255,255,.1), 0 3px 0 #bbb, 0 4px 0 #aaa, 0 5px 5px #444;
       	box-shadow: 0 3px 3px rgba(255,255,255,.1), 0 3px 0 #bbb, 0 4px 0 #aaa, 0 5px 5px #444;
       }
-
-      .formWrapper{
-        display: none;
-        height: 55px;
-        flex: 0.9;
-        min-width: 240px;
+      #innerBox{
+        position: relative;
+        width: 100%;
+        height: 100%;
         display: flex;
+        flex-wrap: nowrap;
         margin: 0px auto;
-        overflow: hidden;
+      }
+      .formWrapper{
+        height: 55px;
+        flex: 0.8;
+        min-width: 120px;
+        display: flex;
+        flex-wrap: nowrap;
+        margin: 0px auto;
       }
       .searchInput{
-        display: none;
-        flex: 7;
+        flex: 1;
         height: 20px;
-        min-width: 168px;
+        min-width: 80px;
         max-width: 512px;
         padding-left: 40px;
         padding-top: 10px;
@@ -94,10 +77,9 @@
         background-repeat: no-repeat;
       }
       .searchSubmit{
-        display: none;
-        flex: 3;
+        flex: 1;
         height: 40px;
-        min-width: 72px;
+        min-width: 40px;
         max-width: 100px;
         margin: 2px;
         margin-top: 5px;
@@ -120,6 +102,45 @@
       	color: #fafafa;
       	cursor: pointer;
         font: 15px Arial, Helvetica;
+      }
+      .button{
+        display: block;
+        position: absolute;
+        top: 7px;
+        width: 30px;
+        height: 30px;
+        background: transparent;
+        border: 0;
+      }
+      .ham {
+        left: 0;
+      }
+      .refresh {
+        right: 0;
+      }
+      .nav{
+        width: 30px;
+        height: 30px;
+      }
+      #lowerBlock{
+        position: absolute;
+        top: 57px;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        min-width: 240px;
+        min-height: 288px;
+        display: flex;
+        flex-wrap: nowrap;
+        margin: 0px auto;
+        z-index: 0;
+        transition: 0.3s ease-in-out;
+      }
+      #map {
+        flex: 1;
+        height: 100%;
+        min-width: 240px;
+        min-height: 288px;
       }
       #middleBlock{
         display: none;
@@ -145,7 +166,6 @@
       	box-shadow: 0 3px 3px rgba(255,255,255,.1), 0 3px 0 #bbb, 0 4px 0 #aaa, 0 5px 5px #444;
       }
       #searchList{
-        display: none;
         height: 55px;
         flex: 0.9;
         min-width: 240px;
@@ -155,7 +175,6 @@
         overflow: hidden;
       }
       #list{
-        display: none;
         text-decoration: none;
         font-size: 16px;
         font-weight: bolder;
@@ -198,45 +217,6 @@
             document.getElementById("tags").onblur();
             document.getElementById("lowerBlock").focus();
           });
-        }
-        //show autocomplete tags
-        function showResult(str) {
-          if (str.length === 0) {
-            var top = "57px";
-            var listDisplay = "none";
-            var lowerBlock = document.getElementById("lowerBlock");
-            var list = document.getElementById("list");
-            lowerBlock.style.top = top;
-            list.style.display = listDisplay;
-          }else {
-            var top = "120px";
-            var listDisplay = "none";
-            var lowerBlock = document.getElementById("lowerBlock");
-            var list = document.getElementById("list");
-            lowerBlock.style.top = top;
-            list.style.display = listDisplay;
-          }
-        }
-        //show information
-        function showList() {
-          var top = "120px";
-          var display = "block";
-          var lowerBlock = document.getElementById("lowerBlock");
-          var middleBlock = document.getElementById("middleBlock");
-          var list = document.getElementById("list");
-
-          setTimer = setTimeout(hideList, 5000);
-          list.style.display = display;
-          middleBlock.style.display = display;
-          lowerBlock.style.top = top;
-        }
-        //hide information
-        function hideList() {
-          //console.log("hide trigger");
-          var top = "57px";
-          var lowerBlock = document.getElementById("lowerBlock");
-          lowerBlock.style.top = top;
-          clearTimeout(setTimer);
         }
 
         function direct(lat,lon){
@@ -292,6 +272,14 @@
             // then do nothing
           }
         }
+
+        function listTrigger() {
+          //ham button click
+        }
+
+        function refreshTrigger() {
+          //refresh button click
+        }
         //for downloading database
         function downloadUrl(url, callback) {
             var request = window.ActiveXObject ?
@@ -332,7 +320,21 @@
 <!--program start on initMap() function-->
 <body onload=initMap()>
   <div id="container">
-    <div id="mapBlock">
+    <div id="upperBlock">
+      <div id="innerBox">
+        <button class="button ham" onclick="listTrigger()">
+          <img class="nav" src="file:///android_asset/images/ic_action_ham.png"/>
+        </button>
+        <form class="formWrapper" action="javascript:findPlaceToDirect();">
+          <input id="tags" class="searchInput" type="text" name="search" placeholder="想去哪裡?">
+          <input class="searchSubmit" type="submit" name="submit" value="出發">
+        </form>
+        <button class="button refresh" onclick="refreshTrigger()">
+          <img class="nav" src="file:///android_asset/images/ic_action_refresh.png"/>
+        </button>
+      </div>
+    </div>
+    <div id="lowerBlock">
       <div id="map"></div>
     </div>
   </div>
