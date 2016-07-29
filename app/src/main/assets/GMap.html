@@ -179,7 +179,7 @@
         var directionsService ;
         var directionsDisplay ;
         function initMap() {
-          end = new google.maps.LatLng("24.945151","121.373030");
+          end = new google.maps.LatLng("24.943131", "121.370899");
           directionsService = new google.maps.DirectionsService();
           directionsDisplay = new google.maps.DirectionsRenderer();
 
@@ -193,18 +193,6 @@
             //console.log("map click");
             document.getElementById("tags").onblur();
             document.getElementById("lowerBlock").focus();
-          });
-          // download from database and do something here
-          downloadUrl("http://dmcl.twbbs.org/NTPU_guidance/search_sql.php", function(data) {
-            var xml = data.responseXML;
-            var markers = xml.documentElement.getElementsByTagName("marker");
-            //grab all the data here
-            for (var i = 0; i < markers.length; i++) {
-              var name = markers[i].getAttribute("name");
-              var point = new google.maps.LatLng(parseFloat(markers[i].getAttribute("latitude")),parseFloat(markers[i].getAttribute("longitude")));
-              var description = markers[i].getAttribute("description");
-
-            }
           });
         }
         //show autocomplete tags
@@ -249,18 +237,57 @@
 
         function direct(lat,lon){
       		directionsDisplay.setMap(map);
-      		var request = {
-         				origin: new google.maps.LatLng(lat,lon),
-         				destination: end,
-         				travelMode: google.maps.TravelMode.WALKING
-         		};
-         		directionsService.route(request,
-         				function(result, status){
-         			  		if (status == google.maps.DirectionsStatus.OK){
-         						directionsDisplay.setDirections(result);
-         					}
-         		});
+            var request = {
+           				origin: new google.maps.LatLng(lat,lon),
+           				destination: end,
+           				travelMode: google.maps.TravelMode.WALKING
+           		};
+           		directionsService.route(request,
+           				function(result, status){
+           			      if (status == google.maps.DirectionsStatus.OK){
+           						  directionsDisplay.setDirections(result);
+                      }
+           		});
       	}
+
+        function findPlaceToDirect(){
+          const placeToGo = document.getElementById("tags").value;
+          var hasInput = placeToGo === '' ? false : true ;
+
+          if (hasInput) {
+            // download from database and do something here
+            downloadUrl("http://dmcl.twbbs.org/NTPU_guidance/search_sql.php", function(data) {
+              var xml = data.responseXML;
+              var markers = xml.documentElement.getElementsByTagName("marker");
+              //grab all the data here
+              for (var i = 0; i < markers.length; i++) {
+                var name = markers[i].getAttribute("name");
+                var latitude = parseFloat(markers[i].getAttribute('latitude'));
+                var longitude = parseFloat(markers[i].getAttribute('longitude'));
+                var point = new google.maps.LatLng(parseFloat(markers[i].getAttribute("latitude")),parseFloat(markers[i].getAttribute("longitude")));
+                var description = markers[i].getAttribute("description");
+
+                if (i === markers.length - 1) { // the last data in db
+                  if (name === placeToGo) {
+                    //send data location to direct function
+
+                    break;
+                  } else { //can't find
+                    alert("找不到您要去的地點!")
+                  }
+                } else {
+                  if (name === placeToGo) { //find place to go
+                     //send data location to direct function
+
+                    break;
+                  }
+                }
+              }
+            });
+          } else { // no input
+            // then do nothing
+          }
+        }
         //for downloading database
         function downloadUrl(url, callback) {
             var request = window.ActiveXObject ?
@@ -302,7 +329,7 @@
 <body onload=initMap()>
   <div id="container">
     <div id="upperBlock">
-      <form class="formWrapper" action="">
+      <form class="formWrapper" action="javascript:findPlaceToDirect();">
         <input id="tags" class="searchInput" type="text" name="search" placeholder="想去哪裡?"
           onfocus="showList()"
           onblur="hideList()"
