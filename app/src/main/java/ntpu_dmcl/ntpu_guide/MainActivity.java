@@ -1,5 +1,6 @@
 package ntpu_dmcl.ntpu_guide;
 
+import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentTransaction;
 import android.content.pm.PackageManager;
@@ -18,14 +19,16 @@ import android.webkit.WebChromeClient;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.Toast;
+import android.webkit.JavascriptInterface;
 
-public class MainActivity extends AppCompatActivity implements LocationListener {
+public class MainActivity extends Activity implements LocationListener {
 
     private WebView wv_map ;
     private LocationManager locationManager;
     private Location bestProviderLocation;
     final private String gps = LocationManager.GPS_PROVIDER;
     final private String network = LocationManager.NETWORK_PROVIDER;
+    private boolean startUse = false;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -38,6 +41,7 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
             wv_map.getSettings().setAllowUniversalAccessFromFileURLs(true);
         }
         wv_map.setWebViewClient(new WebViewClientDemo());
+        wv_map.addJavascriptInterface(this, "Android");
         wv_map.setWebChromeClient(new WebChromeClient()); //allow javascript alert
         wv_map.loadUrl("file:///android_asset/GMap.html");
     }
@@ -77,8 +81,13 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
              */
             Log.e("lati",latitude);
             Log.e("lngi", longitude);
-            wv_map.loadUrl("javascript:direct(\"" + latitude + "\",\"" + longitude + "\")");
-            //wv_map.loadUrl("javascript:direct(" + "24.937190"+ "," + "121.361814" + ")");
+            if(startUse) {
+                wv_map.loadUrl("javascript:direct(\"" + latitude + "\",\"" + longitude + "\")");
+                //wv_map.loadUrl("javascript:direct(" + "24.937190"+ "," + "121.361814" + ")");
+            }
+            else{
+                wv_map.loadUrl("javascript:initMap(\"" + latitude + "\",\"" + longitude + "\")");
+            }
         }
         else{
             // Log.e("getlocation","2");
@@ -114,7 +123,7 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
         locationManager.removeUpdates(this);   //離開頁面時停止更新
 
     }
-    private void locationServiceInitial() {
+    public void locationServiceInitial() {
         checkGPS();
         locationManager = (LocationManager) getSystemService(LOCATION_SERVICE); //取得系統定位服務
         Criteria criteria = new Criteria();
@@ -178,5 +187,15 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
             ActivityCompat.requestPermissions( this, new String[] {  android.Manifest.permission.ACCESS_COARSE_LOCATION  },
                     MY_PERMISSION_ACCESS_COARSE_LOCATION);
         }
+    }
+
+    @JavascriptInterface
+    public void GetLonLat(float Lati,float Long)
+    {
+        Log.e("La+Lo",String.valueOf(Lati)+"\t"+String.valueOf(Long));
+    }
+    @JavascriptInterface
+    public void setStartUse(){
+        startUse =true ;
     }
 }
