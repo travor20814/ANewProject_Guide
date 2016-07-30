@@ -214,16 +214,15 @@
                 if (i === markers.length - 1) { // the last data in db
                   if (name === placeToGo) {
                     //send data location to direct function
-                    submitButton.style.display = "none";
-                    refreshButton.style.display = "inline-block";
-                    refreshImg.style.display = "inline-block";
-                    getFormWidth.style.width = "240px";
-
                     end = point;
                     direct(oldlat,oldlon);
                     Android.setStartUse();
                     //Android.GetLonLat(latitude,longitude);
 
+                    submitButton.style.display = "none";
+                    refreshButton.style.display = "inline-block";
+                    refreshImg.style.display = "inline-block";
+                    getFormWidth.style.width = "240px";
                     break;
                   } else { //can't find
                     alert("找不到您要去的地點!");
@@ -236,15 +235,16 @@
                   if (name === placeToGo) { //find place to go
                      //send data location to direct function
 
+                    end = point;
+                    direct(oldlat,oldlon);
+                    Android.setStartUse();
+                    //Android.GetLonLat(latitude,longitude);
+
                     submitButton.style.display = "none";
                     refreshButton.style.display = "inline-block";
                     refreshImg.style.display = "inline-block";
                     getFormWidth.style.width = "240px";
 
-                     end = point;
-                     direct(oldlat,oldlon);
-                     Android.setStartUse();
-                     //Android.GetLonLat(latitude,longitude);
                     break;
                   }
                 }
