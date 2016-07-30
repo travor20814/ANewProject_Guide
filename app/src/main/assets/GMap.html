@@ -126,6 +126,7 @@
         right: 0;
         margin: 0px auto;
         transition: 0.3s ease-in-out;
+        z-index: 1;
       }
       #map {
         width: 100%;
@@ -166,12 +167,6 @@
             center: end,
             zoom: 19,
             disableDefaultUI: true
-          });
-          //map listener
-          map.addListener('click' , function() {
-            //console.log("map click");
-            document.getElementById("tags").onblur();
-            document.getElementById("lowerBlock").focus();
           });
         }
 
@@ -286,6 +281,18 @@
           //refresh button click
         }
 
+        function usingMap() {
+          const lowerBlock = document.getElementById("lowerBlock");
+
+          lowerBlock.style.zIndex = "1";
+        }
+
+        function mapBlur() {
+          const lowerBlock = document.getElementById("lowerBlock");
+
+          lowerBlock.style.zIndex = "-1";
+        }
+
         //for downloading database
         function downloadUrl(url, callback) {
             var request = window.ActiveXObject ?
@@ -333,6 +340,8 @@
         <form id="form" class="formWrapper" action="javascript:findPlaceToDirect();">
           <input id="tags" class="searchInput" type="text" name="search" placeholder="想去哪裡?"
             onkeyup="showStart()"
+            onblur="usingMap()"
+            onclick="mapBlur()"
           >
           <input id="submit" class="searchSubmit" type="submit" name="submit" value="出發">
         </form>
