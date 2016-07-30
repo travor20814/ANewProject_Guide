@@ -40,7 +40,6 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
         wv_map.setWebViewClient(new WebViewClientDemo());
         wv_map.setWebChromeClient(new WebChromeClient()); //allow javascript alert
         wv_map.loadUrl("file:///android_asset/GMap.html");
-        addFragmentDrawer();
     }
     private class WebViewClientDemo extends WebViewClient {
 
@@ -53,18 +52,7 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
         }
 
     }
-    void addFragmentDrawer(){
-        //建立一個 MyFirstFragment 的實例(Instantiate)
-        Fragment newFragment = new mainActivity_drawer();
-        //使用getFragmentManager()獲得FragmentTransaction物件，並呼叫 beginTransaction() 開始執行Transaction
-        FragmentTransaction ft = getFragmentManager().beginTransaction();
-        //使用FragmentTransaction物件add()的方法將Fragment增加到Activity中
-        //add()有三個參數，第一個是Fragment的ViewGroup；第二個是Fragment 的實例(Instantiate)；第三個是Fragment 的Tag
-        ft.add(R.id.left_drawer, newFragment, "first");
-        //一旦FragmentTransaction出現變化，必須要呼叫commit()使之生效
-        ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
-        ft.commit();
-    }
+
     @Override
     public void onProviderDisabled(String arg0) {//當GPS或網路定位功能關閉時
         // TODO 自動產生的方法 Stub
