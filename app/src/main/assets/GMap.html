@@ -150,8 +150,12 @@
         var end ;
         var directionsService ;
         var directionsDisplay ;
-        function initMap() {
-          end = new google.maps.LatLng("24.943131", "121.370899");
+        var oldlat;
+        var oldlon;
+        function initMap(lat,lon) {
+          end = new google.maps.LatLng(lat,lon);
+          oldlat = lat;
+          oldlon = lon;
           directionsService = new google.maps.DirectionsService();
           directionsDisplay = new google.maps.DirectionsRenderer();
 
@@ -170,6 +174,8 @@
 
         function direct(lat,lon){
       		directionsDisplay.setMap(map);
+          oldlat = lat;
+          oldlon = lon;
             var request = {
            				origin: new google.maps.LatLng(lat,lon),
            				destination: end,
@@ -212,6 +218,12 @@
                     refreshButton.style.display = "inline-block";
                     refreshImg.style.display = "inline-block";
                     getFormWidth.style.width = "240px";
+
+                    end = point;
+                    direct(oldlat,oldlon);
+                    Android.setStartUse();
+                    //Android.GetLonLat(latitude,longitude);
+
                     break;
                   } else { //can't find
                     alert("找不到您要去的地點!");
@@ -223,10 +235,16 @@
                 } else {
                   if (name === placeToGo) { //find place to go
                      //send data location to direct function
+
                     submitButton.style.display = "none";
                     refreshButton.style.display = "inline-block";
                     refreshImg.style.display = "inline-block";
                     getFormWidth.style.width = "240px";
+
+                     end = point;
+                     direct(oldlat,oldlon);
+                     Android.setStartUse();
+                     //Android.GetLonLat(latitude,longitude);
                     break;
                   }
                 }
@@ -302,7 +320,7 @@
     </script>
 </head>
 <!--program start on initMap() function-->
-<body onload=initMap()>
+<body >
   <div id="container">
     <div id="upperBlock">
       <div id="innerBox">
