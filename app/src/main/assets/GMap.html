@@ -15,11 +15,8 @@
         height: 100%;
       }
       #upperBlock{
-        min-width: 240px;
-        min-height: 32px;
-        display: flex;
-        flex-wrap: nowrap;
-        text-align: center;
+        width: 100%;
+        height: 57px;
         background-color: #f6f6f6;
       	background-image: -webkit-gradient(linear, left top, left bottom, from(#f6f6f6), to(#eae8e8));
       	background-image: -webkit-linear-gradient(top, #f6f6f6, #eae8e8);
@@ -36,30 +33,21 @@
       	box-shadow: 0 3px 3px rgba(255,255,255,.1), 0 3px 0 #bbb, 0 4px 0 #aaa, 0 5px 5px #444;
       }
       #innerBox{
-        position: relative;
         width: 100%;
         height: 100%;
-        display: flex;
-        flex-wrap: nowrap;
-        margin: 0px auto;
+        display: inline-block;
+        position: relative;
       }
       .formWrapper{
+        width: 240px;
         height: 55px;
-        flex: 0.8;
-        min-width: 120px;
-        display: flex;
-        flex-wrap: nowrap;
-        margin: 0px auto;
+        margin-left: 45px;
+        display: inline-block;
       }
       .searchInput{
-        flex: 1;
-        height: 20px;
-        min-width: 80px;
-        max-width: 512px;
+        width: 180px;
+        height: 40px;
         padding-left: 40px;
-        padding-top: 10px;
-        padding-bottom: 10px;
-        margin: 2px;
         margin-top: 5px;
         border: 1px solid #CCC;
       	-webkit-box-shadow: 0 1px 1px #ddd inset, 0 1px 0 #FFF;
@@ -77,10 +65,9 @@
         background-repeat: no-repeat;
       }
       .searchSubmit{
-        flex: 1;
+        display: none;
+        width: 60px;
         height: 40px;
-        min-width: 40px;
-        max-width: 100px;
         margin: 2px;
         margin-top: 5px;
         padding-top: 10px;
@@ -103,20 +90,25 @@
       	cursor: pointer;
         font: 15px Arial, Helvetica;
       }
-      .button{
-        display: block;
+      .hamButton{
         position: absolute;
-        top: 7px;
-        width: 30px;
+        width: 40px;
         height: 30px;
+        left: 0;
+        top: 10px;
         background: transparent;
         border: 0;
+        display: inline-block;
       }
-      .ham {
-        left: 0;
-      }
-      .refresh {
-        right: 0;
+      .refreshButton{
+        position: absolute;
+        width: 40px;
+        height: 30px;
+        right: 10px;
+        top: 10px;
+        background: transparent;
+        border: 0;
+        display: inline-block;
       }
       .nav{
         width: 30px;
@@ -124,61 +116,18 @@
       }
       #lowerBlock{
         position: absolute;
-        top: 57px;
+        width: 100%;
+        height: 100%;
+        top: 60px;
         bottom: 0;
         left: 0;
         right: 0;
-        min-width: 240px;
-        min-height: 288px;
-        display: flex;
-        flex-wrap: nowrap;
         margin: 0px auto;
-        z-index: 0;
         transition: 0.3s ease-in-out;
       }
       #map {
-        flex: 1;
+        width: 100%;
         height: 100%;
-        min-width: 240px;
-        min-height: 288px;
-      }
-      #middleBlock{
-        display: none;
-        position: absolute;
-        top: 57px;
-        left: 0;
-        right: 0;
-        min-width: 240px;
-        min-height: 32px;
-        display: flex;
-        flex-wrap: nowrap;
-        text-align: center;
-        background-color: #f6f6f6;
-      	background-image: -webkit-gradient(linear, left top, left bottom, from(#f6f6f6), to(#eae8e8));
-      	background-image: -webkit-linear-gradient(top, #f6f6f6, #eae8e8);
-      	background-image: -moz-linear-gradient(top, #f6f6f6, #eae8e8);
-      	background-image: -ms-linear-gradient(top, #f6f6f6, #eae8e8);
-      	background-image: -o-linear-gradient(top, #f6f6f6, #eae8e8);
-      	background-image: linear-gradient(top, #f6f6f6, #eae8e8);
-      	border-color: #dedede #bababa #aaa #bababa;
-      	-webkit-box-shadow: 0 3px 3px rgba(255,255,255,.1), 0 3px 0 #bbb, 0 4px 0 #aaa, 0 5px 5px #444;
-      	-moz-box-shadow: 0 3px 3px rgba(255,255,255,.1), 0 3px 0 #bbb, 0 4px 0 #aaa, 0 5px 5px #444;
-      	box-shadow: 0 3px 3px rgba(255,255,255,.1), 0 3px 0 #bbb, 0 4px 0 #aaa, 0 5px 5px #444;
-      }
-      #searchList{
-        height: 55px;
-        flex: 0.9;
-        min-width: 240px;
-        display: flex;
-        margin: 0px auto;
-        text-align: center;
-        overflow: hidden;
-      }
-      #list{
-        text-decoration: none;
-        font-size: 16px;
-        font-weight: bolder;
-        color: black;
       }
       ul.ui-autocomplete {
         width: 150px;
@@ -236,6 +185,11 @@
 
         function findPlaceToDirect(){
           const placeToGo = document.getElementById("tags").value;
+          const submitButton = document.getElementById("submit");
+          const refreshButton = document.getElementById("refresh");
+          const refreshImg = document.getElementById("refreshImg");
+          const getFormWidth = document.getElementById("form").style.width;
+
           var hasInput = placeToGo === '' ? false : true ;
 
           if (hasInput) {
@@ -254,15 +208,25 @@
                 if (i === markers.length - 1) { // the last data in db
                   if (name === placeToGo) {
                     //send data location to direct function
-
+                    submitButton.style.display = "none";
+                    refreshButton.style.display = "inline-block";
+                    refreshImg.style.display = "inline-block";
+                    getFormWidth.style.width = "240px";
                     break;
                   } else { //can't find
-                    alert("找不到您要去的地點!")
+                    alert("找不到您要去的地點!");
+                    submitButton.style.display = "inline-block";
+                    refreshButton.style.display = "none";
+                    refreshImg.style.display = "none";
+                    getFormWidth.style.width = "300px";
                   }
                 } else {
                   if (name === placeToGo) { //find place to go
                      //send data location to direct function
-
+                    submitButton.style.display = "none";
+                    refreshButton.style.display = "inline-block";
+                    refreshImg.style.display = "inline-block";
+                    getFormWidth.style.width = "240px";
                     break;
                   }
                 }
@@ -270,6 +234,26 @@
             });
           } else { // no input
             // then do nothing
+          }
+        }
+
+        function showStart() {
+          const submitButton = document.getElementById("submit");
+          const refreshButton = document.getElementById("refresh");
+          const refreshImg = document.getElementById("refreshImg");
+          const getSearchValue = document.getElementById("tags").value;
+          const getFormWidth = document.getElementById("form");
+
+          if (getSearchValue === '') {
+            submitButton.style.display = "none";
+            refreshButton.style.display = "inline-block";
+            refreshImg.style.display = "inline-block";
+            getFormWidth.style.width = "240px";
+          } else {
+            submitButton.style.display = "inline-block";
+            refreshButton.style.display = "none";
+            refreshImg.style.display = "none";
+            getFormWidth.style.width = "300px";
           }
         }
 
@@ -322,15 +306,17 @@
   <div id="container">
     <div id="upperBlock">
       <div id="innerBox">
-        <button class="button ham" onclick="listTrigger()">
+        <button class="hamButton" onclick="listTrigger()">
           <img class="nav" src="file:///android_asset/images/ic_action_ham.png"/>
         </button>
-        <form class="formWrapper" action="javascript:findPlaceToDirect();">
-          <input id="tags" class="searchInput" type="text" name="search" placeholder="想去哪裡?">
-          <input class="searchSubmit" type="submit" name="submit" value="出發">
+        <form id="form" class="formWrapper" action="javascript:findPlaceToDirect();">
+          <input id="tags" class="searchInput" type="text" name="search" placeholder="想去哪裡?"
+            onkeyup="showStart()"
+          >
+          <input id="submit" class="searchSubmit" type="submit" name="submit" value="出發">
         </form>
-        <button class="button refresh" onclick="refreshTrigger()">
-          <img class="nav" src="file:///android_asset/images/ic_action_refresh.png"/>
+        <button id="refresh" class="refreshButton" onclick="refreshTrigger()">
+          <img id="refreshImg" class="nav" src="file:///android_asset/images/ic_action_refresh.png"/>
         </button>
       </div>
     </div>
