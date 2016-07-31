@@ -3,6 +3,8 @@ package ntpu_dmcl.ntpu_guide;
 import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentTransaction;
+import android.content.Context;
+import android.content.IntentSender;
 import android.content.pm.PackageManager;
 import android.location.Criteria;
 import android.location.Location;
@@ -12,16 +14,36 @@ import android.location.LocationProvider;
 import android.os.Build;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.view.GravityCompat;
+import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.AttributeSet;
 import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 import android.webkit.WebChromeClient;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.widget.Adapter;
+import android.widget.AdapterView;
+import android.widget.Button;
+import android.widget.ExpandableListView;
+import android.widget.SimpleExpandableListAdapter;
 import android.widget.Toast;
 import android.webkit.JavascriptInterface;
 
-public class MainActivity extends Activity implements LocationListener {
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+
+
+
+
+public class MainActivity extends Activity implements LocationListener  {
 
     private WebView wv_map ;
     private LocationManager locationManager;
@@ -29,11 +51,18 @@ public class MainActivity extends Activity implements LocationListener {
     final private String gps = LocationManager.GPS_PROVIDER;
     final private String network = LocationManager.NETWORK_PROVIDER;
     private boolean startUse = false;
+    private String[] list_parent = {
+            "瀏覽","大樓","科系"
+    };
+    private String[][] list_child = {
+            {},
+            {"人文大樓","社會科學大樓"},
+            {"資訊工程學系"},
+    };
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        checkGPS();
         wv_map = (WebView)findViewById(R.id.navigationMap);
         wv_map.getSettings().setJavaScriptEnabled(true);
         wv_map.getSettings().setDomStorageEnabled(true);
@@ -44,6 +73,7 @@ public class MainActivity extends Activity implements LocationListener {
         wv_map.addJavascriptInterface(this, "Android");
         wv_map.setWebChromeClient(new WebChromeClient()); //allow javascript alert
         wv_map.loadUrl("file:///android_asset/GMap.html");
+        Drawerset();
     }
     private class WebViewClientDemo extends WebViewClient {
 
@@ -112,7 +142,6 @@ public class MainActivity extends Activity implements LocationListener {
     @Override
     protected void onResume(){
         super.onResume();
-        checkGPS();
         locationServiceInitial();
     }
     @Override
@@ -120,56 +149,113 @@ public class MainActivity extends Activity implements LocationListener {
         // TODO Auto-generated method stub
         super.onPause();
         checkGPS();
-        locationManager.removeUpdates(this);   //離開頁面時停止更新
+        try {
+            locationManager.removeUpdates(this);//離開頁面時停止更新
+        }
+        catch (SecurityException e){
+
+        }
 
     }
+    private void Drawerset(){
+        Log.i("here","");
+        List<Map<String, Object>> groupData = new ArrayList<Map<String, Object>>();
+        List<List<Map<String, Object>>> childData = new ArrayList<List<Map<String, Object>>>();
+        int[] Image  = new int[]{R.mipmap.ic_launcher};
+        for (int i = 0; i < list_parent.length; i++) {
+            Map<String, Object> curGroupMap = new HashMap<String, Object>();
+            groupData.add(curGroupMap);
+            curGroupMap.put("text", list_parent[i]);
+
+            List<Map<String, Object>> children = new ArrayList<Map<String, Object>>();
+            for (int j = 0; j <list_child[i].length ; j++) {
+                Map<String, Object> curChildMap = new HashMap<String, Object>();
+                children.add(curChildMap);
+                curChildMap.put("text_c", list_child[i][j]);
+            }
+            childData.add(children);
+        }
+
+        SimpleExpandableListAdapter adapter = new SimpleExpandableListAdapter(this,
+                groupData,
+                R.layout.main_list_sourse,
+                new String[] { "text" },
+                new int[] { R.id.drawer_text },
+                childData,
+                R.layout.main_list_sourse,
+                new String[] { "text_c" },
+                new int[] { R.id.drawer_text }
+                );
+        ExpandableListView expandableListView = (ExpandableListView) findViewById(R.id.main_leftList);
+        expandableListView.setAdapter(adapter);
+        //Button b = (Button) findViewById(R.id.main_list_go) ;
+
+        expandableListView.setOnGroupClickListener(new ExpandableListView.OnGroupClickListener() {
+            @Override
+            public boolean onGroupClick(ExpandableListView expandableListView, View view, int i, long l) {
+                expandableListView.expandGroup(i);
+                Log.e("listCLick","Main");
+                return true;
+            }
+        });
+    }
+    public void closeDrawer(){
+        DrawerLayout drawerLayout = (DrawerLayout) findViewById(R.id.main_drawer) ;
+        drawerLayout.closeDrawer(GravityCompat.START);
+    }
+    public void openDrawer(){
+        DrawerLayout drawerLayout = (DrawerLayout) findViewById(R.id.main_drawer) ;
+        drawerLayout.openDrawer(GravityCompat.START);
+    }
     public void locationServiceInitial() {
-        checkGPS();
-        locationManager = (LocationManager) getSystemService(LOCATION_SERVICE); //取得系統定位服務
-        Criteria criteria = new Criteria();
-        // 获得最好的定位效果
-        criteria.setAccuracy(Criteria.ACCURACY_FINE);
-        criteria.setAltitudeRequired(false);
-        criteria.setBearingRequired(false);
-        criteria.setCostAllowed(false);
-        // 使用省电模式
-        criteria.setPowerRequirement(Criteria.POWER_LOW);
-        String bestProvider= locationManager.getBestProvider(criteria, true);
-        //Log.e("bestprovider", bestProvider);
-        locationManager.requestLocationUpdates(bestProvider, 1000, 0, this);
-        bestProviderLocation = locationManager.getLastKnownLocation(network);
-        //Log.i("best",String.valueOf(locationManager.isProviderEnabled(bestProvider)));
-        //Log.i("gps",String.valueOf(locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)));
-        //Log.i("network",String.valueOf(locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER)));
-        if(bestProviderLocation!=null) {
-            //Log.e("getLocationWay",bestProvider);
-            this.onLocationChanged(bestProviderLocation);
-        }
-        else {
-            locationManager.removeUpdates(this);
-            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 1000, 0, this);
-            bestProviderLocation = locationManager.getLastKnownLocation(bestProvider);
-            if(bestProviderLocation!=null){
-                // Log.e("getLocationWay","GPS");
+        try {
+            checkGPS();
+            locationManager = (LocationManager) getSystemService(LOCATION_SERVICE); //取得系統定位服務
+            Criteria criteria = new Criteria();
+            // 获得最好的定位效果
+            criteria.setAccuracy(Criteria.ACCURACY_FINE);
+            criteria.setAltitudeRequired(false);
+            criteria.setBearingRequired(false);
+            criteria.setCostAllowed(false);
+            // 使用省电模式
+            criteria.setPowerRequirement(Criteria.POWER_LOW);
+            String bestProvider = locationManager.getBestProvider(criteria, true);
+            //Log.e("bestprovider", bestProvider);
+            locationManager.requestLocationUpdates(bestProvider, 1000, 0, this);
+            bestProviderLocation = locationManager.getLastKnownLocation(network);
+            //Log.i("best",String.valueOf(locationManager.isProviderEnabled(bestProvider)));
+            //Log.i("gps",String.valueOf(locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)));
+            //Log.i("network",String.valueOf(locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER)));
+            if (bestProviderLocation != null) {
+                //Log.e("getLocationWay",bestProvider);
                 this.onLocationChanged(bestProviderLocation);
-            }
-            else{
+            } else {
                 locationManager.removeUpdates(this);
-                locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 1000, 0, this);
-                bestProviderLocation = locationManager.getLastKnownLocation(gps);
-                if(bestProviderLocation!=null){
-                    // Log.e("getLocationWay","NETWORK");
+                locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 1000, 0, this);
+                bestProviderLocation = locationManager.getLastKnownLocation(bestProvider);
+                if (bestProviderLocation != null) {
+                    // Log.e("getLocationWay","GPS");
                     this.onLocationChanged(bestProviderLocation);
-                }
-                else {
-                    Toast.makeText(this, "無法定位座標", Toast.LENGTH_SHORT).show();
+                } else {
                     locationManager.removeUpdates(this);
-                    locationServiceInitial();
+                    locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 1000, 0, this);
+                    bestProviderLocation = locationManager.getLastKnownLocation(gps);
+                    if (bestProviderLocation != null) {
+                        // Log.e("getLocationWay","NETWORK");
+                        this.onLocationChanged(bestProviderLocation);
+                    } else {
+                        Toast.makeText(this, "無法定位座標", Toast.LENGTH_SHORT).show();
+                        locationManager.removeUpdates(this);
+                        locationServiceInitial();
+                    }
                 }
             }
+
+
         }
+        catch (SecurityException e){
 
-
+        }
     }
     /*
     確認gps跟 network 可以用
@@ -198,4 +284,20 @@ public class MainActivity extends Activity implements LocationListener {
     public void setStartUse(){
         startUse =true ;
     }
+
+    class MyOnClickListener implements View.OnClickListener {
+            private  MyOnClickListener instance = null;
+             private MyOnClickListener() {}
+             public  MyOnClickListener getInstance() {
+                     if (instance == null)
+                            instance = new MyOnClickListener();
+                    return instance;
+                }
+            @Override
+            public void onClick(View view) {
+                     //TODO: do something here
+                 }
+         }
+
+
 }

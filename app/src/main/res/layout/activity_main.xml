@@ -22,8 +22,8 @@
 
 </RelativeLayout>
     <ExpandableListView android:id="@+id/main_leftList"
-        android:layout_width="150dp"
-        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:layout_height="fill_parent"
         android:layout_gravity="start"
         android:choiceMode="singleChoice"
         android:divider="@android:color/transparent"
