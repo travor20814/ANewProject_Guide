@@ -55,7 +55,7 @@ public class MainActivity extends Activity implements LocationListener  {
             "瀏覽","大樓","科系"
     };
     private String[][] list_child = {
-            {},
+            {"haha"},
             {"人文大樓","社會科學大樓"},
             {"資訊工程學系"},
     };
@@ -158,46 +158,24 @@ public class MainActivity extends Activity implements LocationListener  {
 
     }
     private void Drawerset(){
-        Log.i("here","");
-        List<Map<String, Object>> groupData = new ArrayList<Map<String, Object>>();
-        List<List<Map<String, Object>>> childData = new ArrayList<List<Map<String, Object>>>();
-        int[] Image  = new int[]{R.mipmap.ic_launcher};
-        for (int i = 0; i < list_parent.length; i++) {
-            Map<String, Object> curGroupMap = new HashMap<String, Object>();
-            groupData.add(curGroupMap);
-            curGroupMap.put("text", list_parent[i]);
+        ArrayList<String> parentItems = new ArrayList<String>();
+        ArrayList<Object> childItems = new ArrayList<Object>();
+        ArrayList<String> child ;
 
-            List<Map<String, Object>> children = new ArrayList<Map<String, Object>>();
-            for (int j = 0; j <list_child[i].length ; j++) {
-                Map<String, Object> curChildMap = new HashMap<String, Object>();
-                children.add(curChildMap);
-                curChildMap.put("text_c", list_child[i][j]);
+        for(int i=0;i<list_parent.length;i++){
+            child = new ArrayList<String>();
+            parentItems.add(list_parent[i]);
+            for(int j=0;j<list_child[i].length;j++){
+                child.add(list_child[i][j]);
             }
-            childData.add(children);
+            childItems.add(child);
         }
 
-        SimpleExpandableListAdapter adapter = new SimpleExpandableListAdapter(this,
-                groupData,
-                R.layout.main_list_sourse,
-                new String[] { "text" },
-                new int[] { R.id.drawer_text },
-                childData,
-                R.layout.main_list_sourse,
-                new String[] { "text_c" },
-                new int[] { R.id.drawer_text }
-                );
         ExpandableListView expandableListView = (ExpandableListView) findViewById(R.id.main_leftList);
+        ExpandListAdapter adapter = new ExpandListAdapter(parentItems,childItems);
+        adapter.setInflater((LayoutInflater)getSystemService(Context.LAYOUT_INFLATER_SERVICE),this);
         expandableListView.setAdapter(adapter);
-        //Button b = (Button) findViewById(R.id.main_list_go) ;
 
-        expandableListView.setOnGroupClickListener(new ExpandableListView.OnGroupClickListener() {
-            @Override
-            public boolean onGroupClick(ExpandableListView expandableListView, View view, int i, long l) {
-                expandableListView.expandGroup(i);
-                Log.e("listCLick","Main");
-                return true;
-            }
-        });
     }
     public void closeDrawer(){
         DrawerLayout drawerLayout = (DrawerLayout) findViewById(R.id.main_drawer) ;
@@ -284,20 +262,5 @@ public class MainActivity extends Activity implements LocationListener  {
     public void setStartUse(){
         startUse =true ;
     }
-
-    class MyOnClickListener implements View.OnClickListener {
-            private  MyOnClickListener instance = null;
-             private MyOnClickListener() {}
-             public  MyOnClickListener getInstance() {
-                     if (instance == null)
-                            instance = new MyOnClickListener();
-                    return instance;
-                }
-            @Override
-            public void onClick(View view) {
-                     //TODO: do something here
-                 }
-         }
-
 
 }
