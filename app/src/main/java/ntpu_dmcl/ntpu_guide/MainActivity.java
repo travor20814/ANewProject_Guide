@@ -11,6 +11,7 @@ import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.location.LocationProvider;
+import android.os.AsyncTask;
 import android.os.Build;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
@@ -20,6 +21,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.AttributeSet;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -31,6 +33,7 @@ import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ExpandableListView;
 import android.widget.SimpleExpandableListAdapter;
+import android.widget.TextView;
 import android.widget.Toast;
 import android.webkit.JavascriptInterface;
 
@@ -38,9 +41,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-
-
+import java.util.Timer;
+import java.util.TimerTask;
 
 
 public class MainActivity extends Activity implements LocationListener  {
@@ -51,6 +53,7 @@ public class MainActivity extends Activity implements LocationListener  {
     final private String gps = LocationManager.GPS_PROVIDER;
     final private String network = LocationManager.NETWORK_PROVIDER;
     private boolean startUse = false;
+    private boolean userback = false;
     private String[] list_parent = {
             "瀏覽","大樓","科系"
     };
@@ -59,6 +62,13 @@ public class MainActivity extends Activity implements LocationListener  {
             {"人文大樓","社會科學大樓"},
             {"資訊工程學系"},
     };
+    /*
+    @Override
+
+
+
+
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -74,17 +84,6 @@ public class MainActivity extends Activity implements LocationListener  {
         wv_map.setWebChromeClient(new WebChromeClient()); //allow javascript alert
         wv_map.loadUrl("file:///android_asset/GMap.html");
         Drawerset();
-    }
-    private class WebViewClientDemo extends WebViewClient {
-
-        @Override
-        public void onPageFinished(WebView view, String url) {
-            super.onPageFinished(view, url);
-            //在这里执行你想调用的js函数
-            locationServiceInitial();
-
-        }
-
     }
 
     @Override
@@ -157,6 +156,32 @@ public class MainActivity extends Activity implements LocationListener  {
         }
 
     }
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event)
+    {
+        if ((keyCode == KeyEvent.KEYCODE_BACK))
+        {
+            if(userback==false) {
+                Toast.makeText(this, "再按一次離開", Toast.LENGTH_SHORT).show();
+
+                userback=true;
+                Timer backTimer = new Timer(true);
+                backTimer.schedule(new backTimer(), 2000);
+            }
+            else if(userback == true){
+                finish();
+            }
+        }
+        return false;
+    }
+
+    /*
+    function
+
+
+
+
+     */
     private void Drawerset(){
         ArrayList<String> parentItems = new ArrayList<String>();
         ArrayList<Object> childItems = new ArrayList<Object>();
@@ -185,6 +210,7 @@ public class MainActivity extends Activity implements LocationListener  {
         DrawerLayout drawerLayout = (DrawerLayout) findViewById(R.id.main_drawer) ;
         drawerLayout.openDrawer(GravityCompat.START);
     }
+
     public void locationServiceInitial() {
         try {
             checkGPS();
@@ -252,7 +278,53 @@ public class MainActivity extends Activity implements LocationListener  {
                     MY_PERMISSION_ACCESS_COARSE_LOCATION);
         }
     }
+    /*
+    class
 
+
+
+
+     */
+    private class WebViewClientDemo extends WebViewClient {
+
+        @Override
+        public void onPageFinished(WebView view, String url) {
+            super.onPageFinished(view, url);
+            //在这里执行你想调用的js函数
+            locationServiceInitial();
+
+        }
+
+    }
+
+    public class backTimer extends TimerTask
+    {
+        public void run()
+        {
+            userback = false;
+        }
+    }
+    class closeDrawerThread extends AsyncTask<Void,Void,Void> {
+        @Override
+        protected Void doInBackground(Void... parm) {
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void result) {
+            super.onPostExecute(result);
+            openDrawer();
+        }
+
+
+    }
+    /*
+    @JavascriptInterface
+
+
+
+
+     */
     @JavascriptInterface
     public void GetLonLat(float Lati,float Long)
     {
@@ -262,5 +334,9 @@ public class MainActivity extends Activity implements LocationListener  {
     public void setStartUse(){
         startUse =true ;
     }
+    @JavascriptInterface
+    public void htmlOpendrawer(){
 
+        new closeDrawerThread().execute();
+    }
 }

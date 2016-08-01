@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
+import android.widget.Button;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -31,17 +32,15 @@ public class ExpandListAdapter extends BaseExpandableListAdapter {
     }
 
     @Override
-    public View getChildView(int groupPosition, final int childPosition, boolean isLastChild, View convertView, ViewGroup parent) {
+    public View getChildView(final int groupPosition, final int childPosition, boolean isLastChild, View convertView, ViewGroup parent) {
 
         child = (ArrayList<String>) childtems.get(groupPosition);
-
-        TextView textView = null;
 
         if (convertView == null) {
             convertView = inflater.inflate(R.layout.main_list_child, null);
         }
 
-        textView = (TextView) convertView.findViewById(R.id.drawer_text);
+        TextView textView = (TextView) convertView.findViewById(R.id.drawer_text);
         textView.setText(child.get(childPosition));
 
         convertView.setOnClickListener(new View.OnClickListener() {
@@ -52,6 +51,20 @@ public class ExpandListAdapter extends BaseExpandableListAdapter {
             }
         });
 
+        Button btn_go = (Button) convertView.findViewById(R.id.main_list_go);
+        Button btn_info = (Button) convertView.findViewById(R.id.main_list_info);
+        btn_go.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Log.e("main","go.group:"+String.valueOf(groupPosition)+".child:"+String.valueOf(childPosition));
+            }
+        });
+        btn_info.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Log.e("main","info.group:"+String.valueOf(groupPosition)+".child:"+String.valueOf(childPosition));
+            }
+        });
         return convertView;
     }
 
