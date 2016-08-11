@@ -218,8 +218,6 @@
               //grab all the data here
               for (var i = 0; i < markers.length; i++) {
                 var name = markers[i].getAttribute("name");
-                var latitude = parseFloat(markers[i].getAttribute('latitude'));
-                var longitude = parseFloat(markers[i].getAttribute('longitude'));
                 var point = new google.maps.LatLng(parseFloat(markers[i].getAttribute("latitude")),parseFloat(markers[i].getAttribute("longitude")));
                 var description = markers[i].getAttribute("description");
 
@@ -306,6 +304,39 @@
           const lowerBlock = document.getElementById("lowerBlock");
 
           lowerBlock.style.zIndex = "-1";
+        }
+
+        function drawerNavigation(destination) {
+          //for drawer navigation
+          const placeToGo = destination; //get destination string
+
+          downloadUrl("http://dmcl.twbbs.org/NTPU_guidance/search_sql.php", function(data) {
+            var xml = data.responseXML;
+            var markers = xml.documentElement.getElementsByTagName("marker");
+            //grab all the data here
+            for (var i = 0; i < markers.length; i++) {
+              var name = markers[i].getAttribute("name");
+              var point = new google.maps.LatLng(parseFloat(markers[i].getAttribute("latitude")),parseFloat(markers[i].getAttribute("longitude")));
+              var description = markers[i].getAttribute("description");
+
+              if (i === markers.length - 1) { // the last data in db
+                if (name === placeToGo) { //find place to go
+                  end = point; // assign it to end
+                  //add some action on android here
+                  break;
+                } else { //can't find
+                  alert("查不到正確的地點!!");
+                  //add some action on android here
+                }
+              } else {
+                if (name === placeToGo) { //find place to go
+                  end = point;
+                  //add some action on android here
+                  break;
+                }
+              }
+            }
+          });
         }
 
         //for downloading database
