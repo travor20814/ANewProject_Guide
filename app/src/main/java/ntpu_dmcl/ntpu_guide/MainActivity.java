@@ -278,6 +278,10 @@ public class MainActivity extends Activity implements LocationListener  {
                     MY_PERMISSION_ACCESS_COARSE_LOCATION);
         }
     }
+    public void OnNavigationClick(String aim){
+        wv_map.loadUrl("javascript:drawerNavigation(\"" + aim + "\")");
+
+    }
     /*
     class
 

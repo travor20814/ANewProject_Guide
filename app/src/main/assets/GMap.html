@@ -217,10 +217,44 @@
           buidingAdminOverlay.setMap(map);
         }
 
+        function makeMarker( position, icon, title ) {
+         new google.maps.Marker({
+          position: position,
+          map: map,
+          icon: icon,
+          title: title
+         });
+        }
+
         function direct(lat,lon){
       		directionsDisplay.setMap(map);
+          directionsDisplay.setOptions( { suppressMarkers: true } );
           oldlat = lat;
           oldlon = lon;
+          var icons = {
+            start: new google.maps.MarkerImage(
+              // URL
+              'http://chart.apis.google.com/chart?chst=d_map_pin_icon&chld=glyphish_runner|5190ED'
+              /*,
+              // (width,height)
+              new google.maps.Size( 300, 300 ),
+              // The origin point (x,y)
+              new google.maps.Point( 0, 0 ),
+              // The anchor point (x,y)
+              new google.maps.Point( 10, 35 )//2232*/
+            ),
+            end: new google.maps.MarkerImage(
+              // URL
+              'http://chart.apis.google.com/chart?chst=d_map_pin_icon&chld=glyphish_target|ed5190'
+              /*,
+              // (width,height)
+              new google.maps.Size( 44, 32 ),
+              // The origin point (x,y)
+              new google.maps.Point( 0, 0 ),
+              // The anchor point (x,y)
+              new google.maps.Point( 10, 35 )*/
+            )
+          };
             var request = {
            				origin: new google.maps.LatLng(lat,lon),
            				destination: end,
@@ -230,6 +264,9 @@
            				function(result, status){
            			      if (status == google.maps.DirectionsStatus.OK){
            						  directionsDisplay.setDirections(result);
+                        var leg = result.routes[ 0 ].legs[ 0 ];
+                        makeMarker( leg.start_location, icons.start, "title" );
+                        makeMarker( leg.end_location, icons.end, 'title' );
                       }
            		});
       	}
@@ -367,6 +404,7 @@
               if (i === markers.length - 1) { // the last data in db
                 if (name === placeToGo) { //find place to go
                   end = point; // assign it to end
+                  direct(oldlat,oldlon);
                   //add some action on android here
                   break;
                 } else { //can't find
@@ -376,6 +414,7 @@
               } else {
                 if (name === placeToGo) { //find place to go
                   end = point;
+                  direct(oldlat,oldlon);
                   //add some action on android here
                   break;
                 }

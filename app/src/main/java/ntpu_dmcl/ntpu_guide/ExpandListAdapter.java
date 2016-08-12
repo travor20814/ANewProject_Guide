@@ -5,6 +5,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.JavascriptInterface;
 import android.widget.BaseExpandableListAdapter;
 import android.widget.Button;
 import android.widget.TextView;
@@ -57,6 +58,8 @@ public class ExpandListAdapter extends BaseExpandableListAdapter {
             @Override
             public void onClick(View view) {
                 Log.e("main","go.group:"+String.valueOf(groupPosition)+".child:"+String.valueOf(childPosition));
+                ((MainActivity) activity).OnNavigationClick(((ArrayList<String>) childtems.get(groupPosition)).get(childPosition));
+                ((MainActivity) activity).closeDrawer();
             }
         });
         btn_info.setOnClickListener(new View.OnClickListener() {
