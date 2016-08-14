@@ -5,7 +5,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.webkit.JavascriptInterface;
 import android.widget.BaseExpandableListAdapter;
 import android.widget.Button;
 import android.widget.TextView;
@@ -48,7 +47,7 @@ public class ExpandListAdapter extends BaseExpandableListAdapter {
 
             @Override
             public void onClick(View view) {
-                Log.e("expanable","click");
+                //Log.e("expanable","click");
             }
         });
 
@@ -57,7 +56,7 @@ public class ExpandListAdapter extends BaseExpandableListAdapter {
         btn_go.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Log.e("main","go.group:"+String.valueOf(groupPosition)+".child:"+String.valueOf(childPosition));
+                //Log.e("main","go.group:"+String.valueOf(groupPosition)+".child:"+String.valueOf(childPosition));
                 ((MainActivity) activity).OnNavigationClick(((ArrayList<String>) childtems.get(groupPosition)).get(childPosition));
                 ((MainActivity) activity).closeDrawer();
             }
@@ -65,7 +64,7 @@ public class ExpandListAdapter extends BaseExpandableListAdapter {
         btn_info.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Log.e("main","info.group:"+String.valueOf(groupPosition)+".child:"+String.valueOf(childPosition));
+                //Log.e("main","info.group:"+String.valueOf(groupPosition)+".child:"+String.valueOf(childPosition));
             }
         });
         return convertView;
@@ -75,8 +74,10 @@ public class ExpandListAdapter extends BaseExpandableListAdapter {
     public View getGroupView(int groupPosition, boolean isExpanded, View convertView, ViewGroup parent) {
 
         if (convertView == null) {
+           // Log.e("Expan","null");
             convertView = inflater.inflate(R.layout.main_list_group, null);
         }
+        //Log.e("Expan","textset");
         TextView textView = null;
         textView = (TextView) convertView.findViewById(R.id.drawer_text);
         textView.setText(parentItems.get(groupPosition));
@@ -87,6 +88,7 @@ public class ExpandListAdapter extends BaseExpandableListAdapter {
 
     @Override
     public Object getChild(int groupPosition, int childPosition) {
+        //Log.e("expan","getchild");
         return null;
     }
 
@@ -102,6 +104,7 @@ public class ExpandListAdapter extends BaseExpandableListAdapter {
 
     @Override
     public Object getGroup(int groupPosition) {
+        //Log.e("expan","getgroup");
         return null;
     }
 

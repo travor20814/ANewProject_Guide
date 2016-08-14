@@ -55,10 +55,9 @@ public class MainActivity extends Activity implements LocationListener  {
     private boolean startUse = false;
     private boolean userback = false;
     private String[] list_parent = {
-            "瀏覽","大樓","科系"
+            "大樓","科系"
     };
     private String[][] list_child = {
-            {"haha"},
             {"人文大樓","社會科學大樓"},
             {"資訊工程學系"},
     };
@@ -195,8 +194,9 @@ public class MainActivity extends Activity implements LocationListener  {
             }
             childItems.add(child);
         }
-
+        ViewGroup header =(ViewGroup) getLayoutInflater().inflate(R.layout.drawer_header,null);
         ExpandableListView expandableListView = (ExpandableListView) findViewById(R.id.main_leftList);
+        expandableListView.addHeaderView(header,null,false);
         ExpandListAdapter adapter = new ExpandListAdapter(parentItems,childItems);
         adapter.setInflater((LayoutInflater)getSystemService(Context.LAYOUT_INFLATER_SERVICE),this);
         expandableListView.setAdapter(adapter);
