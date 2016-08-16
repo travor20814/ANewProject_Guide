@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentTransaction;
 import android.content.Context;
+import android.content.Intent;
 import android.content.IntentSender;
 import android.content.pm.PackageManager;
 import android.location.Criteria;
@@ -281,6 +282,12 @@ public class MainActivity extends Activity implements LocationListener  {
     public void OnNavigationClick(String aim){
         wv_map.loadUrl("javascript:drawerNavigation(\"" + aim + "\")");
 
+    }
+
+    public void OnInfoClick(){
+        Intent i = new Intent();
+        i.setClass(MainActivity.this,InfoActivity.class);
+        startActivity(i);
     }
     /*
     class

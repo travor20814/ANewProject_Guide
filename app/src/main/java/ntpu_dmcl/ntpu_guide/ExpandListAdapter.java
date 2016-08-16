@@ -65,6 +65,8 @@ public class ExpandListAdapter extends BaseExpandableListAdapter {
             @Override
             public void onClick(View view) {
                 //Log.e("main","info.group:"+String.valueOf(groupPosition)+".child:"+String.valueOf(childPosition));
+                ((MainActivity) activity).OnInfoClick();
+                ((MainActivity) activity).closeDrawer();
             }
         });
         return convertView;
