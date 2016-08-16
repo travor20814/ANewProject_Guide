@@ -242,6 +242,18 @@
            var endIcon = 'http://chart.apis.google.com/chart?chst=d_map_pin_icon&chld=glyphish_target|ed5190';
 
            if (icon.url === endIcon) { //start icon should not have click event
+             var contentString = '<h2 style="font-size:16px">小提示</h1><br />'+
+             '<span>點擊marker可以查看更多資訊</span>';
+
+             var infowindow = new google.maps.InfoWindow({
+                content: contentString
+             });
+             //hint for user, if it's necessary
+             infowindow.open(map, marker);
+             setTimeout( function(){
+                infowindow.close();
+             }, '6000');
+
              marker.addListener('click', function() {
                const lowerBlock = document.getElementById("lowerBlock");
                const detailBlock = document.getElementById("detailBlock");
