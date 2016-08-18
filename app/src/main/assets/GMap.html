@@ -210,13 +210,6 @@
             disableDefaultUI: true
           });
 
-          imageBounds = {
-            north: 24.945426,
-            south: 24.944307,
-            east: 121.371433,
-            west: 121.370011
-          };
-
           map.addListener('click', function() { //close the bottom info block when map onclick
             const lowerBlock = document.getElementById("lowerBlock");
             const detailBlock = document.getElementById("detailBlock");
@@ -225,10 +218,32 @@
             detailBlock.style.display = "none";
           });
 
-          buidingAdminOverlay = new google.maps.GroundOverlay(
-              'file:///android_asset/images/admin_build_try4.png',
-              imageBounds);
-          buidingAdminOverlay.setMap(map);
+          adminBound = { north: 24.945376, south: 24.944357, east: 121.371383, west: 121.370061 };
+          businessBound = { north: 24.946057, south: 24.944992, east: 121.372648, west: 121.371168 };
+          lawBound = { north: 24.944698, south: 24.943828, east: 121.373428, west: 121.372180 };
+          publicBound = { north: 24.944039, south: 24.943117, east: 121.372226, west: 121.371065 };
+          socialBound = { north: 24.944725, south: 24.943752, east: 121.370349, west: 121.368996 };
+          libraryBound = { north: 24.943984, south: 24.943139, east: 121.370736, west: 121.369592 };
+          humanBound = { north: 24.946432, south: 24.945617, east: 121.371593, west: 121.370676 };
+          electricBound = { north: 24.943338, south: 24.942533, east: 121.371143, west: 121.370044 };
+
+          buildingAdminOverlay = new google.maps.GroundOverlay( 'file:///android_asset/images/admin_build_try4.png', adminBound);
+          buildingBusinessOverlay = new google.maps.GroundOverlay( 'file:///android_asset/images/business_build_try2.png', businessBound);
+          buildingLawOverlay = new google.maps.GroundOverlay( 'file:///android_asset/images/law_building_try.png', lawBound);
+          buildingPublicOverlay = new google.maps.GroundOverlay( 'file:///android_asset/images/public_build.png', publicBound);
+          buildingSocialOverlay = new google.maps.GroundOverlay( 'file:///android_asset/images/social_build.png', socialBound);
+          buildingLibraryOverlay = new google.maps.GroundOverlay( 'file:///android_asset/images/library_try.png', libraryBound);
+          buildingHumanOverlay = new google.maps.GroundOverlay( 'file:///android_asset/images/human.png', humanBound);
+          buildingElectricOverlay = new google.maps.GroundOverlay( 'file:///android_asset/images/electric_build.png', electricBound);
+
+          buildingAdminOverlay.setMap(map);
+          buildingBusinessOverlay.setMap(map);
+          buildingLawOverlay.setMap(map);
+          buildingPublicOverlay.setMap(map);
+          buildingSocialOverlay.setMap(map);
+          buildingLibraryOverlay.setMap(map);
+          buildingHumanOverlay.setMap(map);
+          buildingElectricOverlay.setMap(map);
         }
 
         function makeMarker( position, icon, title ) {
