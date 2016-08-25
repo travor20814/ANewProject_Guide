@@ -171,6 +171,15 @@
       	text-shadow:1px 1px 0px #528ecc;
        	box-shadow:inset 1px 1px 0px 0px #bbdaf7;
       }
+      .markerName{
+        font-size: 16px;
+        font-weight: bold;
+        font-family: 微軟正黑體, 標楷體, sans-serif;
+      }
+      .markerDesc{
+        font-size: 13px;
+        font-family: 微軟正黑體, 標楷體, sans-serif;
+      }
       ul.ui-autocomplete {
         width: 150px;
         height: 50px;
@@ -189,6 +198,7 @@
     <script src="https://code.jquery.com/ui/1.12.0/jquery-ui.js"></script>
     <script type="text/javascript">
         var map;
+        var infoWindow;
         var imageBounds;
         var buidingAdminOverlay;
         var setTimer;
@@ -197,12 +207,16 @@
         var directionsDisplay ;
         var oldlat;
         var oldlon;
+        var destName;
+        var destDescription; // for info window
+
         function initMap(lat,lon) {
           end = new google.maps.LatLng(lat,lon);
           oldlat = lat;
           oldlon = lon;
           directionsService = new google.maps.DirectionsService();
           directionsDisplay = new google.maps.DirectionsRenderer();
+          destDescription = "null";
 
           map = new google.maps.Map(document.getElementById('map'), {
             center: end,
@@ -210,12 +224,16 @@
             disableDefaultUI: true
           });
 
+          infoWindow = new google.maps.InfoWindow({ map: map });
+
           map.addListener('click', function() { //close the bottom info block when map onclick
             const lowerBlock = document.getElementById("lowerBlock");
             const detailBlock = document.getElementById("detailBlock");
 
             lowerBlock.style.bottom = 0;
             detailBlock.style.display = "none";
+
+            infoWindow.close();
           });
 
           adminBound = { north: 24.945376, south: 24.944357, east: 121.371383, west: 121.370061 };
@@ -257,25 +275,23 @@
            var endIcon = 'http://chart.apis.google.com/chart?chst=d_map_pin_icon&chld=glyphish_target|ed5190';
 
            if (icon.url === endIcon) { //start icon should not have click event
-             var contentString = '<h2 style="font-size:16px">小提示</h1><br />'+
+             var hint = '<h2 style="font-size:16px">小提示</h2><br />'+
              '<span>點擊marker可以查看更多資訊</span>';
 
-             var infowindow = new google.maps.InfoWindow({
-                content: contentString
+             infoWindow = new google.maps.InfoWindow({
+               map: map,
+               content: hint,
              });
              //hint for user, if it's necessary
-             infowindow.open(map, marker);
+             infoWindow.open(map, marker);
              setTimeout( function(){
-                infowindow.close();
+                infoWindow.close();
              }, '6000');
 
-             marker.addListener('click', function() {
-               const lowerBlock = document.getElementById("lowerBlock");
-               const detailBlock = document.getElementById("detailBlock");
-
-               lowerBlock.style.bottom = "60px";
-               detailBlock.style.display = "block";
-             });
+             var content =  '<span class="markerName">'+destName+'</span><br />' +
+             '<span class="markerDesc">' + destDescription + '</span><br/><br/>' +
+             '交通資訊'
+             bindInfoWindow(marker, map, infoWindow, content);
            }
         }
 
@@ -349,6 +365,8 @@
                   if (name === placeToGo) {
                     //send data location to direct function
                     end = point;
+                    destName = name;
+                    destDescription = description;
                     direct(oldlat,oldlon);
                     Android.setStartUse();
                     //Android.GetLonLat(latitude,longitude);
@@ -357,6 +375,7 @@
                     refreshButton.style.display = "inline-block";
                     refreshImg.style.display = "inline-block";
                     getFormWidth.style.width = "240px";
+
                     break;
                   } else { //can't find
                     alert("找不到您要去的地點!");
@@ -368,8 +387,9 @@
                 } else {
                   if (name === placeToGo) { //find place to go
                      //send data location to direct function
-
                     end = point;
+                    destName = name;
+                    destDescription = description;
                     direct(oldlat,oldlon);
                     Android.setStartUse();
                     //Android.GetLonLat(latitude,longitude);
@@ -458,8 +478,11 @@
               if (i === markers.length - 1) { // the last data in db
                 if (name === placeToGo) { //find place to go
                   end = point; // assign it to end
+                  destName = name;
+                  destDescription = description;
                   direct(oldlat,oldlon);
                   //add some action on android here
+
                   break;
                 } else { //can't find
                   alert("查不到正確的地點!!");
@@ -468,15 +491,30 @@
               } else {
                 if (name === placeToGo) { //find place to go
                   end = point;
+                  destName = name;
+                  destDescription = description;
                   direct(oldlat,oldlon);
                   //add some action on android here
+
                   break;
                 }
               }
             }
           });
         }
+        //bind infowindow on marker
+        function bindInfoWindow(marker, map, infoWindow, desc){
+          google.maps.event.addListener(marker, 'click', function() {
+            infoWindow.setContent(desc); //set description on marker
+            infoWindow.open(map, marker);
 
+            const lowerBlock = document.getElementById("lowerBlock");
+            const detailBlock = document.getElementById("detailBlock");
+
+            lowerBlock.style.bottom = "60px";
+            detailBlock.style.display = "block";
+          });
+        }
         //for downloading database
         function downloadUrl(url, callback) {
             var request = window.ActiveXObject ?
