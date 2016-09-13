@@ -207,6 +207,7 @@
         var directionsDisplay ;
         var oldlat;
         var oldlon;
+		var oldPlaceToGo;
         var destName;
         var destDescription; // for info window
 
@@ -369,6 +370,7 @@
                     destDescription = description;
                     direct(oldlat,oldlon);
                     Android.setStartUse();
+					oldPlaceToGo = placeToGo;
                     //Android.GetLonLat(latitude,longitude);
 
                     submitButton.style.display = "none";
@@ -392,6 +394,7 @@
                     destDescription = description;
                     direct(oldlat,oldlon);
                     Android.setStartUse();
+					oldPlaceToGo = placeToGo;
                     //Android.GetLonLat(latitude,longitude);
 
                     submitButton.style.display = "none";
@@ -456,6 +459,7 @@
 
         function showFloorPlan() {
           //show floor plan
+		  Android.getWhereToGo(oldPlaceToGo);
         }
 
         function showDetail() {
@@ -481,6 +485,7 @@
                   destName = name;
                   destDescription = description;
                   direct(oldlat,oldlon);
+				  oldPlaceToGo = placeToGo;
                   //add some action on android here
 
                   break;
@@ -494,6 +499,7 @@
                   destName = name;
                   destDescription = description;
                   direct(oldlat,oldlon);
+				  oldPlaceToGo = placeToGo;
                   //add some action on android here
 
                   break;

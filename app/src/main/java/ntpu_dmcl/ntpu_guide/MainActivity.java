@@ -48,6 +48,8 @@ import java.util.TimerTask;
 
 public class MainActivity extends Activity implements LocationListener  {
 
+    final private String testlon = "121.367838";
+    final private String testlat = "24.942454";
     private WebView wv_map ;
     private LocationManager locationManager;
     private Location bestProviderLocation;
@@ -111,11 +113,11 @@ public class MainActivity extends Activity implements LocationListener  {
             Log.e("lati",latitude);
             Log.e("lngi", longitude);
             if(startUse) {
-                wv_map.loadUrl("javascript:direct(\"" + latitude + "\",\"" + longitude + "\")");
+                wv_map.loadUrl("javascript:direct(\"" + testlat + "\",\"" + testlon + "\")");
                 //wv_map.loadUrl("javascript:direct(" + "24.937190"+ "," + "121.361814" + ")");
             }
             else{
-                wv_map.loadUrl("javascript:initMap(\"" + latitude + "\",\"" + longitude + "\")");
+                wv_map.loadUrl("javascript:initMap(\"" + testlat + "\",\"" + testlon + "\")");
             }
         }
         else{
@@ -226,7 +228,7 @@ public class MainActivity extends Activity implements LocationListener  {
             criteria.setPowerRequirement(Criteria.POWER_LOW);
             String bestProvider = locationManager.getBestProvider(criteria, true);
             //Log.e("bestprovider", bestProvider);
-            locationManager.requestLocationUpdates(bestProvider, 1000, 0, this);
+            locationManager.requestLocationUpdates(bestProvider, 1000, 10, this);
             bestProviderLocation = locationManager.getLastKnownLocation(network);
             //Log.i("best",String.valueOf(locationManager.isProviderEnabled(bestProvider)));
             //Log.i("gps",String.valueOf(locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)));
@@ -236,14 +238,14 @@ public class MainActivity extends Activity implements LocationListener  {
                 this.onLocationChanged(bestProviderLocation);
             } else {
                 locationManager.removeUpdates(this);
-                locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 1000, 0, this);
+                locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 1000,10, this);
                 bestProviderLocation = locationManager.getLastKnownLocation(bestProvider);
                 if (bestProviderLocation != null) {
                     // Log.e("getLocationWay","GPS");
                     this.onLocationChanged(bestProviderLocation);
                 } else {
                     locationManager.removeUpdates(this);
-                    locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 1000, 0, this);
+                    locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 1000, 10, this);
                     bestProviderLocation = locationManager.getLastKnownLocation(gps);
                     if (bestProviderLocation != null) {
                         // Log.e("getLocationWay","NETWORK");
@@ -289,6 +291,11 @@ public class MainActivity extends Activity implements LocationListener  {
         i.setClass(MainActivity.this,InfoActivity.class);
         startActivity(i);
     }
+    public void showFloorDialog(int number)
+    {
+        floorDialog editNameDialog = new floorDialog().newInstance(number);
+        editNameDialog.show(getFragmentManager(), "EditNameDialog");
+    }
     /*
     class
 
@@ -329,6 +336,23 @@ public class MainActivity extends Activity implements LocationListener  {
 
 
     }
+    class catchSqlData extends AsyncTask<String,Void, ArrayList<HashMap<String, String>>> {
+        @Override
+        protected void onPreExecute(){
+            super.onPreExecute();
+
+        }
+        @Override
+        protected  ArrayList<HashMap<String, String>> doInBackground(String... param) {
+            return new connectToSQL("select * from places where name ='"+param[0]+"'").getServerConnect();
+        }
+        @Override
+        protected void onPostExecute( ArrayList<HashMap<String, String>> result) {
+            super.onPostExecute(result);
+            // 展現圖片
+            showFloorDialog(Integer.parseInt(result.get(0).get("number")));
+        }
+    }
     /*
     @JavascriptInterface
 
@@ -349,5 +373,9 @@ public class MainActivity extends Activity implements LocationListener  {
     public void htmlOpendrawer(){
 
         new closeDrawerThread().execute();
+    }
+    @JavascriptInterface
+    public void getWhereToGo(String name){
+        new catchSqlData().execute(name);
     }
 }
