@@ -192,7 +192,7 @@
       .ui-helper-hidden-accessible { position: absolute; left:-999em; }
 
     </style>
-    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAOuz5xFsq3pIkk_kZxEXDMEr6UpzKnlro&callback=initMap"
+    <script src="http://maps.google.com/maps/api/js?v=3&key=AIzaSyAOuz5xFsq3pIkk_kZxEXDMEr6UpzKnlro&libraries=geometry,places&callback=initMap"
             async defer></script>
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
     <script src="https://code.jquery.com/ui/1.12.0/jquery-ui.js"></script>
@@ -207,9 +207,10 @@
         var directionsDisplay ;
         var oldlat;
         var oldlon;
-		var oldPlaceToGo;
+		    var oldPlaceToGo;
         var destName;
         var destDescription; // for info window
+        var markers = [];
 
         function initMap(lat,lon) {
           end = new google.maps.LatLng(lat,lon);
@@ -265,6 +266,12 @@
           buildingElectricOverlay.setMap(map);
         }
 
+        function clearMarkers(){
+          for (var i = 0; i < markers.length; i++) {
+            markers[i].setMap(null);
+          }
+        }
+
         function makeMarker( position, icon, title ) {
            var marker = new google.maps.Marker({
             position: position,
@@ -272,6 +279,7 @@
             icon: icon,
             title: title
            });
+           markers.push(marker);
 
            var endIcon = 'http://chart.apis.google.com/chart?chst=d_map_pin_icon&chld=glyphish_target|ed5190';
 
@@ -336,6 +344,7 @@
           	if (status == google.maps.DirectionsStatus.OK){
          		  directionsDisplay.setDirections(result);
               var leg = result.routes[ 0 ].legs[ 0 ];
+              clearMarkers();
               makeMarker( leg.start_location, icons.start, "title" );
               makeMarker( leg.end_location, icons.end, 'title' );
             }
@@ -370,7 +379,7 @@
                     destDescription = description;
                     direct(oldlat,oldlon);
                     Android.setStartUse();
-					oldPlaceToGo = placeToGo;
+					          oldPlaceToGo = placeToGo;
                     //Android.GetLonLat(latitude,longitude);
 
                     submitButton.style.display = "none";
@@ -394,7 +403,7 @@
                     destDescription = description;
                     direct(oldlat,oldlon);
                     Android.setStartUse();
-					oldPlaceToGo = placeToGo;
+					          oldPlaceToGo = placeToGo;
                     //Android.GetLonLat(latitude,longitude);
 
                     submitButton.style.display = "none";
@@ -459,7 +468,7 @@
 
         function showFloorPlan() {
           //show floor plan
-		  Android.getWhereToGo(oldPlaceToGo);
+		      Android.getWhereToGo(oldPlaceToGo);
         }
 
         function showDetail() {
@@ -485,7 +494,7 @@
                   destName = name;
                   destDescription = description;
                   direct(oldlat,oldlon);
-				  oldPlaceToGo = placeToGo;
+				          oldPlaceToGo = placeToGo;
                   //add some action on android here
 
                   break;
@@ -499,7 +508,7 @@
                   destName = name;
                   destDescription = description;
                   direct(oldlat,oldlon);
-				  oldPlaceToGo = placeToGo;
+				          oldPlaceToGo = placeToGo;
                   //add some action on android here
 
                   break;
@@ -543,8 +552,14 @@
             "總務處",
             "行政大樓",
             "資訊工程學系",
-            "人文學院",
-            "電機資訊學院",
+            "圖書館",
+            "法學大樓",
+            "行政大樓",
+            "商學大樓",
+            "社會科學大樓",
+            "電機資訊大樓",
+            "公共事務大樓",
+            "人文大樓",
             "心湖"
           ];
           $( "#tags" ).autocomplete({
