@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.WebView;
 import android.widget.ImageView;
 
 /**
@@ -27,9 +28,9 @@ public class floorDialog extends DialogFragment {
         final int[] floorPlans={R.mipmap.floor_plan_csie};
         //*****************************
         final View view = inflater.inflate(R.layout.floor_dialog, container);
-        ImageView imageView = (ImageView) view.findViewById(R.id.floorPlan);
-        imageView.setBackgroundResource(floorPlans[0]);
-
+        WebView webView = (WebView) view.findViewById(R.id.floorplan);
+        webView.loadUrl("file:///android_asset/images/social_5.Png");
+        webView.getSettings().setBuiltInZoomControls(true);
         return view;
     }
     @Override
