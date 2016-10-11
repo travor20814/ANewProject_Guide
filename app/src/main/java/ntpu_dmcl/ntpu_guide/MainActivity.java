@@ -1,11 +1,8 @@
 package ntpu_dmcl.ntpu_guide;
 
 import android.app.Activity;
-import android.app.Fragment;
-import android.app.FragmentTransaction;
 import android.content.Context;
 import android.content.Intent;
-import android.content.IntentSender;
 import android.content.pm.PackageManager;
 import android.location.Criteria;
 import android.location.Location;
@@ -18,9 +15,7 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.AttributeSet;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -29,19 +24,13 @@ import android.view.ViewGroup;
 import android.webkit.WebChromeClient;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
-import android.widget.Adapter;
-import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ExpandableListView;
-import android.widget.SimpleExpandableListAdapter;
-import android.widget.TextView;
 import android.widget.Toast;
 import android.webkit.JavascriptInterface;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -58,7 +47,7 @@ public class MainActivity extends Activity implements LocationListener  {
     private boolean startUse = false;
     private boolean userback = false;
     private String[] list_parent = {
-            "大樓","科系"
+            "大樓(OO處)","科系(OO院)"
     };
     private String[][] list_child = {
             {"人文大樓","社會科學大樓"},
@@ -188,7 +177,7 @@ public class MainActivity extends Activity implements LocationListener  {
         ArrayList<String> parentItems = new ArrayList<String>();
         ArrayList<Object> childItems = new ArrayList<Object>();
         ArrayList<String> child ;
-
+/*admin list set*/
         for(int i=0;i<list_parent.length;i++){
             child = new ArrayList<String>();
             parentItems.add(list_parent[i]);
@@ -197,13 +186,30 @@ public class MainActivity extends Activity implements LocationListener  {
             }
             childItems.add(child);
         }
-        ViewGroup header =(ViewGroup) getLayoutInflater().inflate(R.layout.drawer_header,null);
-        ExpandableListView expandableListView = (ExpandableListView) findViewById(R.id.main_leftList);
-        expandableListView.addHeaderView(header,null,false);
-        ExpandListAdapter adapter = new ExpandListAdapter(parentItems,childItems);
-        adapter.setInflater((LayoutInflater)getSystemService(Context.LAYOUT_INFLATER_SERVICE),this);
-        expandableListView.setAdapter(adapter);
+        ViewGroup header_a =(ViewGroup) getLayoutInflater().inflate(R.layout.drawer_header_admin,null);
+        ExpandableListView expandableListView_a = (ExpandableListView) findViewById(R.id.main_leftList_admin);
+        expandableListView_a.addHeaderView(header_a,null,false);
+        ExpandListAdapter adapter_a = new ExpandListAdapter(parentItems,childItems);
+        adapter_a.setInflater((LayoutInflater)getSystemService(Context.LAYOUT_INFLATER_SERVICE),this);
+        expandableListView_a.setAdapter(adapter_a);
 
+/*teach list set*/
+        ViewGroup header_t =(ViewGroup) getLayoutInflater().inflate(R.layout.drawer_header_teach,null);
+        ExpandableListView expandableListView_t = (ExpandableListView) findViewById(R.id.main_leftList_teach);
+        expandableListView_t.addHeaderView(header_t,null,false);
+        ExpandListAdapter adapter_t = new ExpandListAdapter(parentItems,childItems);
+        adapter_t.setInflater((LayoutInflater)getSystemService(Context.LAYOUT_INFLATER_SERVICE),this);
+        expandableListView_t.setAdapter(adapter_t);
+
+/*buuton set*/
+        Button toSchool = (Button) findViewById(R.id.drawer_toSchool);
+        toSchool.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                wv_map.loadUrl("javascript:drawerNavigation(\"三峽校區正門\")");
+                closeDrawer();
+            }
+        });
     }
     public void closeDrawer(){
         DrawerLayout drawerLayout = (DrawerLayout) findViewById(R.id.main_drawer) ;
@@ -279,6 +285,10 @@ public class MainActivity extends Activity implements LocationListener  {
 
             ActivityCompat.requestPermissions( this, new String[] {  android.Manifest.permission.ACCESS_COARSE_LOCATION  },
                     MY_PERMISSION_ACCESS_COARSE_LOCATION);
+        }
+        while(ContextCompat.checkSelfPermission( this, android.Manifest.permission.ACCESS_COARSE_LOCATION ) != PackageManager.PERMISSION_GRANTED&&
+                ContextCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED){
+
         }
     }
     public void OnNavigationClick(String aim){

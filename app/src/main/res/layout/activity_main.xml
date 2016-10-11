@@ -12,6 +12,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+
+
     <WebView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -21,12 +23,44 @@
 
 
 </RelativeLayout>
-    <ExpandableListView android:id="@+id/main_leftList"
+    <LinearLayout
+        android:orientation="vertical"
+        android:id="@+id/mian_drawer_layout"
         android:layout_width="wrap_content"
-        android:layout_height="fill_parent"
-        android:layout_gravity="start"
-        android:choiceMode="singleChoice"
-        android:divider="@android:color/transparent"
-        android:dividerHeight="0dp"
-        android:background="#ffffff" />
+        android:layout_height="match_parent"
+        android:layout_gravity="start">
+
+        <TableRow
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content">
+
+            <Button
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/toSchool"
+                android:id="@+id/drawer_toSchool"
+                android:background="@drawable/drawer_button"
+                style="@style/ButtonText"
+               />
+        </TableRow>
+
+        <ExpandableListView android:id="@+id/main_leftList_admin"
+            android:layout_width="wrap_content"
+            android:layout_height="fill_parent"
+            android:choiceMode="singleChoice"
+            android:divider="@android:color/transparent"
+            android:dividerHeight="0dp"
+            android:background="@drawable/drawer_list"
+            android:layout_weight="1"
+            />
+        <ExpandableListView android:id="@+id/main_leftList_teach"
+            android:layout_width="wrap_content"
+            android:layout_height="fill_parent"
+            android:choiceMode="singleChoice"
+            android:divider="@android:color/transparent"
+            android:dividerHeight="0dp"
+            android:background="@drawable/drawer_list"
+            android:layout_weight="1"/>
+
+    </LinearLayout>
 </android.support.v4.widget.DrawerLayout>

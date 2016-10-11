@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:weightSum="1">
+
+    <TextView
+        android:text="@string/admin"
+        android:layout_width="285.5dp"
+        android:layout_height="wrap_content"
+        android:id="@+id/textView"
+        android:textSize="20sp"
+        android:textAlignment="center"
+        android:textAllCaps="false"
+        android:layout_gravity="center_vertical"
+        android:background="@drawable/drawer_admin_list"
+        android:textColor="@color/white"
+        android:gravity="center"
+        android:textStyle="italic"
+        android:shadowColor="#000000"
+        android:shadowDx="1"
+        android:shadowDy="11"
+        android:shadowRadius="2"/>
+</LinearLayout>
