@@ -32,7 +32,7 @@ public class floorDialog extends DialogFragment {
         //*****************************
         final View view = inflater.inflate(R.layout.floor_dialog, container);
         WebView webView = (WebView) view.findViewById(R.id.floorplan);
-        webView.loadUrl("file:///android_asset/images/social_5.Png");
+        webView.loadUrl("file:///android_asset/images/floor_plan_pin_csie.png");
         webView.getSettings().setBuiltInZoomControls(true);
         webView.getSettings().setDisplayZoomControls(false);
         webView.setInitialScale(45);
