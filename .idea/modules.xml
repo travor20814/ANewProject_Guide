@@ -2,8 +2,8 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
+      <module fileurl="file://$PROJECT_DIR$/ANewProject_Guide.iml" filepath="$PROJECT_DIR$/ANewProject_Guide.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
-      <module fileurl="file://$PROJECT_DIR$/ntpu_guide.iml" filepath="$PROJECT_DIR$/ntpu_guide.iml" />
     </modules>
   </component>
 </project>

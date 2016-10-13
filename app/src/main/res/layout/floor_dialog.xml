@@ -5,7 +5,7 @@
 
 
     <WebView
-        android:layout_width="300dp"
+        android:layout_width="match_parent"
         android:layout_height="212dp"
         android:id="@+id/floorplan"
         android:layout_gravity="center_horizontal" />
