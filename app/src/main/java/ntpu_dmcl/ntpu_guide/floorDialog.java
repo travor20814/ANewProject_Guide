@@ -35,6 +35,7 @@ public class floorDialog extends DialogFragment {
         webView.loadUrl("file:///android_asset/images/social_5.Png");
         webView.getSettings().setBuiltInZoomControls(true);
         webView.getSettings().setDisplayZoomControls(false);
+        Log.e("minH&W", String.valueOf(webView.getMinimumHeight())+"&&"+String.valueOf(webView.getMinimumWidth()));
         webView.setInitialScale(45);
         /*DisplayMetrics displaymetrics = new DisplayMetrics();
          getActivity().getWindowManager().getDefaultDisplay().getMetrics(displaymetrics);
