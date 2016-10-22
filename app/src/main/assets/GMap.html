@@ -188,6 +188,8 @@
         color: black;
         -moz-border-radius: 5px;
         border-radius: 5px;
+        overflow-y: scroll;
+        overflow-x: hidden;
       }
       .ui-helper-hidden-accessible { position: absolute; left:-999em; }
 
@@ -196,6 +198,7 @@
             async defer></script>
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
     <script src="https://code.jquery.com/ui/1.12.0/jquery-ui.js"></script>
+    <script src="./destinations.js"></script>
     <script type="text/javascript">
         var map;
         var infoWindow;
@@ -548,22 +551,13 @@
         }
         //auto complete for searching tags
         $( function() {
-          var availableTags = [
-            "總務處",
-            "行政大樓",
-            "資訊工程學系",
-            "圖書館",
-            "法學大樓",
-            "行政大樓",
-            "商學大樓",
-            "社會科學大樓",
-            "電機資訊大樓",
-            "公共事務大樓",
-            "人文大樓",
-            "心湖"
-          ];
+          var availableTags = tags; //tags maintained in destination.js
           $( "#tags" ).autocomplete({
-            source: availableTags,
+            source: function(request, response) {
+              var results = $.ui.autocomplete.filter(availableTags, request.term); //filter tags
+
+              response(results.slice(0, 10)); //only display 10 results
+            },
             select: function( event, ui) {
               $("#tags").val(ui.item.label);
               return false;
