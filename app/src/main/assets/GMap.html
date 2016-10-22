@@ -213,6 +213,7 @@
 		    var oldPlaceToGo;
         var destName;
         var destDescription; // for info window
+        var destTransport; //for info window
         var markers = [];
 
         function initMap(lat,lon) {
@@ -302,7 +303,8 @@
 
              var content =  '<span class="markerName">'+destName+'</span><br />' +
              '<span class="markerDesc">' + destDescription + '</span><br/><br/>' +
-             '交通資訊'
+             destTransport;
+
              bindInfoWindow(marker, map, infoWindow, content);
            }
         }
@@ -373,6 +375,7 @@
                 var name = markers[i].getAttribute("name");
                 var point = new google.maps.LatLng(parseFloat(markers[i].getAttribute("latitude")),parseFloat(markers[i].getAttribute("longitude")));
                 var description = markers[i].getAttribute("description");
+                var transport = markers[i].getAttribute("transport");
 
                 if (i === markers.length - 1) { // the last data in db
                   if (name === placeToGo) {
@@ -380,6 +383,7 @@
                     end = point;
                     destName = name;
                     destDescription = description;
+                    destTransport = transport;
                     direct(oldlat,oldlon);
                     Android.setStartUse();
 					          oldPlaceToGo = placeToGo;
@@ -404,6 +408,7 @@
                     end = point;
                     destName = name;
                     destDescription = description;
+                    destTransport = transport;
                     direct(oldlat,oldlon);
                     Android.setStartUse();
 					          oldPlaceToGo = placeToGo;
@@ -490,12 +495,14 @@
               var name = markers[i].getAttribute("name");
               var point = new google.maps.LatLng(parseFloat(markers[i].getAttribute("latitude")),parseFloat(markers[i].getAttribute("longitude")));
               var description = markers[i].getAttribute("description");
+              var transport = markers[i].getAttribute("transport");
 
               if (i === markers.length - 1) { // the last data in db
                 if (name === placeToGo) { //find place to go
                   end = point; // assign it to end
                   destName = name;
                   destDescription = description;
+                  destTransport = transport;
                   direct(oldlat,oldlon);
 				          oldPlaceToGo = placeToGo;
                   //add some action on android here
@@ -510,6 +517,7 @@
                   end = point;
                   destName = name;
                   destDescription = description;
+                  destTransport = transport;
                   direct(oldlat,oldlon);
 				          oldPlaceToGo = placeToGo;
                   //add some action on android here
