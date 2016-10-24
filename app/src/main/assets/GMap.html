@@ -211,9 +211,11 @@
         var oldlat;
         var oldlon;
 		    var oldPlaceToGo;
-        var destName;
-        var destDescription; // for info window
-        var destTransport; //for info window
+        var destName; // info window
+        var destLocation; // info window
+        var destHowcome; // info window
+        var destDescription; // 詳細資訊
+        var destTransport; // 交通資訊
         var markers = [];
 
         function initMap(lat,lon) {
@@ -302,8 +304,8 @@
              }, '6000');
 
              var content =  '<span class="markerName">'+destName+'</span><br />' +
-             '<span class="markerDesc">' + destDescription + '</span><br/><br/>' +
-             destTransport;
+             '<span class="markerDesc">' + destLocation + '</span><br/><br/>' +
+             destHowcome;
 
              bindInfoWindow(marker, map, infoWindow, content);
            }
@@ -373,15 +375,19 @@
               //grab all the data here
               for (var i = 0; i < markers.length; i++) {
                 var name = markers[i].getAttribute("name");
+                var location = markers[i].getAttribute("location");
                 var point = new google.maps.LatLng(parseFloat(markers[i].getAttribute("latitude")),parseFloat(markers[i].getAttribute("longitude")));
                 var description = markers[i].getAttribute("description");
+                var howcome = markers[i].getAttribute("howcome");
                 var transport = markers[i].getAttribute("transport");
 
                 if (i === markers.length - 1) { // the last data in db
                   if (name === placeToGo) {
                     //send data location to direct function
                     end = point;
-                    destName = name;
+                    destName = name; //info window
+                    destLocation = location;//info window
+                    destHowcome = howcome;//info window
                     destDescription = description;
                     destTransport = transport;
                     direct(oldlat,oldlon);
@@ -406,7 +412,9 @@
                   if (name === placeToGo) { //find place to go
                      //send data location to direct function
                     end = point;
-                    destName = name;
+                    destName = name;//info window
+                    destLocation = location;//info window
+                    destHowcome = howcome;//info window
                     destDescription = description;
                     destTransport = transport;
                     direct(oldlat,oldlon);
@@ -493,14 +501,18 @@
             //grab all the data here
             for (var i = 0; i < markers.length; i++) {
               var name = markers[i].getAttribute("name");
+              var location = markers[i].getAttribute("location");
               var point = new google.maps.LatLng(parseFloat(markers[i].getAttribute("latitude")),parseFloat(markers[i].getAttribute("longitude")));
               var description = markers[i].getAttribute("description");
+              var howcome = markers[i].getAttribute("howcome");
               var transport = markers[i].getAttribute("transport");
 
               if (i === markers.length - 1) { // the last data in db
                 if (name === placeToGo) { //find place to go
                   end = point; // assign it to end
-                  destName = name;
+                  destName = name;//info window
+                  destLocation = location;//info window
+                  destHowcome = howcome;//info window
                   destDescription = description;
                   destTransport = transport;
                   direct(oldlat,oldlon);
@@ -515,7 +527,9 @@
               } else {
                 if (name === placeToGo) { //find place to go
                   end = point;
-                  destName = name;
+                  destName = name;//info window
+                  destLocation = location;//info window
+                  destHowcome = howcome;//info window
                   destDescription = description;
                   destTransport = transport;
                   direct(oldlat,oldlon);
