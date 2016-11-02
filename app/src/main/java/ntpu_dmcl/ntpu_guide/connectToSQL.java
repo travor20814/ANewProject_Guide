@@ -1,6 +1,6 @@
 package ntpu_dmcl.ntpu_guide;
 
-import android.util.Log;
+//import android.util.Log;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -72,7 +72,7 @@ public class connectToSQL {
                  map.put("latitude", content[2]);
                  map.put("description", content[3]);
                  map.put("number", content[4]);
-                 Log.e("name",content[0]);
+                 //Log.e("name",content[0]);
                  list.add(map);
              }
              return list;

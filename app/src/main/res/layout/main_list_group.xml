@@ -13,7 +13,9 @@
         android:textColor="#000000"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:width="280dp"
-        android:paddingLeft="40dp" />
+        android:paddingLeft="40dp"
+        android:textSize="22sp"
+       />
 
 
 </LinearLayout>

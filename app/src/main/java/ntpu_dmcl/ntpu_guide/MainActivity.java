@@ -16,7 +16,6 @@ import android.support.v4.content.ContextCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -74,7 +73,7 @@ public class MainActivity extends Activity implements LocationListener  {
         wv_map.addJavascriptInterface(this, "Android");
         wv_map.setWebChromeClient(new WebChromeClient()); //allow javascript alert
         wv_map.loadUrl("file:///android_asset/GMap.html");
-        Drawerset();
+        new catchListName().execute();
     }
 
     @Override
@@ -99,8 +98,8 @@ public class MainActivity extends Activity implements LocationListener  {
             /*
             it is a bad way to check locate or not,but i'm lazy
              */
-            Log.e("lati",latitude);
-            Log.e("lngi", longitude);
+            //Log.e("lati",latitude);
+            //Log.e("lngi", longitude);
             if(startUse) {
                 wv_map.loadUrl("javascript:direct(\"" + testlat + "\",\"" + testlon + "\")");
                 //wv_map.loadUrl("javascript:direct(" + "24.937190"+ "," + "121.361814" + ")");
@@ -173,31 +172,22 @@ public class MainActivity extends Activity implements LocationListener  {
 
 
      */
-    private void Drawerset(){
-        ArrayList<String> parentItems = new ArrayList<String>();
-        ArrayList<Object> childItems = new ArrayList<Object>();
-        ArrayList<String> child ;
+    private void Drawerset(ArrayList<String> parentItems_A, ArrayList<Object> childItems_A,ArrayList<String> parentItems_T, ArrayList<Object> childItems_T){
 /*admin list set*/
-        for(int i=0;i<list_parent.length;i++){
-            child = new ArrayList<String>();
-            parentItems.add(list_parent[i]);
-            for(int j=0;j<list_child[i].length;j++){
-                child.add(list_child[i][j]);
-            }
-            childItems.add(child);
-        }
+
         ViewGroup header_a =(ViewGroup) getLayoutInflater().inflate(R.layout.drawer_header_admin,null);
         ExpandableListView expandableListView_a = (ExpandableListView) findViewById(R.id.main_leftList_admin);
         expandableListView_a.addHeaderView(header_a,null,false);
-        ExpandListAdapter adapter_a = new ExpandListAdapter(parentItems,childItems);
+        ExpandListAdapter adapter_a = new ExpandListAdapter(parentItems_A,childItems_A);
         adapter_a.setInflater((LayoutInflater)getSystemService(Context.LAYOUT_INFLATER_SERVICE),this);
         expandableListView_a.setAdapter(adapter_a);
 
 /*teach list set*/
+
         ViewGroup header_t =(ViewGroup) getLayoutInflater().inflate(R.layout.drawer_header_teach,null);
         ExpandableListView expandableListView_t = (ExpandableListView) findViewById(R.id.main_leftList_teach);
         expandableListView_t.addHeaderView(header_t,null,false);
-        ExpandListAdapter adapter_t = new ExpandListAdapter(parentItems,childItems);
+        ExpandListAdapter adapter_t = new ExpandListAdapter(parentItems_T,childItems_T);
         adapter_t.setInflater((LayoutInflater)getSystemService(Context.LAYOUT_INFLATER_SERVICE),this);
         expandableListView_t.setAdapter(adapter_t);
 
@@ -296,8 +286,11 @@ public class MainActivity extends Activity implements LocationListener  {
 
     }
 
-    public void OnInfoClick(){
+    public void OnInfoClick(String name){
         Intent i = new Intent();
+        Bundle bundle = new Bundle();
+        bundle.putString("name",name);
+        i.putExtras(bundle);
         i.setClass(MainActivity.this,InfoActivity.class);
         startActivity(i);
     }
@@ -360,9 +353,80 @@ public class MainActivity extends Activity implements LocationListener  {
         protected void onPostExecute( ArrayList<HashMap<String, String>> result) {
             super.onPostExecute(result);
             // 展現圖片
+           // Log.e("name",result.get(0).get("description"));
             showFloorDialog(Integer.parseInt(result.get(0).get("number")));
         }
     }
+
+    class catchListName extends AsyncTask<Integer,Void,String> {
+        @Override
+        protected void onPreExecute(){
+            super.onPreExecute();
+
+        }
+        @Override
+        protected  String doInBackground(Integer... param) {
+            return new getListName("select distinct Pname,Cname from list_name where `group` = 0  order by Pname" ).getServerConnect()+
+                    "&&&"+
+                    new getListName("select distinct Pname,Cname from list_name where `group` = 1  order by Pname").getServerConnect();
+        }
+        @Override
+        protected void onPostExecute( String result) {
+            super.onPostExecute(result);
+            String[] AandT = result.split("&&&");
+           // Log.e("result",result);
+            /////////////////////////////////////////////////////////////
+            if(!(AandT[0].equals("wrong")||AandT[1].equals("wrong"))) {
+                ArrayList<String> parentItems_A = new ArrayList<String>();
+                ArrayList<Object> childItems_A = new ArrayList<Object>();
+                ArrayList<String> child_A = new ArrayList<String>();
+                ArrayList<String> parentItems_T = new ArrayList<String>();
+                ArrayList<Object> childItems_T = new ArrayList<Object>();
+                ArrayList<String> child_T = new ArrayList<String>();
+                ////////////////////////////////////////////////////////////
+                String[] items_A = AandT[0].split("@@@@@");
+                String oldcontent_A = "";
+                for (int i = 0; i < items_A.length; i++) {
+                    String[] content = items_A[i].split("###");
+                    if (!content[0].equals(oldcontent_A)) {
+                        parentItems_A.add(content[0]);
+                        oldcontent_A = content[0];
+                        if (i != 0) {
+                            childItems_A.add(child_A);
+                        }
+                        child_A = new ArrayList<String>();
+                    }
+                    child_A.add(content[1]);
+                    if (i == items_A.length - 1) {
+                        childItems_A.add(child_A);
+                        child_A = new ArrayList<String>();
+                    }
+                }
+                ////////////////////////////////////////////////////////////////
+                String[] items_T = AandT[1].split("@@@@@");
+                String oldcontent_T = "";
+                for (int i = 0; i < items_T.length; i++) {
+                    String[] content = items_T[i].split("###");
+                    if (!content[0].equals(oldcontent_T)) {
+                        parentItems_T.add(content[0]);
+                        oldcontent_T = content[0];
+                        if (i != 0) {
+                            childItems_T.add(child_T);
+                        }
+                        child_T = new ArrayList<String>();
+                    }
+                    child_T.add(content[1]);
+                    if (i == items_T.length - 1) {
+                        childItems_T.add(child_T);
+                        child_T = new ArrayList<String>();
+                    }
+                }
+                //////////////////////////////////////////////////////////
+                Drawerset(parentItems_A, childItems_A, parentItems_T, childItems_T);
+            }
+        }
+    }
+
     /*
     @JavascriptInterface
 
@@ -373,7 +437,7 @@ public class MainActivity extends Activity implements LocationListener  {
     @JavascriptInterface
     public void GetLonLat(float Lati,float Long)
     {
-        Log.e("La+Lo",String.valueOf(Lati)+"\t"+String.valueOf(Long));
+        //Log.e("La+Lo",String.valueOf(Lati)+"\t"+String.valueOf(Long));
     }
     @JavascriptInterface
     public void setStartUse(){

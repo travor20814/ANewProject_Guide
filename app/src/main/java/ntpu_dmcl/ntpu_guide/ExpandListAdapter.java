@@ -43,6 +43,17 @@ public class ExpandListAdapter extends BaseExpandableListAdapter {
         TextView textView = (TextView) convertView.findViewById(R.id.drawer_text);
         textView.setText(child.get(childPosition));
 
+
+        //Log.e("text.width",String.valueOf(textView.getWidth()));
+        //Log.e("text.maxwidth",String.valueOf(textView.getMaxWidth()));
+        //Log.e("text.maxems",String.valueOf(textView.getMaxEms()));
+        //Log.e("text.size",String.valueOf(textView.getTextSize()));
+        //Log.e("text.maxline",String.valueOf(textView.getMaxLines()));
+        //Log.e("text.minlune",String.valueOf(textView.getMinLines()));
+        //Log.e("text.size",String.valueOf(textView.getLineCount()));
+        //Log.e("text.length",String.valueOf(child.get(childPosition).length()));
+
+
         convertView.setOnClickListener(new View.OnClickListener() {
 
             @Override
@@ -65,7 +76,7 @@ public class ExpandListAdapter extends BaseExpandableListAdapter {
             @Override
             public void onClick(View view) {
                 //Log.e("main","info.group:"+String.valueOf(groupPosition)+".child:"+String.valueOf(childPosition));
-                ((MainActivity) activity).OnInfoClick();
+                ((MainActivity) activity).OnInfoClick(((ArrayList<String>) childtems.get(groupPosition)).get(childPosition));
                 ((MainActivity) activity).closeDrawer();
             }
         });

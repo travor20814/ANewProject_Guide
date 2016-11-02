@@ -42,6 +42,10 @@ public class InfoActivity extends AppCompatActivity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        Bundle bundle = this.getIntent().getExtras();
+        String name = bundle.getString("name");
+        setTitle(name);
+        ///
         // 设置无标题窗口
         int[] img = new int[] { R.mipmap.ic_action_refresh,R.mipmap.ic_launcher,R.mipmap.image_go,
         R.mipmap.image_info};
