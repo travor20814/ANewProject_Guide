@@ -366,9 +366,9 @@ public class MainActivity extends Activity implements LocationListener  {
         }
         @Override
         protected  String doInBackground(Integer... param) {
-            return new getListName("select distinct Pname,Cname from list_name where `group` = 0  order by Pname" ).getServerConnect()+
+            return new getSqlString("select distinct Pname,Cname from list_name where `group` = 0  order by Pname" ).getServerConnect()+
                     "&&&"+
-                    new getListName("select distinct Pname,Cname from list_name where `group` = 1  order by Pname").getServerConnect();
+                    new getSqlString("select distinct Pname,Cname from list_name where `group` = 1  order by Pname").getServerConnect();
         }
         @Override
         protected void onPostExecute( String result) {

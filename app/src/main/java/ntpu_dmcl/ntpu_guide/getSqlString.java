@@ -15,9 +15,9 @@ import java.net.URLEncoder;
 /**
  * Created by user on 2016/10/19.
  */
-public class getListName {
+public class getSqlString {
     String sqlCommand ;
-    public getListName(String sqlCommand){
+    public getSqlString(String sqlCommand){
         try {
             this.sqlCommand= URLEncoder.encode(sqlCommand, "UTF-8");
         } catch (UnsupportedEncodingException e) {

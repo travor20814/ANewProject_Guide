@@ -2,6 +2,7 @@ package ntpu_dmcl.ntpu_guide;
 
 import android.app.Activity;
 import android.graphics.Color;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.v4.view.PagerAdapter;
@@ -99,6 +100,7 @@ public class InfoActivity extends AppCompatActivity {
         //给viewpager设置监听事件
         viewPager.setOnPageChangeListener(new GuidePageChangeListener());
         toolbarSet();
+        new catchInfo().execute(name);
     }
 
     public void toolbarSet(){
@@ -198,6 +200,33 @@ public class InfoActivity extends AppCompatActivity {
                             .setBackgroundResource(R.drawable.unfocused_circle);
                 }
             }
+        }
+    }
+
+    class catchInfo extends AsyncTask<String,Void,String> {
+        @Override
+        protected void onPreExecute(){
+            super.onPreExecute();
+
+        }
+        @Override
+        protected  String doInBackground(String... param) {
+            return new getSqlString("select location , description ,howcome, connectway from places where name ='"+param[0]+"'").getServerConnect();
+        }
+        @Override
+        protected void onPostExecute( String result) {
+            super.onPostExecute(result);
+            String tem[] = result.split("@@@@@");
+            String data[] = tem[0].split("###");
+            TextView location = (TextView) findViewById(R.id.location);
+            TextView history = (TextView) findViewById(R.id.history);
+            TextView howcome = (TextView) findViewById(R.id.howtocome);
+            TextView connectway = (TextView) findViewById(R.id.connectway);
+            location.setText(data[0]);
+            history.setText(data[1]);
+            howcome.setText(data[2]);
+            connectway.setText(data[3]);
+
         }
     }
 }

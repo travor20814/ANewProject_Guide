@@ -84,7 +84,7 @@ public class ExpandListAdapter extends BaseExpandableListAdapter {
     }
 
     @Override
-    public View getGroupView(int groupPosition, boolean isExpanded, View convertView, ViewGroup parent) {
+    public View getGroupView(final int groupPosition, boolean isExpanded, View convertView, ViewGroup parent) {
 
         if (convertView == null) {
            // Log.e("Expan","null");
@@ -94,7 +94,15 @@ public class ExpandListAdapter extends BaseExpandableListAdapter {
         TextView textView = null;
         textView = (TextView) convertView.findViewById(R.id.drawer_text);
         textView.setText(parentItems.get(groupPosition));
-
+        Button btn_info = (Button) convertView.findViewById(R.id.main_list_info);
+        btn_info.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //Log.e("main","info.group:"+String.valueOf(groupPosition)+".child:"+String.valueOf(childPosition));
+                ((MainActivity) activity).OnInfoClick(parentItems.get(groupPosition));
+                ((MainActivity) activity).closeDrawer();
+            }
+        });
 
         return convertView;
     }
