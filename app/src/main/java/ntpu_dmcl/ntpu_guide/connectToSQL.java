@@ -68,10 +68,13 @@ public class connectToSQL {
                  String[] content = items[i].split("###");
                  HashMap<String, String> map = new HashMap<String, String>();
                  map.put("name", content[0]);
-                 map.put("longitude", content[1]);
-                 map.put("latitude", content[2]);
-                 map.put("description", content[3]);
-                 map.put("number", content[4]);
+                 map.put("location", content[1]);
+                 map.put("longitude", content[2]);
+                 map.put("latitude", content[3]);
+                 map.put("description", content[4]);
+                 map.put("howcome", content[5]);
+                 map.put("transport", content[6]);
+                 map.put("number", content[7]);
                  //Log.e("name",content[0]);
                  list.add(map);
              }
