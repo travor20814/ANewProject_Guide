@@ -102,11 +102,12 @@ public class MainActivity extends Activity implements LocationListener  {
             //Log.e("lati",latitude);
             //Log.e("lngi", longitude);
             if(startUse) {
-                wv_map.loadUrl("javascript:direct(\"" + testlat + "\",\"" + testlon + "\")");
-                //wv_map.loadUrl("javascript:direct(" + "24.937190"+ "," + "121.361814" + ")");
+                wv_map.loadUrl("javascript:direct(\"" + latitude + "\",\"" + longitude + "\")");
+                // wv_map.loadUrl("javascript:direct(\"" + testlat + "\",\"" + testlon + "\")");
             }
             else{
-                wv_map.loadUrl("javascript:initMap(\"" + testlat + "\",\"" + testlon + "\")");
+                wv_map.loadUrl("javascript:initMap(\"" + latitude + "\",\"" + longitude + "\")");
+                // wv_map.loadUrl("javascript:initMap(\"" + testlat + "\",\"" + testlon + "\")");
             }
         }
         else{

@@ -299,7 +299,7 @@
              });
              //hint for user, if it's necessary
              infoWindow.open(map, marker);
-             setTimeout( function(){
+             setTimer = setTimeout( function(){
                 infoWindow.close();
              }, '6000');
 
@@ -545,6 +545,7 @@
         //bind infowindow on marker
         function bindInfoWindow(marker, map, infoWindow, desc){
           google.maps.event.addListener(marker, 'click', function() {
+            clearTimeout(setTimer);
             infoWindow.setContent(desc); //set description on marker
             infoWindow.open(map, marker);
 
