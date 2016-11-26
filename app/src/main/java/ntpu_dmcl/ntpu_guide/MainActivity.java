@@ -46,14 +46,10 @@ public class MainActivity extends Activity implements LocationListener  {
     final private String network = LocationManager.NETWORK_PROVIDER;
     private boolean startUse = false;
     private boolean userback = false;
-    private String[] list_parent = {
-            "大樓(OO處)","科系(OO院)"
-    };
-    private String[][] list_child = {
-            {"人文大樓","社會科學大樓"},
-            {"資訊工程學系"},
-    };
-    /*
+    private String oldPlace;
+
+
+        /*
     @Override
 
 
@@ -102,12 +98,12 @@ public class MainActivity extends Activity implements LocationListener  {
             //Log.e("lati",latitude);
             //Log.e("lngi", longitude);
             if(startUse) {
-                wv_map.loadUrl("javascript:direct(\"" + latitude + "\",\"" + longitude + "\")");
-                // wv_map.loadUrl("javascript:direct(\"" + testlat + "\",\"" + testlon + "\")");
+               // wv_map.loadUrl("javascript:direct(\"" + latitude + "\",\"" + longitude + "\")");
+                wv_map.loadUrl("javascript:direct(\"" + testlat + "\",\"" + testlon + "\")");
             }
             else{
-                wv_map.loadUrl("javascript:initMap(\"" + latitude + "\",\"" + longitude + "\")");
-                // wv_map.loadUrl("javascript:initMap(\"" + testlat + "\",\"" + testlon + "\")");
+                //wv_map.loadUrl("javascript:initMap(\"" + latitude + "\",\"" + longitude + "\")");
+                wv_map.loadUrl("javascript:initMap(\"" + testlat + "\",\"" + testlon + "\")");
             }
         }
         else{
@@ -288,14 +284,6 @@ public class MainActivity extends Activity implements LocationListener  {
 
     }
 
-    public void OnInfoClick(String name){
-        Intent i = new Intent();
-        Bundle bundle = new Bundle();
-        bundle.putString("name",name);
-        i.putExtras(bundle);
-        i.setClass(MainActivity.this,InfoActivity.class);
-        startActivity(i);
-    }
     public void showFloorDialog(int number)
     {
         floorDialog editNameDialog = new floorDialog().newInstance(number);
@@ -453,5 +441,15 @@ public class MainActivity extends Activity implements LocationListener  {
     @JavascriptInterface
     public void getWhereToGo(String name){
         new catchSqlData().execute(name);
+    }
+    @JavascriptInterface
+    public void OnInfoClick(String name){
+        oldPlace = name;
+        Intent i = new Intent();
+        Bundle bundle = new Bundle();
+        bundle.putString("name",name);
+        i.putExtras(bundle);
+        i.setClass(MainActivity.this,InfoActivity.class);
+        startActivity(i);
     }
 }

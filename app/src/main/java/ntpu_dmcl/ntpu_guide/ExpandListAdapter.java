@@ -95,6 +95,16 @@ public class ExpandListAdapter extends BaseExpandableListAdapter {
         textView = (TextView) convertView.findViewById(R.id.drawer_text);
         textView.setText(parentItems.get(groupPosition));
         Button btn_info = (Button) convertView.findViewById(R.id.main_list_info);
+        Button btn_go = (Button) convertView.findViewById(R.id.main_list_go);
+
+        btn_go.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //Log.e("main","go.group:"+String.valueOf(groupPosition)+".child:"+String.valueOf(childPosition));
+                ((MainActivity) activity).OnNavigationClick(parentItems.get(groupPosition));
+                ((MainActivity) activity).closeDrawer();
+            }
+        });
         btn_info.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
