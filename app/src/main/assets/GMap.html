@@ -303,9 +303,9 @@
                 infoWindow.close();
              }, '6000');
 
-             var content =  '<span class="markerName">'+destName+'</span><br />' +
-             '<span class="markerDesc">' + destLocation + '</span><br/><br/>' +
-             destHowcome;
+             var content =  '<span class="markerName">' + destName + '</span><br />' +
+             '<span class="markerDesc">' + destLocation + '<br /><br />' + '-----如何來這裡?-----<br />' +
+             destHowcome + '</span>';
 
              bindInfoWindow(marker, map, infoWindow, content);
            }
@@ -488,7 +488,7 @@
         }
 
         function showDetail() {
-             Android.OnInfoClick(oldPlaceToGo);
+          Android.OnInfoClick(oldPlaceToGo);
           //show destination detail
         }
 

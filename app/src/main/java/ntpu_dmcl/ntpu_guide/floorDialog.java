@@ -28,27 +28,29 @@ public class floorDialog extends DialogFragment {
                               Bundle savedInstanceState)
     {  //******************************
         final int number = getArguments().getInt("number");
-        final int[] floorPlans={R.mipmap.floor_plan_csie};
+//        final int[] floorPlans={R.mipmap.floor_plan_csie};
+        String floorPlanImage = "ntpu_" + String.valueOf(number) + ".png";
         final View view = inflater.inflate(R.layout.floor_dialog, container);
         WebView webView = (WebView) view.findViewById(R.id.floorplan);
-        switch (number) {
-            case 30: // 社會科學學院
-                Log.d("tag:", String.valueOf(number));
-                webView.loadUrl("file:///android_asset/images/floor_plan_pin_csie.png");
-                break;
-            case 49: // 通訊工程學系
-                Log.d("tag:", String.valueOf(number));
-                webView.loadUrl("file:///android_asset/images/floor_plan_pin_csie.png");
-                break;
-            case 76: // 採購組
-                Log.d("tag:", String.valueOf(number));
-                webView.loadUrl("file:///android_asset/images/floor_plan_pin_csie.png");
-                break;
-            default:
-                Log.d("tag:", String.valueOf(number));
-                webView.loadUrl("file:///android_asset/images/floor_plan_pin_csie.png");
-                break;
-        }
+        webView.loadUrl("file:///android_asset/images/" + floorPlanImage);
+//        switch (number) {
+//            case 30: // 社會科學學院
+//                Log.d("tag:", String.valueOf(number));
+//                webView.loadUrl("file:///android_asset/images/" + floorPlanImage);
+//                break;
+//            case 49: // 通訊工程學系
+//                Log.d("tag:", String.valueOf(number));
+//                webView.loadUrl("file:///android_asset/images/floor_plan_pin_csie.png");
+//                break;
+//            case 76: // 採購組
+//                Log.d("tag:", String.valueOf(number));
+//                webView.loadUrl("file:///android_asset/images/floor_plan_pin_csie.png");
+//                break;
+//            default:
+//                Log.d("tag:", String.valueOf(number));
+//                webView.loadUrl("file:///android_asset/images/floor_plan_pin_csie.png");
+//                break;
+//        }
         //*****************************
         webView.getSettings().setBuiltInZoomControls(true);
         webView.getSettings().setDisplayZoomControls(false);
