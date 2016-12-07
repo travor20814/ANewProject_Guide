@@ -26,6 +26,10 @@
             android:theme="@style/NoActionBar"
             android:screenOrientation="portrait"
             />
+        <activity android:name=".TranportActivity"
+            android:theme="@style/NoActionBar"
+            android:screenOrientation="portrait"
+            />
 
     </application>
 

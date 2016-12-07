@@ -232,8 +232,6 @@
             disableDefaultUI: true
           });
 
-          infoWindow = new google.maps.InfoWindow({ map: map });
-
           map.addListener('click', function() { //close the bottom info block when map onclick
             const lowerBlock = document.getElementById("lowerBlock");
             const detailBlock = document.getElementById("detailBlock");
@@ -303,9 +301,9 @@
                 infoWindow.close();
              }, '6000');
 
-             var content =  '<span class="markerName">'+destName+'</span><br />' +
-             '<span class="markerDesc">' + destLocation + '</span><br/><br/>' +
-             destHowcome;
+             var content =  '<span class="markerName">' + destName + '</span><br />' +
+             '<span class="markerDesc">' + destLocation + '<br /><br />' + '-----如何來這裡?-----<br />' +
+             destHowcome + '</span>';
 
              bindInfoWindow(marker, map, infoWindow, content);
            }
@@ -482,6 +480,7 @@
 
         function showTraffic() {
           //show traffic information
+          Android.OnTransportClick();
         }
 
         function showFloorPlan() {
@@ -490,7 +489,7 @@
         }
 
         function showDetail() {
-             Android.OnInfoClick(oldPlaceToGo);
+          Android.OnInfoClick(oldPlaceToGo);
           //show destination detail
         }
 

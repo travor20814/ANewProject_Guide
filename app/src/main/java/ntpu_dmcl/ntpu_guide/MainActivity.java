@@ -9,6 +9,7 @@ import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.location.LocationProvider;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.support.v4.app.ActivityCompat;
@@ -302,7 +303,6 @@ public class MainActivity extends Activity implements LocationListener  {
 
      */
     private class WebViewClientDemo extends WebViewClient {
-
         @Override
         public void onPageFinished(WebView view, String url) {
             super.onPageFinished(view, url);
@@ -459,6 +459,12 @@ public class MainActivity extends Activity implements LocationListener  {
         bundle.putString("name",name);
         i.putExtras(bundle);
         i.setClass(MainActivity.this,InfoActivity.class);
+        startActivity(i);
+    }
+    @JavascriptInterface
+    public void OnTransportClick() {
+        Intent i = new Intent();
+        i.setClass(MainActivity.this, TranportActivity.class);
         startActivity(i);
     }
 }
