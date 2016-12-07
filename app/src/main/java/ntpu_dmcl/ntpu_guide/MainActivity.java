@@ -46,7 +46,7 @@ public class MainActivity extends Activity implements LocationListener  {
     final private String network = LocationManager.NETWORK_PROVIDER;
     private boolean startUse = false;
     private boolean userback = false;
-    private String oldPlace;
+    private String oldPlace="";
 
 
         /*
@@ -130,6 +130,9 @@ public class MainActivity extends Activity implements LocationListener  {
     protected void onResume(){
         super.onResume();
         locationServiceInitial();
+        if(!oldPlace.equals(""))
+        wv_map.loadUrl("javascript:drawerNavigation(\"" + oldPlace + "\")");
+       // Log.i("main resume oldplace",oldPlace);
     }
     @Override
     protected void onPause() {
@@ -195,6 +198,7 @@ public class MainActivity extends Activity implements LocationListener  {
             @Override
             public void onClick(View view) {
                 wv_map.loadUrl("javascript:drawerNavigation(\"三峽校區正門\")");
+                //oldPlace ="三峽校區正門" ;
                 closeDrawer();
             }
         });
@@ -281,6 +285,7 @@ public class MainActivity extends Activity implements LocationListener  {
     }
     public void OnNavigationClick(String aim){
         wv_map.loadUrl("javascript:drawerNavigation(\"" + aim + "\")");
+        //oldPlace =aim ;
 
     }
 
@@ -303,7 +308,7 @@ public class MainActivity extends Activity implements LocationListener  {
             super.onPageFinished(view, url);
             //在这里执行你想调用的js函数
             locationServiceInitial();
-
+            //Log.i("mainactivity","webview be reset");
         }
 
     }
@@ -430,6 +435,11 @@ public class MainActivity extends Activity implements LocationListener  {
         //Log.e("La+Lo",String.valueOf(Lati)+"\t"+String.valueOf(Long));
     }
     @JavascriptInterface
+    public void GetOldplace(String place )
+    {
+        oldPlace = place;
+    }
+    @JavascriptInterface
     public void setStartUse(){
         startUse =true ;
     }
@@ -444,7 +454,6 @@ public class MainActivity extends Activity implements LocationListener  {
     }
     @JavascriptInterface
     public void OnInfoClick(String name){
-        oldPlace = name;
         Intent i = new Intent();
         Bundle bundle = new Bundle();
         bundle.putString("name",name);
