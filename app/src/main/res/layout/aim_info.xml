@@ -46,71 +46,78 @@ android:layout_height="match_parent"
             <TextView
                 android:layout_marginTop="20dp"
                 android:text="位置"
-                android:layout_width="252dp"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/textView3"
-                android:paddingLeft="10dp"
-                android:gravity="center"
-                android:layout_marginLeft="20dp"
-                android:textColor="@color/white"
-                android:background="@drawable/info_subtitle"
-                />
+                android:padding="10dp"
+                android:layout_margin="5dp"
+                android:textSize="20sp"
+                android:textColor="@color/black"
+                android:background="@drawable/info_subtitle_simple" />
 
             <TextView
                 android:text="社會科學大樓8樓03室（搭乘大廳電梯到8樓，  出電梯左側）"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:padding="10dp"
+                android:textSize="16sp"
                 android:id="@+id/location" />
 
             <TextView
                 android:text="如何到達"
-                android:layout_width="252dp"
-                android:layout_height="wrap_content"
-                android:id="@+id/textView4"
-                android:paddingLeft="10dp"
-                android:gravity="center"
-                android:layout_marginLeft="20dp"
-                android:textColor="@color/white"
-                android:background="@drawable/info_subtitle"/>
-
-            <TextView
-                android:text="（如何到這裡？） 中央草坪右邊第三棟大樓即為社會科學學院，車輛可停  放於大樓後面停車格或外環道路停車格"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:id="@+id/textView4"
+                android:padding="10dp"
+                android:layout_margin="5dp"
+                android:textColor="@color/black"
+                android:textSize="20sp"
+                android:background="@drawable/info_subtitle_simple" />
+
+            <TextView
+                android:text="中央草坪右邊第三棟大樓即為社會科學學院，車輛可停  放於大樓後面停車格或外環道路停車格"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="16sp"
+                android:padding="10dp"
                 android:id="@+id/howtocome" />
 
             <TextView
                 android:text="聯絡人和電話"
-                android:layout_width="252dp"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/textView2"
-                android:paddingLeft="10dp"
-                android:gravity="center"
-                android:layout_marginLeft="20dp"
-                android:textColor="@color/white"
-                android:background="@drawable/info_subtitle"/>
+                android:padding="10dp"
+                android:layout_margin="5dp"
+                android:textColor="@color/black"
+                android:textSize="20sp"
+                android:background="@drawable/info_subtitle_simple" />
 
             <TextView
                 android:text="02-86741111轉67207吳亭臻助理"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:textSize="16sp"
+                android:padding="10dp"
                 android:id="@+id/connectway" />
 
             <TextView
                 android:text="歷史與特色"
-                android:layout_width="252dp"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/textView5"
-                android:paddingLeft="10dp"
-                android:gravity="center"
-                android:layout_marginLeft="20dp"
-                android:textColor="@color/white"
-                android:background="@drawable/info_subtitle"/>
+                android:padding="10dp"
+                android:layout_margin="5dp"
+                android:textColor="@color/black"
+                android:textSize="20sp"
+                android:background="@drawable/info_subtitle_simple" />
 
             <TextView
                 android:text="社會科學學院是中興法商學院時期之經濟學系、社會學系與臺灣發展研究中心，於民國八十九年二月一日法商學院改制為國立臺北大學時，組合並發展而成的。改制同時，社會學系分別成立社會學系與社會工作學系，另於九十年八月奉准成立犯罪學研究所，因此，目前社會科學學院共有三系一所一中心等五個行政單位，其中犯罪學研究所另設有「全國中輟學生復學輔導資源發展研究中心」。  本院於八十九年二月一日成立時，經濟學系梁進發教授奉校長指派為代理院長並進行下任院長選薦工作，於八十九年八月一日，梁院長經選舉成為第一任院長，九十年八月一日，梁院長因受校長倚重委派為本校副校長，辭去院長兼職，本院乃經改選第二任院"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:textSize="16sp"
+                android:padding="10dp"
                 android:id="@+id/history" />
         </LinearLayout>
     </ScrollView>
