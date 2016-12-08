@@ -45,7 +45,7 @@
         </TableRow>
 
         <ExpandableListView android:id="@+id/main_leftList_admin"
-            android:layout_width="wrap_content"
+            android:layout_width="fill_parent"
             android:layout_height="fill_parent"
             android:choiceMode="singleChoice"
             android:divider="@android:color/transparent"
@@ -54,7 +54,7 @@
             android:layout_weight="1"
             />
         <ExpandableListView android:id="@+id/main_leftList_teach"
-            android:layout_width="wrap_content"
+            android:layout_width="fill_parent"
             android:layout_height="fill_parent"
             android:choiceMode="singleChoice"
             android:divider="@android:color/transparent"

@@ -1,20 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:weightSum="1"
-    >
+    android:weightSum="6">
 
     <TextView
         android:text="@string/teach"
-        android:layout_width="285.5dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/textView"
         android:textSize="20sp"
         android:textAlignment="center"
         android:textAllCaps="false"
-        android:layout_gravity="center_vertical"
         android:background="@drawable/drawer_teach_list"
         android:textColor="@color/white"
         android:gravity="center"
@@ -23,5 +21,31 @@
         android:shadowDx="1"
         android:shadowDy="11"
         android:shadowRadius="2"
-    />
+        android:layout_weight="4"/>
+    <TextView
+        android:text="@string/position"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:maxWidth="40dp"
+        android:id="@+id/textView2"
+        android:textSize="20sp"
+        android:textAlignment="center"
+        android:textAllCaps="false"
+        android:textColor="@color/black"
+        android:gravity="center"
+        android:textStyle="italic"
+        android:layout_weight="1"/>
+    <TextView
+        android:text="@string/info"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:maxWidth="40dp"
+        android:id="@+id/textView3"
+        android:textSize="20sp"
+        android:textAlignment="center"
+        android:textAllCaps="false"
+        android:textColor="@color/black"
+        android:gravity="center"
+        android:textStyle="italic"
+        android:layout_weight="1"/>
 </LinearLayout>

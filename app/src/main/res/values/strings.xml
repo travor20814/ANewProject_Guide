@@ -3,4 +3,6 @@
     <string name="admin">行政單位</string>
     <string name="teach">教學單位</string>
     <string name="toSchool">如何到達三峽校區?</string>
+    <string name="position">位置</string>
+    <string name="info">資訊</string>
 </resources>

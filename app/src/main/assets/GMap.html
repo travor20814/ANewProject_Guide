@@ -193,6 +193,16 @@
       }
       .ui-helper-hidden-accessible { position: absolute; left:-999em; }
 
+      @media screen and (min-width: 480px) {
+        .searchInput {
+          width: 350px;
+        }
+        .searchSubmit {
+          width: 80px;
+          margin-left: 8px;
+        }
+      }
+
     </style>
     <script src="http://maps.google.com/maps/api/js?v=3&key=AIzaSyAOuz5xFsq3pIkk_kZxEXDMEr6UpzKnlro&libraries=geometry,places&callback=initMap"
             async defer></script>
@@ -453,7 +463,7 @@
             submitButton.style.display = "inline-block";
             refreshButton.style.display = "none";
             refreshImg.style.display = "none";
-            getFormWidth.style.width = "300px";
+            getFormWidth.style.width = "100%";
           }
         }
 
