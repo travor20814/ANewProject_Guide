@@ -49,7 +49,7 @@ public class InfoActivity extends AppCompatActivity {
         ///
         // 设置无标题窗口
         int[] img = new int[] { R.mipmap.ic_action_refresh,R.mipmap.ic_launcher,R.mipmap.image_go,
-        R.mipmap.image_info};
+        R.drawable.d0262};
         LayoutInflater inflater = getLayoutInflater();
         pageViews = new ArrayList<View>();
         for (int i = 0; i < img.length; i++) {
@@ -60,6 +60,7 @@ public class InfoActivity extends AppCompatActivity {
             imageView.setScaleType(ScaleType.CENTER_INSIDE);
             imageView.setImageResource(img[i]);
             imageView.setPadding(15, 30, 15, 30);
+            imageView.setAdjustViewBounds(true);
             layout.addView(imageView, ltp);
             pageViews.add(layout);
         }
@@ -216,6 +217,8 @@ public class InfoActivity extends AppCompatActivity {
         @Override
         protected void onPostExecute( String result) {
             super.onPostExecute(result);
+            result=result.replace("<br />",System.getProperty("line.separator"));
+            result=result.replace("&nbsp;","  ");
             String tem[] = result.split("@@@@@");
             String data[] = tem[0].split("###");
             TextView location = (TextView) findViewById(R.id.location);

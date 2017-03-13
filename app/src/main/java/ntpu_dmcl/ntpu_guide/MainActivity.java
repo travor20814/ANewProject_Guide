@@ -368,6 +368,8 @@ public class MainActivity extends Activity implements LocationListener  {
         @Override
         protected void onPostExecute( String result) {
             super.onPostExecute(result);
+            result=result.replace("<br />",System.getProperty("line.separator"));
+            result=result.replace("&nbsp;","  ");
             String[] AandT = result.split("&&&");
            // Log.e("result",result);
             /////////////////////////////////////////////////////////////
@@ -411,6 +413,8 @@ public class MainActivity extends Activity implements LocationListener  {
                         child_T = new ArrayList<String>();
                     }
                     child_T.add(content[1]);
+
+
                     if (i == items_T.length - 1) {
                         childItems_T.add(child_T);
                         child_T = new ArrayList<String>();

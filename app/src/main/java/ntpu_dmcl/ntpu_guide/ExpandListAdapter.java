@@ -39,47 +39,60 @@ public class ExpandListAdapter extends BaseExpandableListAdapter {
         if (convertView == null) {
             convertView = inflater.inflate(R.layout.main_list_child, null);
         }
+        if(child.get(childPosition).equals("nope")){
+            TextView textView = (TextView) convertView.findViewById(R.id.drawer_text);
+            Button btn_go = (Button) convertView.findViewById(R.id.main_list_go);
+            Button btn_info = (Button) convertView.findViewById(R.id.main_list_info);
+            textView.setVisibility(View.GONE);
+            btn_go.setVisibility(View.GONE);
+            btn_info.setVisibility(View.GONE);
+        }
+        else {
 
-        TextView textView = (TextView) convertView.findViewById(R.id.drawer_text);
-        textView.setText(child.get(childPosition));
+            TextView textView = (TextView) convertView.findViewById(R.id.drawer_text);
+            textView.setText(child.get(childPosition));
 
 
-        //Log.e("text.width",String.valueOf(textView.getWidth()));
-        //Log.e("text.maxwidth",String.valueOf(textView.getMaxWidth()));
-        //Log.e("text.maxems",String.valueOf(textView.getMaxEms()));
-        //Log.e("text.size",String.valueOf(textView.getTextSize()));
-        //Log.e("text.maxline",String.valueOf(textView.getMaxLines()));
-        //Log.e("text.minlune",String.valueOf(textView.getMinLines()));
-        //Log.e("text.size",String.valueOf(textView.getLineCount()));
-        //Log.e("text.length",String.valueOf(child.get(childPosition).length()));
+            //Log.e("text.width",String.valueOf(textView.getWidth()));
+            //Log.e("text.maxwidth",String.valueOf(textView.getMaxWidth()));
+            //Log.e("text.maxems",String.valueOf(textView.getMaxEms()));
+            //Log.e("text.size",String.valueOf(textView.getTextSize()));
+            //Log.e("text.maxline",String.valueOf(textView.getMaxLines()));
+            //Log.e("text.minlune",String.valueOf(textView.getMinLines()));
+            //Log.e("text.size",String.valueOf(textView.getLineCount()));
+            //Log.e("text.length",String.valueOf(child.get(childPosition).length()));
 
 
-        convertView.setOnClickListener(new View.OnClickListener() {
+            convertView.setOnClickListener(new View.OnClickListener() {
 
-            @Override
-            public void onClick(View view) {
-                //Log.e("expanable","click");
-            }
-        });
+                @Override
+                public void onClick(View view) {
+                    //Log.e("expanable","click");
+                }
+            });
 
-        Button btn_go = (Button) convertView.findViewById(R.id.main_list_go);
-        Button btn_info = (Button) convertView.findViewById(R.id.main_list_info);
-        btn_go.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                //Log.e("main","go.group:"+String.valueOf(groupPosition)+".child:"+String.valueOf(childPosition));
-                ((MainActivity) activity).OnNavigationClick(((ArrayList<String>) childtems.get(groupPosition)).get(childPosition));
-                ((MainActivity) activity).closeDrawer();
-            }
-        });
-        btn_info.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                //Log.e("main","info.group:"+String.valueOf(groupPosition)+".child:"+String.valueOf(childPosition));
-                ((MainActivity) activity).OnInfoClick(((ArrayList<String>) childtems.get(groupPosition)).get(childPosition));
-                ((MainActivity) activity).closeDrawer();
-            }
-        });
+            Button btn_go = (Button) convertView.findViewById(R.id.main_list_go);
+            Button btn_info = (Button) convertView.findViewById(R.id.main_list_info);
+            btn_go.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    //Log.e("main","go.group:"+String.valueOf(groupPosition)+".child:"+String.valueOf(childPosition));
+                    ((MainActivity) activity).OnNavigationClick(((ArrayList<String>) childtems.get(groupPosition)).get(childPosition));
+                    ((MainActivity) activity).closeDrawer();
+                }
+            });
+            btn_info.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    //Log.e("main","info.group:"+String.valueOf(groupPosition)+".child:"+String.valueOf(childPosition));
+                    ((MainActivity) activity).OnInfoClick(((ArrayList<String>) childtems.get(groupPosition)).get(childPosition));
+                    ((MainActivity) activity).closeDrawer();
+                }
+            });
+            textView.setVisibility(View.VISIBLE);
+            btn_go.setVisibility(View.VISIBLE);
+            btn_info.setVisibility(View.VISIBLE);
+        }
         return convertView;
     }
 
@@ -93,7 +106,14 @@ public class ExpandListAdapter extends BaseExpandableListAdapter {
         //Log.e("Expan","textset");
         TextView textView = null;
         textView = (TextView) convertView.findViewById(R.id.drawer_text);
-        textView.setText(parentItems.get(groupPosition));
+        if(parentItems.get(groupPosition).contains("(")){
+            String[] tem = parentItems.get(groupPosition).split("\\(");
+            String name = tem[0]+"\n("+tem[1];
+            textView.setText(name);
+        }
+        else {
+            textView.setText(parentItems.get(groupPosition));
+        }
         Button btn_info = (Button) convertView.findViewById(R.id.main_list_info);
         Button btn_go = (Button) convertView.findViewById(R.id.main_list_go);
 
