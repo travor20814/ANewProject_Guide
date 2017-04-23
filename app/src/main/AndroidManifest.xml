@@ -30,6 +30,10 @@
             android:theme="@style/NoActionBar"
             android:screenOrientation="portrait"
             />
+        <activity android:name=".publicArtActivity"
+            android:theme="@style/NoActionBar"
+            android:screenOrientation="portrait"
+            />
 
     </application>
 

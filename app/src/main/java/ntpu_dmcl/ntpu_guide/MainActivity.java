@@ -295,6 +295,8 @@ public class MainActivity extends Activity implements LocationListener  {
         floorDialog editNameDialog = new floorDialog().newInstance(number);
         editNameDialog.show(getFragmentManager(), "EditNameDialog");
     }
+
+
     /*
     class
 
@@ -458,12 +460,21 @@ public class MainActivity extends Activity implements LocationListener  {
     }
     @JavascriptInterface
     public void OnInfoClick(String name){
-        Intent i = new Intent();
-        Bundle bundle = new Bundle();
-        bundle.putString("name",name);
-        i.putExtras(bundle);
-        i.setClass(MainActivity.this,InfoActivity.class);
-        startActivity(i);
+        Log.e("infoclick",name);
+        if(name.equals("公共藝術"))
+        {
+            Intent i = new Intent();
+            i.setClass(MainActivity.this, publicArtActivity.class);
+            startActivity(i);
+        }
+        else {
+            Intent i = new Intent();
+            Bundle bundle = new Bundle();
+            bundle.putString("name", name);
+            i.putExtras(bundle);
+            i.setClass(MainActivity.this, InfoActivity.class);
+            startActivity(i);
+        }
     }
     @JavascriptInterface
     public void OnTransportClick() {
