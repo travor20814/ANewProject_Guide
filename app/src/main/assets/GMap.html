@@ -229,6 +229,9 @@
         var destTransport; // 交通資訊
         var markers = [];
 
+        // cache
+        var dbMarkers = [];
+
         function initMap(lat,lon) {
           end = new google.maps.LatLng(lat,lon);
           oldlat = lat;
@@ -279,6 +282,33 @@
           buildingLibraryOverlay.setMap(map);
           buildingHumanOverlay.setMap(map);
           buildingElectricOverlay.setMap(map);
+
+          initMarkerCache(); // cache all the markers
+        }
+
+        function initMarkerCache() {
+          downloadUrl("http://dmcl.twbbs.org/NTPU_guidance/search_sql.php", function(data) {
+            var xml = data.responseXML;
+            var markers = xml.documentElement.getElementsByTagName("marker");
+            //grab all the data here
+            for (var i = 0; i < markers.length; i++) {
+              var name = markers[i].getAttribute("name");
+              var location = markers[i].getAttribute("location");
+              var point = new google.maps.LatLng(parseFloat(markers[i].getAttribute("latitude")),parseFloat(markers[i].getAttribute("longitude")));
+              var description = markers[i].getAttribute("description");
+              var howcome = markers[i].getAttribute("howcome");
+              var transport = markers[i].getAttribute("transport");
+
+              dbMarkers.push({
+                'name': name,
+                'point': point,
+                'location': location,
+                'howcome': howcome,
+                'description': description,
+                'transport': transport,
+              });
+            }
+          });
         }
 
         function clearMarkers(){
@@ -367,87 +397,6 @@
           });
       	}
 
-        function findPlaceToDirect(){
-          const placeToGo = document.getElementById("tags").value;
-          const submitButton = document.getElementById("submit");
-          const refreshButton = document.getElementById("refresh");
-          const refreshImg = document.getElementById("refreshImg");
-          const getFormWidth = document.getElementById("form").style.width;
-
-          var hasInput = placeToGo === '' ? false : true ;
-
-          if (hasInput) {
-            // download from database and do something here
-            downloadUrl("http://dmcl.twbbs.org/NTPU_guidance/search_sql.php", function(data) {
-              var xml = data.responseXML;
-              var markers = xml.documentElement.getElementsByTagName("marker");
-              //grab all the data here
-              for (var i = 0; i < markers.length; i++) {
-                var name = markers[i].getAttribute("name");
-                var location = markers[i].getAttribute("location");
-                var point = new google.maps.LatLng(parseFloat(markers[i].getAttribute("latitude")),parseFloat(markers[i].getAttribute("longitude")));
-                var description = markers[i].getAttribute("description");
-                var howcome = markers[i].getAttribute("howcome");
-                var transport = markers[i].getAttribute("transport");
-
-                if (i === markers.length - 1) { // the last data in db
-                  if (name === placeToGo) {
-                    //send data location to direct function
-                    end = point;
-                    destName = name; //info window
-                    destLocation = location;//info window
-                    destHowcome = howcome;//info window
-                    destDescription = description;
-                    destTransport = transport;
-                    direct(oldlat,oldlon);
-                    Android.setStartUse();
-					          oldPlaceToGo = placeToGo;
-					          Android.GetOldplace(oldPlaceToGo);
-                    //Android.GetLonLat(latitude,longitude);
-
-                    submitButton.style.display = "none";
-                    refreshButton.style.display = "inline-block";
-                    refreshImg.style.display = "inline-block";
-                    getFormWidth.style.width = "240px";
-
-                    break;
-                  } else { //can't find
-                    alert("找不到您要去的地點!");
-                    submitButton.style.display = "inline-block";
-                    refreshButton.style.display = "none";
-                    refreshImg.style.display = "none";
-                    getFormWidth.style.width = "300px";
-                  }
-                } else {
-                  if (name === placeToGo) { //find place to go
-                     //send data location to direct function
-                    end = point;
-                    destName = name;//info window
-                    destLocation = location;//info window
-                    destHowcome = howcome;//info window
-                    destDescription = description;
-                    destTransport = transport;
-                    direct(oldlat,oldlon);
-                    Android.setStartUse();
-					          oldPlaceToGo = placeToGo;
-					          Android.GetOldplace(oldPlaceToGo);
-                    //Android.GetLonLat(latitude,longitude);
-
-                    submitButton.style.display = "none";
-                    refreshButton.style.display = "inline-block";
-                    refreshImg.style.display = "inline-block";
-                    getFormWidth.style.width = "240px";
-
-                    break;
-                  }
-                }
-              }
-            });
-          } else { // no input
-            // then do nothing
-          }
-        }
-
         function showStart() {
           const submitButton = document.getElementById("submit");
           const refreshButton = document.getElementById("refresh");
@@ -519,10 +468,69 @@
           return false;
         }
 
+        function findPlaceToDirect(){
+          const placeToGo = document.getElementById("tags").value;
+          const submitButton = document.getElementById("submit");
+          const refreshButton = document.getElementById("refresh");
+          const refreshImg = document.getElementById("refreshImg");
+          const getFormWidth = document.getElementById("form").style.width;
+          const detailBtns = document.getElementsByClassName('desButton');
+
+          var hasInput = placeToGo === '' ? false : true ;
+          var checkFindedFlag = false;
+
+          if (hasInput) {
+            if (checkNoInfo(placeToGo)) {
+              for (var i = 0; i < detailBtns.length; i++) {
+                detailBtns[i].style.display = 'none';
+              }
+
+              detailBtns[0].style.display = 'inline-block';
+            } else {
+              for (var i = 0; i < detailBtns.length; i++) {
+                detailBtns[i].style.display = 'inline-block';
+              }
+            }
+
+            for (var i = 0; i < dbMarkers.length; i++) {
+              if (dbMarkers[i].name === placeToGo) {
+                end = dbMarkers[i].point; // assign it to end
+                destName = dbMarkers[i].name;//info window
+                destLocation = dbMarkers[i].location;//info window
+                destHowcome = dbMarkers[i].howcome;//info window
+                destDescription = dbMarkers[i].description;
+                destTransport = dbMarkers[i].transport;
+                direct(oldlat,oldlon);
+                oldPlaceToGo = placeToGo;
+                Android.GetOldplace(oldPlaceToGo);
+                checkFindedFlag = true;
+
+                submitButton.style.display = "none";
+                refreshButton.style.display = "inline-block";
+                refreshImg.style.display = "inline-block";
+                getFormWidth.style.width = "240px";
+
+                break;
+              }
+            }
+
+            if (!checkFindedFlag) {
+              alert('查不到正確的地點!');
+              submitButton.style.display = "inline-block";
+              refreshButton.style.display = "none";
+              refreshImg.style.display = "none";
+              getFormWidth.style.width = "300px";
+            }
+          } else { // no input
+            // then do nothing
+          }
+        }
+
         function drawerNavigation(destination) {
           //for drawer navigation
           const placeToGo = destination; //get destination string
           const detailBtns = document.getElementsByClassName('desButton');
+          var checkFindedFlag = false;
 
           if (checkNoInfo(placeToGo)) {
             for (var i = 0; i < detailBtns.length; i++) {
@@ -536,54 +544,26 @@
             }
           }
 
-          downloadUrl("http://dmcl.twbbs.org/NTPU_guidance/search_sql.php", function(data) {
-            var xml = data.responseXML;
-            var markers = xml.documentElement.getElementsByTagName("marker");
-            //grab all the data here
-            for (var i = 0; i < markers.length; i++) {
-              var name = markers[i].getAttribute("name");
-              var location = markers[i].getAttribute("location");
-              var point = new google.maps.LatLng(parseFloat(markers[i].getAttribute("latitude")),parseFloat(markers[i].getAttribute("longitude")));
-              var description = markers[i].getAttribute("description");
-              var howcome = markers[i].getAttribute("howcome");
-              var transport = markers[i].getAttribute("transport");
+          for (var i = 0; i < dbMarkers.length; i++) {
+            if (dbMarkers[i].name === placeToGo) {
+              end = dbMarkers[i].point; // assign it to end
+              destName = dbMarkers[i].name;//info window
+              destLocation = dbMarkers[i].location;//info window
+              destHowcome = dbMarkers[i].howcome;//info window
+              destDescription = dbMarkers[i].description;
+              destTransport = dbMarkers[i].transport;
+              direct(oldlat,oldlon);
+              oldPlaceToGo = placeToGo;
+              Android.GetOldplace(oldPlaceToGo);
+              checkFindedFlag = true;
 
-              if (i === markers.length - 1) { // the last data in db
-                if (name === placeToGo) { //find place to go
-                  end = point; // assign it to end
-                  destName = name;//info window
-                  destLocation = location;//info window
-                  destHowcome = howcome;//info window
-                  destDescription = description;
-                  destTransport = transport;
-                  direct(oldlat,oldlon);
-				          oldPlaceToGo = placeToGo;
-				          Android.GetOldplace(oldPlaceToGo);
-                  //add some action on android here
-
-                  break;
-                } else { //can't find
-                  alert("查不到正確的地點!!");
-                  //add some action on android here
-                }
-              } else {
-                if (name === placeToGo) { //find place to go
-                  end = point;
-                  destName = name;//info window
-                  destLocation = location;//info window
-                  destHowcome = howcome;//info window
-                  destDescription = description;
-                  destTransport = transport;
-                  direct(oldlat,oldlon);
-				          oldPlaceToGo = placeToGo;
-				          Android.GetOldplace(oldPlaceToGo);
-                  //add some action on android here
-
-                  break;
-                }
-              }
+              break;
             }
-          });
+          }
+
+          if (!checkFindedFlag) {
+            alert('查不到正確的地點!');
+          }
         }
         //bind infowindow on marker
         function bindInfoWindow(marker, map, infoWindow, desc){
