@@ -153,6 +153,7 @@
         margin: 0px auto;
       }
       .desButton{
+        display: inline-block;
         width: 100px;
         height: 40px;
         font-size:15px;
@@ -503,9 +504,37 @@
           //show destination detail
         }
 
+        function checkNoInfo(destination) {
+          const noInfoDestinations = [ // 沒有平面圖 or 詳細資訊的地點要在這新增
+            '三峽校區正門',
+            '海山學研究中心'
+          ];
+
+          for (var i = 0; i < noInfoDestinations.length; i++) {
+            if (noInfoDestinations[i] === destination) {
+              return true;
+            }
+          }
+
+          return false;
+        }
+
         function drawerNavigation(destination) {
           //for drawer navigation
           const placeToGo = destination; //get destination string
+          const detailBtns = document.getElementsByClassName('desButton');
+
+          if (checkNoInfo(placeToGo)) {
+            for (var i = 0; i < detailBtns.length; i++) {
+              detailBtns[i].style.display = 'none';
+            }
+
+            detailBtns[0].style.display = 'inline-block';
+          } else {
+            for (var i = 0; i < detailBtns.length; i++) {
+              detailBtns[i].style.display = 'inline-block';
+            }
+          }
 
           downloadUrl("http://dmcl.twbbs.org/NTPU_guidance/search_sql.php", function(data) {
             var xml = data.responseXML;
