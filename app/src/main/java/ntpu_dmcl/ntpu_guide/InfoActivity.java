@@ -564,13 +564,13 @@ public class InfoActivity extends AppCompatActivity {
             int[][] imagearray = imageArray();
             int index = Integer.parseInt(data[4]) ;
             if(index>=60 && index<120 ){
-                index = index-16;
+                index = index-15;
             }
             else if(index>119)
             {
-                index = index-29;
+                index = index-28;
             }
-            int[] img = imagearray[index];
+            int[] img = imagearray[index-1];
             //int[] img = new int[] { R.mipmap.ic_action_refresh,R.mipmap.ic_launcher,R.mipmap.image_go,R.drawable.d0262};
             LayoutInflater inflater = getLayoutInflater();
             pageViews = new ArrayList<View>();
