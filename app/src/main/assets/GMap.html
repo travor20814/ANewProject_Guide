@@ -264,6 +264,8 @@
           libraryBound = { north: 24.943984, south: 24.943139, east: 121.370736, west: 121.369592 };
           humanBound = { north: 24.946432, south: 24.945617, east: 121.371593, west: 121.370676 };
           electricBound = { north: 24.943338, south: 24.942533, east: 121.371143, west: 121.370044 };
+          dormitoryBound = { north: 24.941962, south: 24.941267, east: 121.368598, west: 121.367993 };
+          sportBound = { north: 24.940754, south: 24.939400, east: 121.363980, west: 121.363084 };
 
           buildingAdminOverlay = new google.maps.GroundOverlay( 'file:///android_asset/images/admin_build_try4.png', adminBound);
           buildingBusinessOverlay = new google.maps.GroundOverlay( 'file:///android_asset/images/business_build_try2.png', businessBound);
@@ -273,6 +275,8 @@
           buildingLibraryOverlay = new google.maps.GroundOverlay( 'file:///android_asset/images/library_try.png', libraryBound);
           buildingHumanOverlay = new google.maps.GroundOverlay( 'file:///android_asset/images/human.png', humanBound);
           buildingElectricOverlay = new google.maps.GroundOverlay( 'file:///android_asset/images/electric_build.png', electricBound);
+          buildingDormitoryOverlay = new google.maps.GroundOverlay( 'file:///android_asset/images/dormitory.png', dormitoryBound);
+          buildingSportOverlay = new google.maps.GroundOverlay( 'file:///android_asset/images/sport.png', sportBound);
 
           buildingAdminOverlay.setMap(map);
           buildingBusinessOverlay.setMap(map);
@@ -282,6 +286,8 @@
           buildingLibraryOverlay.setMap(map);
           buildingHumanOverlay.setMap(map);
           buildingElectricOverlay.setMap(map);
+          buildingDormitoryOverlay.setMap(map);
+          buildingSportOverlay.setMap(map);
 
           initMarkerCache(); // cache all the markers
         }
