@@ -103,37 +103,63 @@ public class ExpandListAdapter extends BaseExpandableListAdapter {
            // Log.e("Expan","null");
             convertView = inflater.inflate(R.layout.main_list_group, null);
         }
-        //Log.e("Expan","textset");
-        TextView textView = null;
-        textView = (TextView) convertView.findViewById(R.id.drawer_text);
-        if(parentItems.get(groupPosition).contains("(")){
-            String[] tem = parentItems.get(groupPosition).split("\\(");
-            String name = tem[0]+"\n("+tem[1];
-            textView.setText(name);
+        if(parentItems.get(groupPosition).equals("公共藝術"))
+        {
+            TextView textView = null;
+            textView = (TextView) convertView.findViewById(R.id.drawer_text);
+            if (parentItems.get(groupPosition).contains("(")) {
+                String[] tem = parentItems.get(groupPosition).split("\\(");
+                String name = tem[0] + "\n(" + tem[1];
+                textView.setText(name);
+            } else {
+                textView.setText(parentItems.get(groupPosition));
+            }
+            Button btn_info = (Button) convertView.findViewById(R.id.main_list_info);
+            Button btn_go = (Button) convertView.findViewById(R.id.main_list_go);
+
+
+            btn_info.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    //Log.e("main","info.group:"+String.valueOf(groupPosition)+".child:"+String.valueOf(childPosition));
+                    ((MainActivity) activity).OnInfoClick(parentItems.get(groupPosition));
+                    ((MainActivity) activity).closeDrawer();
+                }
+            });
+            btn_go.setVisibility(View.GONE);
         }
         else {
-            textView.setText(parentItems.get(groupPosition));
+            //Log.e("Expan","textset");
+            TextView textView = null;
+            textView = (TextView) convertView.findViewById(R.id.drawer_text);
+            if (parentItems.get(groupPosition).contains("(")) {
+                String[] tem = parentItems.get(groupPosition).split("\\(");
+                String name = tem[0] + "\n(" + tem[1];
+                textView.setText(name);
+            } else {
+                textView.setText(parentItems.get(groupPosition));
+            }
+            Button btn_info = (Button) convertView.findViewById(R.id.main_list_info);
+            Button btn_go = (Button) convertView.findViewById(R.id.main_list_go);
+
+            btn_go.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    //Log.e("main","go.group:"+String.valueOf(groupPosition)+".child:"+String.valueOf(childPosition));
+                    ((MainActivity) activity).OnNavigationClick(parentItems.get(groupPosition));
+                    ((MainActivity) activity).closeDrawer();
+                }
+            });
+            btn_info.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    //Log.e("main","info.group:"+String.valueOf(groupPosition)+".child:"+String.valueOf(childPosition));
+                    ((MainActivity) activity).OnInfoClick(parentItems.get(groupPosition));
+                    ((MainActivity) activity).closeDrawer();
+                }
+            });
+            btn_go.setVisibility(View.VISIBLE);
         }
-        Button btn_info = (Button) convertView.findViewById(R.id.main_list_info);
-        Button btn_go = (Button) convertView.findViewById(R.id.main_list_go);
-
-        btn_go.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                //Log.e("main","go.group:"+String.valueOf(groupPosition)+".child:"+String.valueOf(childPosition));
-                ((MainActivity) activity).OnNavigationClick(parentItems.get(groupPosition));
-                ((MainActivity) activity).closeDrawer();
-            }
-        });
-        btn_info.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                //Log.e("main","info.group:"+String.valueOf(groupPosition)+".child:"+String.valueOf(childPosition));
-                ((MainActivity) activity).OnInfoClick(parentItems.get(groupPosition));
-                ((MainActivity) activity).closeDrawer();
-            }
-        });
-
         return convertView;
     }
 
