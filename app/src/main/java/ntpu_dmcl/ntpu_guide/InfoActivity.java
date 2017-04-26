@@ -568,7 +568,7 @@ public class InfoActivity extends AppCompatActivity {
             }
             else if(index>119)
             {
-                index = index-28;
+                index = index-29;
             }
             int[] img = imagearray[index];
             //int[] img = new int[] { R.mipmap.ic_action_refresh,R.mipmap.ic_launcher,R.mipmap.image_go,R.drawable.d0262};
