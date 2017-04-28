@@ -366,11 +366,11 @@ public class InfoActivity extends AppCompatActivity {
                 },
                 {//91. 採編組,
 
-                        R.drawable.ifnullpic
+                        R.drawable.img_71
                 },
                 {//92. 閱覽組,
 
-                        R.drawable.ifnullpic
+                        R.drawable.img_71
                 },
                 {//93. 推廣服務組,//6,
 
