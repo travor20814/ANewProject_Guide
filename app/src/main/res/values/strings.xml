@@ -1,9 +1,12 @@
 <resources>
-    <string name="app_name">ntpu_guide</string>
+    <string name="app_name">三峽校區導覽APP</string>
     <string name="admin">行政單位</string>
     <string name="teach">教學單位</string>
     <string name="toSchool">如何到達三峽校區?</string>
     <string name="position">位置</string>
     <string name="info">資訊</string>
     <string name="PA">公共藝術</string>
+    <string name="gpsandwifi">請開啟ＧＰＳ和網路</string>
+    <string name="cantlocate">無法取得定位位置\n若您剛開啟GPS，請走至戶外並嘗試重試</string>
+    <string name="reload">重試</string>
 </resources>

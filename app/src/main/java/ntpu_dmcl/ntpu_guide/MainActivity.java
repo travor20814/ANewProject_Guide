@@ -9,6 +9,8 @@ import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.location.LocationProvider;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
@@ -17,7 +19,7 @@ import android.support.v4.content.ContextCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.os.Bundle;
-import android.util.Log;
+//import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -60,6 +62,8 @@ public class MainActivity extends Activity implements LocationListener  {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        //Log.e("tem","tem");
+        checkGPS();
         setContentView(R.layout.activity_main);
         wv_map = (WebView)findViewById(R.id.navigationMap);
         wv_map.getSettings().setJavaScriptEnabled(true);
@@ -82,6 +86,8 @@ public class MainActivity extends Activity implements LocationListener  {
     @Override
     public void onProviderEnabled(String arg0) { //當GPS或網路定位功能開啟
         // TODO 自動產生的方法 Stub
+        locationServiceInitial();
+        //Log.e("GPS","enable");
     }
     @Override
     public void onLocationChanged(Location location) {
@@ -101,10 +107,13 @@ public class MainActivity extends Activity implements LocationListener  {
             if(startUse) {
                 wv_map.loadUrl("javascript:direct(\"" + latitude + "\",\"" + longitude + "\")");
                 //wv_map.loadUrl("javascript:direct(\"" + testlat + "\",\"" + testlon + "\")");
+                if(!oldPlace.equals(""))
+                    wv_map.loadUrl("javascript:drawerNavigation(\"" + oldPlace + "\")");
             }
             else{
                 wv_map.loadUrl("javascript:initMap(\"" + latitude + "\",\"" + longitude + "\")");
                 //wv_map.loadUrl("javascript:initMap(\"" + testlat + "\",\"" + testlon + "\")");
+
             }
         }
         else{
@@ -130,7 +139,12 @@ public class MainActivity extends Activity implements LocationListener  {
     @Override
     protected void onResume(){
         super.onResume();
-        locationServiceInitial();
+        LocationManager locationManager
+                = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+        if(locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
+            //Log.e("GPS","enable");
+            locationServiceInitial();
+        }
         if(!oldPlace.equals(""))
         wv_map.loadUrl("javascript:drawerNavigation(\"" + oldPlace + "\")");
        // Log.i("main resume oldplace",oldPlace);
@@ -148,6 +162,8 @@ public class MainActivity extends Activity implements LocationListener  {
         }
 
     }
+
+
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event)
     {
@@ -215,6 +231,7 @@ public class MainActivity extends Activity implements LocationListener  {
 
     public void locationServiceInitial() {
         try {
+            //Log.e("locationInitial","suspend");
             checkGPS();
             locationManager = (LocationManager) getSystemService(LOCATION_SERVICE); //取得系統定位服務
             Criteria criteria = new Criteria();
@@ -227,7 +244,7 @@ public class MainActivity extends Activity implements LocationListener  {
             criteria.setPowerRequirement(Criteria.POWER_LOW);
             String bestProvider = locationManager.getBestProvider(criteria, true);
             //Log.e("bestprovider", bestProvider);
-            locationManager.requestLocationUpdates(bestProvider, 1000, 10, this);
+            locationManager.requestLocationUpdates(bestProvider, 3000, 10, this);
             bestProviderLocation = locationManager.getLastKnownLocation(network);
             //Log.i("best",String.valueOf(locationManager.isProviderEnabled(bestProvider)));
             //Log.i("gps",String.valueOf(locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)));
@@ -237,14 +254,14 @@ public class MainActivity extends Activity implements LocationListener  {
                 this.onLocationChanged(bestProviderLocation);
             } else {
                 locationManager.removeUpdates(this);
-                locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 1000,10, this);
+                locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 3000,10, this);
                 bestProviderLocation = locationManager.getLastKnownLocation(bestProvider);
                 if (bestProviderLocation != null) {
                     // Log.e("getLocationWay","GPS");
                     this.onLocationChanged(bestProviderLocation);
                 } else {
                     locationManager.removeUpdates(this);
-                    locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 1000, 10, this);
+                    locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 3000, 10, this);
                     bestProviderLocation = locationManager.getLastKnownLocation(gps);
                     if (bestProviderLocation != null) {
                         // Log.e("getLocationWay","NETWORK");
@@ -252,7 +269,11 @@ public class MainActivity extends Activity implements LocationListener  {
                     } else {
                         Toast.makeText(this, "無法定位座標", Toast.LENGTH_SHORT).show();
                         locationManager.removeUpdates(this);
-                        locationServiceInitial();
+                        //locationServiceInitial();
+                        Intent i = new Intent();
+                        i.setClass(MainActivity.this, CantLocate.class);
+                        startActivity(i);
+                        android.os.Process.killProcess(android.os.Process.myPid());
                     }
                 }
             }
@@ -279,12 +300,12 @@ public class MainActivity extends Activity implements LocationListener  {
             ActivityCompat.requestPermissions( this, new String[] {  android.Manifest.permission.ACCESS_COARSE_LOCATION  },
                     MY_PERMISSION_ACCESS_COARSE_LOCATION);
         }
-        while(ContextCompat.checkSelfPermission( this, android.Manifest.permission.ACCESS_COARSE_LOCATION ) != PackageManager.PERMISSION_GRANTED&&
-                ContextCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED){
 
-        }
     }
+
+
     public void OnNavigationClick(String aim){
+        isConnected();
         wv_map.loadUrl("javascript:drawerNavigation(\"" + aim + "\")");
         //oldPlace =aim ;
 
@@ -309,7 +330,10 @@ public class MainActivity extends Activity implements LocationListener  {
         public void onPageFinished(WebView view, String url) {
             super.onPageFinished(view, url);
             //在这里执行你想调用的js函数
-            locationServiceInitial();
+            if(locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
+                //Log.e("GPS","enable");
+                locationServiceInitial();
+            }
             //Log.i("mainactivity","webview be reset");
         }
 
@@ -340,7 +364,7 @@ public class MainActivity extends Activity implements LocationListener  {
         @Override
         protected void onPreExecute(){
             super.onPreExecute();
-
+            isConnected();
         }
         @Override
         protected  ArrayList<HashMap<String, String>> doInBackground(String... param) {
@@ -460,7 +484,8 @@ public class MainActivity extends Activity implements LocationListener  {
     }
     @JavascriptInterface
     public void OnInfoClick(String name){
-        Log.e("infoclick",name);
+        isConnected();
+        //Log.e("infoclick",name);
         if(name.equals("公共藝術"))
         {
             Intent i = new Intent();
@@ -478,8 +503,20 @@ public class MainActivity extends Activity implements LocationListener  {
     }
     @JavascriptInterface
     public void OnTransportClick() {
+        isConnected();
         Intent i = new Intent();
         i.setClass(MainActivity.this, TranportActivity.class);
         startActivity(i);
+    }
+    @JavascriptInterface
+    private void isConnected() {
+        ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo networkInfo = cm.getActiveNetworkInfo();
+        if (networkInfo == null || !networkInfo.isConnected()) {
+            Intent i = new Intent();
+            i.setClass(MainActivity.this, CantLocate.class);
+            startActivity(i);
+            android.os.Process.killProcess(android.os.Process.myPid());
+        }
     }
 }
