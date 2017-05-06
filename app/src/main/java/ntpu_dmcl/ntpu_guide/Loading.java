@@ -30,19 +30,12 @@ public class Loading extends Activity {
         new checkgps().execute();
     }
     public void checkGPS(){
-        final int MY_PERMISSION_ACCESS_COARSE_LOCATION = 11;
         final int MY_PERMISSION_ACCESS_FINE_LOCATION = 12;
         if ( ContextCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED ) {
 
             ActivityCompat.requestPermissions(this, new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION},
                     MY_PERMISSION_ACCESS_FINE_LOCATION);
         }
-        if ( ContextCompat.checkSelfPermission( this, android.Manifest.permission.ACCESS_COARSE_LOCATION ) != PackageManager.PERMISSION_GRANTED ) {
-
-            ActivityCompat.requestPermissions( this, new String[] {  android.Manifest.permission.ACCESS_COARSE_LOCATION  },
-                    MY_PERMISSION_ACCESS_COARSE_LOCATION);
-        }
-            //Toast.makeText(this, "請開啟gps或3G網路", Toast.LENGTH_SHORT).show();
     }
 
     private boolean isConnected(){
@@ -66,7 +59,8 @@ public class Loading extends Activity {
                 LocationManager locationManager
                         = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
                 // 通過GPS衛星定位，定位級別可以精確到街（通過24顆衛星定位，在室外和空曠的地方定位準確、速度快）
-                while (!locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)||
+                while (ContextCompat.checkSelfPermission( Loading.this, android.Manifest.permission.ACCESS_FINE_LOCATION ) != PackageManager.PERMISSION_GRANTED||
+                        !locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)||
                         !isConnected())
                 {
                     Log.e("tem","tem");

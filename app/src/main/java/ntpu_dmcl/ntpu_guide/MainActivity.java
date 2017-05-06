@@ -288,19 +288,12 @@ public class MainActivity extends Activity implements LocationListener  {
     確認gps跟 network 可以用
      */
     public void checkGPS(){
-        final int MY_PERMISSION_ACCESS_COARSE_LOCATION = 11;
         final int MY_PERMISSION_ACCESS_FINE_LOCATION = 12;
         if ( ContextCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED ) {
 
             ActivityCompat.requestPermissions(this, new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION},
                     MY_PERMISSION_ACCESS_FINE_LOCATION);
         }
-        if ( ContextCompat.checkSelfPermission( this, android.Manifest.permission.ACCESS_COARSE_LOCATION ) != PackageManager.PERMISSION_GRANTED ) {
-
-            ActivityCompat.requestPermissions( this, new String[] {  android.Manifest.permission.ACCESS_COARSE_LOCATION  },
-                    MY_PERMISSION_ACCESS_COARSE_LOCATION);
-        }
-
     }
 
 
