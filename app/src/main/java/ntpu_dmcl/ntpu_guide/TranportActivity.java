@@ -9,12 +9,12 @@ import android.webkit.WebView;
  */
 
 public class TranportActivity extends Activity{
-    private WebView tr_map ;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.transport);
+        WebView tr_map ;
         tr_map = (WebView)findViewById(R.id.transportPage);
         tr_map.loadUrl("http://www.ntpu.edu.tw/chinese/about/contact6.php");
     }

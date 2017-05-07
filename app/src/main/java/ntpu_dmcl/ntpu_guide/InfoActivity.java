@@ -1,6 +1,6 @@
 package ntpu_dmcl.ntpu_guide;
 
-import android.app.Activity;
+
 import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -14,7 +14,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewGroup.LayoutParams;
-import android.view.Window;
 import android.widget.ImageView;
 import android.widget.ImageView.ScaleType;
 import android.widget.LinearLayout;
@@ -513,7 +512,7 @@ public class InfoActivity extends AppCompatActivity {
     }
 
     // 指引页面更改事件监听器
-    class GuidePageChangeListener implements OnPageChangeListener {
+    private class GuidePageChangeListener implements OnPageChangeListener {
 
         @Override
         public void onPageScrollStateChanged(int arg0) {
@@ -542,7 +541,7 @@ public class InfoActivity extends AppCompatActivity {
         }
     }
 
-    class catchInfo extends AsyncTask<String,Void,String> {
+    private class catchInfo extends AsyncTask<String,Void,String> {
         @Override
         protected void onPreExecute(){
             super.onPreExecute();

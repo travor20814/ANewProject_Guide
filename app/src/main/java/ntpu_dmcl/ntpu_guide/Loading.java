@@ -3,6 +3,7 @@ package ntpu_dmcl.ntpu_guide;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.location.LocationManager;
 import android.net.ConnectivityManager;
@@ -15,8 +16,6 @@ import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.widget.Toast;
 
-import java.util.ArrayList;
-import java.util.HashMap;
 
 /**
  * Created by chenhaowei on 2017/5/6.
@@ -41,13 +40,10 @@ public class Loading extends Activity {
     private boolean isConnected(){
         ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo networkInfo = cm.getActiveNetworkInfo();
-        if (networkInfo != null && networkInfo.isConnected()) {
-            return true;
-        }
-        return false;
+        return (networkInfo != null && networkInfo.isConnected());
     }
 
-    class checkgps extends AsyncTask<Void,Void, Void> {
+    private class checkgps extends AsyncTask<Void,Void, Void> {
         @Override
         protected void onPreExecute(){
             super.onPreExecute();
@@ -69,7 +65,7 @@ public class Loading extends Activity {
                 //Thread.sleep(3000);
             }
             catch (InterruptedException e){
-
+                e.printStackTrace();
             }
 
             return null;
@@ -77,10 +73,46 @@ public class Loading extends Activity {
         @Override
         protected void onPostExecute( Void result) {
             super.onPostExecute(result);
+            String command = "select version_code ,version_name from version ";
+            new checkversion().execute(command);
             Intent i = new Intent();
             i.setClass(Loading.this, MainActivity.class);
             startActivity(i);
             Loading.this.finish();
+        }
+    }
+    private class checkversion extends AsyncTask<String,Void, String> {
+        @Override
+        protected  String doInBackground(String... param) {
+            return new getSqlString(param[0]).getServerConnect();
+        }
+        @Override
+        protected void onPostExecute( String result) {
+            super.onPostExecute(result);
+            if(result.equals("wrong")){
+                Toast.makeText(Loading.this, "version無法取得", Toast.LENGTH_SHORT).show();
+            }
+            else {
+                try {
+
+                    PackageInfo pkgInfo = getPackageManager().getPackageInfo(getPackageName(), 0);
+                    int verCode = pkgInfo.versionCode;
+                    String verName = pkgInfo.versionName;
+                    String ver_Code = String.valueOf(verCode);
+                    //Log.e("vercode",ver_Code);
+                    String tem[] = result.split("@@@@@");
+                    String data[] = tem[0].split("###");
+                    //Log.e("data",data[0]+"\t"+data[1]);
+                    if (!data[0].equals(ver_Code)||!data[1].equals(verName))
+                    {
+                        Toast.makeText(Loading.this, "有新版本可以更新喔！", Toast.LENGTH_LONG).show();
+                    }
+                }
+                catch (PackageManager.NameNotFoundException e)
+                {
+                    e.printStackTrace();
+                }
+            }
         }
     }
 }

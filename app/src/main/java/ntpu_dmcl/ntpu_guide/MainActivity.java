@@ -3,7 +3,6 @@ package ntpu_dmcl.ntpu_guide;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationListener;
@@ -11,11 +10,8 @@ import android.location.LocationManager;
 import android.location.LocationProvider;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
-import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.ContextCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.os.Bundle;
@@ -40,13 +36,10 @@ import java.util.TimerTask;
 
 public class MainActivity extends Activity implements LocationListener  {
 
-    final private String testlon = "121.367838";
-    final private String testlat = "24.942454";
+    //final private String testlon = "121.367838";
+    //final private String testlat = "24.942454";
     private WebView wv_map ;
     private LocationManager locationManager;
-    private Location bestProviderLocation;
-    final private String gps = LocationManager.GPS_PROVIDER;
-    final private String network = LocationManager.NETWORK_PROVIDER;
     private boolean startUse = false;
     private boolean userback = false;
     private String oldPlace="";
@@ -63,7 +56,6 @@ public class MainActivity extends Activity implements LocationListener  {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         //Log.e("tem","tem");
-        checkGPS();
         setContentView(R.layout.activity_main);
         wv_map = (WebView)findViewById(R.id.navigationMap);
         wv_map.getSettings().setJavaScriptEnabled(true);
@@ -151,32 +143,35 @@ public class MainActivity extends Activity implements LocationListener  {
     }
     @Override
     protected void onPause() {
-        // TODO Auto-generated method stub
         super.onPause();
-        checkGPS();
         try {
             locationManager.removeUpdates(this);//離開頁面時停止更新
         }
         catch (SecurityException e){
-
+            e.printStackTrace();
         }
 
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        android.os.Process.killProcess(android.os.Process.myPid());
+    }
 
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event)
     {
         if ((keyCode == KeyEvent.KEYCODE_BACK))
         {
-            if(userback==false) {
+            if(!userback) {
                 Toast.makeText(this, "再按一次離開", Toast.LENGTH_SHORT).show();
 
                 userback=true;
                 Timer backTimer = new Timer(true);
                 backTimer.schedule(new backTimer(), 2000);
             }
-            else if(userback == true){
+            else {
                 finish();
             }
         }
@@ -224,15 +219,17 @@ public class MainActivity extends Activity implements LocationListener  {
         DrawerLayout drawerLayout = (DrawerLayout) findViewById(R.id.main_drawer) ;
         drawerLayout.closeDrawer(GravityCompat.START);
     }
-    public void openDrawer(){
+    private void openDrawer(){
         DrawerLayout drawerLayout = (DrawerLayout) findViewById(R.id.main_drawer) ;
         drawerLayout.openDrawer(GravityCompat.START);
     }
 
-    public void locationServiceInitial() {
+    private void locationServiceInitial() {
         try {
+            Location bestProviderLocation;
+            final String gps = LocationManager.GPS_PROVIDER;
+            final String network = LocationManager.NETWORK_PROVIDER;
             //Log.e("locationInitial","suspend");
-            checkGPS();
             locationManager = (LocationManager) getSystemService(LOCATION_SERVICE); //取得系統定位服務
             Criteria criteria = new Criteria();
             // 获得最好的定位效果
@@ -281,18 +278,7 @@ public class MainActivity extends Activity implements LocationListener  {
 
         }
         catch (SecurityException e){
-
-        }
-    }
-    /*
-    確認gps跟 network 可以用
-     */
-    public void checkGPS(){
-        final int MY_PERMISSION_ACCESS_FINE_LOCATION = 12;
-        if ( ContextCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED ) {
-
-            ActivityCompat.requestPermissions(this, new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION},
-                    MY_PERMISSION_ACCESS_FINE_LOCATION);
+            e.printStackTrace();
         }
     }
 
@@ -304,7 +290,7 @@ public class MainActivity extends Activity implements LocationListener  {
 
     }
 
-    public void showFloorDialog(int number)
+    private void showFloorDialog(int number)
     {
         floorDialog editNameDialog = new floorDialog().newInstance(number);
         editNameDialog.show(getFragmentManager(), "EditNameDialog");
@@ -332,14 +318,14 @@ public class MainActivity extends Activity implements LocationListener  {
 
     }
 
-    public class backTimer extends TimerTask
+    private class backTimer extends TimerTask
     {
         public void run()
         {
             userback = false;
         }
     }
-    class closeDrawerThread extends AsyncTask<Void,Void,Void> {
+    private class closeDrawerThread extends AsyncTask<Void,Void,Void> {
         @Override
         protected Void doInBackground(Void... parm) {
             return null;
@@ -353,7 +339,7 @@ public class MainActivity extends Activity implements LocationListener  {
 
 
     }
-    class catchSqlData extends AsyncTask<String,Void, ArrayList<HashMap<String, String>>> {
+    private class catchSqlData extends AsyncTask<String,Void, ArrayList<HashMap<String, String>>> {
         @Override
         protected void onPreExecute(){
             super.onPreExecute();
@@ -372,7 +358,7 @@ public class MainActivity extends Activity implements LocationListener  {
         }
     }
 
-    class catchListName extends AsyncTask<Integer,Void,String> {
+    private class catchListName extends AsyncTask<Integer,Void,String> {
         @Override
         protected void onPreExecute(){
             super.onPreExecute();
@@ -502,7 +488,7 @@ public class MainActivity extends Activity implements LocationListener  {
         startActivity(i);
     }
     @JavascriptInterface
-    private void isConnected() {
+    public void isConnected() {
         ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo networkInfo = cm.getActiveNetworkInfo();
         if (networkInfo == null || !networkInfo.isConnected()) {

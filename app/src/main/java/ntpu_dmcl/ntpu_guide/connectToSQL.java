@@ -17,7 +17,7 @@ import java.util.HashMap;
  * Created by user on 2016/9/12.
  */
 public class connectToSQL {
-    String sqlCommand ;
+    private String sqlCommand ;
     public connectToSQL(String sqlCommand){
         try {
             this.sqlCommand= URLEncoder.encode(sqlCommand, "UTF-8");
