@@ -27,14 +27,8 @@ import java.util.ArrayList;
 
 public class InfoActivity extends AppCompatActivity {
 
-    private ViewPager viewPager;
     private ArrayList<View> pageViews;
-    private ImageView imageView;
     private ImageView[] imageViews;
-    // 包裹滑动图片LinearLayout
-    private ViewGroup main;
-    // 包裹小圆点的LinearLayout
-    private ViewGroup group;
     @SuppressWarnings("unused")
     private TextView content;
 
@@ -455,7 +449,7 @@ public class InfoActivity extends AppCompatActivity {
         return images;
     }
     // 指引页面数据适配器
-    class GuidePageAdapter extends PagerAdapter {
+    private class GuidePageAdapter extends PagerAdapter {
 
         @Override
         public int getCount() {
@@ -554,84 +548,97 @@ public class InfoActivity extends AppCompatActivity {
         @Override
         protected void onPostExecute( String result) {
             super.onPostExecute(result);
-            result=result.replace("<br />",System.getProperty("line.separator"));
-            result=result.replace("&nbsp;","  ");
-            String tem[] = result.split("@@@@@");
-            String data[] = tem[0].split("###");
+            ViewPager viewPager;
+            ViewGroup main;
+            ViewGroup group;
+            if(!result.equals("wrong")) {
+                result = result.replace("<br />", System.getProperty("line.separator"));
+                result = result.replace("&nbsp;", "  ");
+                String tem[] = result.split("@@@@@");
+                String data[] = tem[0].split("###");
 
 
-            int[][] imagearray = imageArray();
-            int index = Integer.parseInt(data[4]) ;
-            if(index>=60 && index<120 ){
-                index = index-15;
-            }
-            else if(index>119)
-            {
-                index = index-28;
-            }
-            int[] img = imagearray[index-1];
-            //int[] img = new int[] { R.mipmap.ic_action_refresh,R.mipmap.ic_launcher,R.mipmap.image_go,R.drawable.d0262};
-            LayoutInflater inflater = getLayoutInflater();
-            pageViews = new ArrayList<View>();
-            for (int i = 0; i < img.length; i++) {
-                LinearLayout layout = new LinearLayout(getBaseContext());
-                LayoutParams ltp = new LayoutParams(LayoutParams.MATCH_PARENT,
-                        LayoutParams.MATCH_PARENT);
-                final ImageView imageView = new ImageView(getBaseContext());
-                imageView.setScaleType(ScaleType.CENTER_INSIDE);
-                imageView.setImageResource(img[i]);
-                imageView.setPadding(15, 30, 15, 30);
-                imageView.setAdjustViewBounds(true);
-                layout.addView(imageView, ltp);
-                pageViews.add(layout);
-            }
-            imageViews = new ImageView[pageViews.size()];
-            main = (ViewGroup) inflater.inflate(R.layout.aim_info, null);
-            group = (ViewGroup) main.findViewById(R.id.viewGroup);
-            viewPager = (ViewPager) main.findViewById(R.id.guidePages);
-            //content = (TextView) findViewById(R.id.photo_content);
-
-            /**
-             * 有几张图片 下面就显示几个小圆点
-             */
-
-            for (int i = 0; i < pageViews.size(); i++) {
-                LinearLayout.LayoutParams margin = new LinearLayout.LayoutParams(
-                        LinearLayout.LayoutParams.WRAP_CONTENT,
-                        LinearLayout.LayoutParams.WRAP_CONTENT);
-                //设置每个小圆点距离左边的间距
-                margin.setMargins(10, 0, 0, 0);
-                imageView = new ImageView(InfoActivity.this);
-                //设置每个小圆点的宽高
-                //imageView.setLayoutParams(new ViewGroup.LayoutParams(5, 5));
-                imageViews[i] = imageView;
-                if (i == 0) {
-                    // 默认选中第一张图片
-                    imageViews[i]
-                            .setBackgroundResource(R.drawable.focused_circle);
-                } else {
-                    //其他图片都设置未选中状态
-                    imageViews[i]
-                            .setBackgroundResource(R.drawable.unfocused_circle);
+                int[][] imagearray = imageArray();
+                int index = Integer.parseInt(data[4]);
+                if (index >= 60 && index < 120) {
+                    index = index - 15;
+                } else if (index > 119) {
+                    index = index - 28;
                 }
-                group.addView(imageViews[i], margin);
+                int[] img = imagearray[index - 1];
+                //int[] img = new int[] { R.mipmap.ic_action_refresh,R.mipmap.ic_launcher,R.mipmap.image_go,R.drawable.d0262};
+                LayoutInflater inflater = getLayoutInflater();
+                pageViews = new ArrayList<View>();
+                for (int i = 0; i < img.length; i++) {
+                    LinearLayout layout = new LinearLayout(getBaseContext());
+                    LayoutParams ltp = new LayoutParams(LayoutParams.MATCH_PARENT,
+                            LayoutParams.MATCH_PARENT);
+                    final ImageView imageView = new ImageView(getBaseContext());
+                    imageView.setScaleType(ScaleType.CENTER_INSIDE);
+                    imageView.setImageResource(img[i]);
+                    imageView.setPadding(15, 30, 15, 30);
+                    imageView.setAdjustViewBounds(true);
+                    layout.addView(imageView, ltp);
+                    pageViews.add(layout);
+                }
+                imageViews = new ImageView[pageViews.size()];
+                main = (ViewGroup) inflater.inflate(R.layout.aim_info, null);
+                group = (ViewGroup) main.findViewById(R.id.viewGroup);
+                viewPager = (ViewPager) main.findViewById(R.id.guidePages);
+                //content = (TextView) findViewById(R.id.photo_content);
+
+                /**
+                 * 有几张图片 下面就显示几个小圆点
+                 */
+
+                for (int i = 0; i < pageViews.size(); i++) {
+                    LinearLayout.LayoutParams margin = new LinearLayout.LayoutParams(
+                            LinearLayout.LayoutParams.WRAP_CONTENT,
+                            LinearLayout.LayoutParams.WRAP_CONTENT);
+                    //设置每个小圆点距离左边的间距
+                    margin.setMargins(10, 0, 0, 0);
+                    ImageView imageView = new ImageView(InfoActivity.this);
+                    //设置每个小圆点的宽高
+                    //imageView.setLayoutParams(new ViewGroup.LayoutParams(5, 5));
+                    imageViews[i] = imageView;
+                    if (i == 0) {
+                        // 默认选中第一张图片
+                        imageViews[i]
+                                .setBackgroundResource(R.drawable.focused_circle);
+                    } else {
+                        //其他图片都设置未选中状态
+                        imageViews[i]
+                                .setBackgroundResource(R.drawable.unfocused_circle);
+                    }
+                    group.addView(imageViews[i], margin);
+                }
+                setContentView(main);
+                //给viewpager设置适配器
+                viewPager.setAdapter(new GuidePageAdapter());
+                //给viewpager设置监听事件
+                viewPager.setOnPageChangeListener(new GuidePageChangeListener());
+                toolbarSet();
+
+                TextView location = (TextView) findViewById(R.id.location);
+                TextView history = (TextView) findViewById(R.id.history);
+                TextView howcome = (TextView) findViewById(R.id.howtocome);
+                TextView connectway = (TextView) findViewById(R.id.connectway);
+                location.setText(data[0]);
+                history.setText(data[1]);
+                howcome.setText(data[2]);
+                connectway.setText(data[3]);
             }
-            setContentView(main);
-            //给viewpager设置适配器
-            viewPager.setAdapter(new GuidePageAdapter());
-            //给viewpager设置监听事件
-            viewPager.setOnPageChangeListener(new GuidePageChangeListener());
-            toolbarSet();
-
-
-            TextView location = (TextView) findViewById(R.id.location);
-            TextView history = (TextView) findViewById(R.id.history);
-            TextView howcome = (TextView) findViewById(R.id.howtocome);
-            TextView connectway = (TextView) findViewById(R.id.connectway);
-            location.setText(data[0]);
-            history.setText(data[1]);
-            howcome.setText(data[2]);
-            connectway.setText(data[3]);
+            else {
+                TextView location = (TextView) findViewById(R.id.location);
+                TextView history = (TextView) findViewById(R.id.history);
+                TextView howcome = (TextView) findViewById(R.id.howtocome);
+                TextView connectway = (TextView) findViewById(R.id.connectway);
+                final String error = "error";
+                location.setText(error);
+                history.setText(error);
+                howcome.setText(error);
+                connectway.setText(error);
+            }
 
 
         }
