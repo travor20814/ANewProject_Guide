@@ -494,6 +494,7 @@
           var checkFindedFlag = false;
 
           if (hasInput) {
+            Android.isConnected();
             if (checkNoInfo(placeToGo)) {
               for (var i = 0; i < detailBtns.length; i++) {
                 detailBtns[i].style.display = 'none';
