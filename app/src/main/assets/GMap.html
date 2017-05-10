@@ -516,21 +516,12 @@
                 Android.GetOldplace(oldPlaceToGo);
                 checkFindedFlag = true;
 
-                submitButton.style.display = "none";
-                refreshButton.style.display = "inline-block";
-                refreshImg.style.display = "inline-block";
-                getFormWidth.style.width = "240px";
-
                 break;
               }
             }
 
             if (!checkFindedFlag) {
               alert('查不到正確的地點!');
-              submitButton.style.display = "inline-block";
-              refreshButton.style.display = "none";
-              refreshImg.style.display = "none";
-              getFormWidth.style.width = "300px";
             }
           } else { // no input
             // then do nothing
