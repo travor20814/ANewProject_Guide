@@ -38,20 +38,27 @@
       #innerBox{
         width: 100%;
         height: 100%;
-        display: inline-block;
+        display: flex;
+        flex-wrap: nowrap;
+        align-items: center;
         position: relative;
       }
       .formWrapper{
-        width: 240px;
+        flex: 1;
         height: 55px;
         margin-left: 45px;
-        display: inline-block;
+        display: flex;
+        flex-wrap: nowrap;
+        align-items: center;
+        justify-content: center;
       }
       .searchInput{
-        width: 180px;
+        flex: 1;
+        display: flex;
+        min-width: 175px;
         height: 40px;
         padding-left: 40px;
-        margin-top: 5px;
+        margin-right: 5px;
         border: 1px solid #CCC;
       	-webkit-box-shadow: 0 1px 1px #ddd inset, 0 1px 0 #FFF;
       	-moz-box-shadow: 0 1px 1px #ddd inset, 0 1px 0 #FFF;
@@ -68,8 +75,7 @@
         background-repeat: no-repeat;
       }
       .searchSubmit{
-        display: none;
-        width: 60px;
+        width: 43px;
         height: 40px;
         margin: 2px;
         margin-top: 5px;
@@ -91,6 +97,7 @@
       	box-shadow: 0 1px 0 rgba(255, 255, 255, 0.3) inset, 0 1px 0 #FFF;
       	color: #fafafa;
       	cursor: pointer;
+        outline: none;
         font: 15px Arial, Helvetica;
       }
       .hamButton{
@@ -404,6 +411,7 @@
       	}
 
         function showStart() {
+          // 原本用來切換 重新整理 & 出發按鈕的 function (deprecated)
           const submitButton = document.getElementById("submit");
           const refreshButton = document.getElementById("refresh");
           const refreshImg = document.getElementById("refreshImg");
@@ -628,15 +636,11 @@
         </button>
         <form id="form" class="formWrapper" action="javascript:findPlaceToDirect();">
           <input id="tags" class="searchInput" type="text" name="search" placeholder="輸入目的 / 使用左側選單"
-            onkeyup="showStart()"
             onblur="usingMap()"
             onclick="mapBlur()"
-          >
-          <input id="submit" class="searchSubmit" type="submit" name="submit" value="出發">
+          />
+          <input id="submit" class="searchSubmit" type="submit" name="submit" value="出發" />
         </form>
-        <button id="refresh" class="refreshButton" onclick="refreshTrigger()">
-          <img id="refreshImg" class="nav" src="file:///android_asset/images/ic_action_refresh.png"/>
-        </button>
       </div>
     </div>
     <div id="lowerBlock">
