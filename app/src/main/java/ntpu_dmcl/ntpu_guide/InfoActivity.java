@@ -195,7 +195,7 @@ public class InfoActivity extends AppCompatActivity {
                 },
                 {//35. 師資培育中心,//84,
 
-                        R.drawable.img_84
+                        R.drawable.img_84,R.drawable.img_94
                 },
                 {//36. 國際談判及同步翻譯中心,//64,85,
 
@@ -227,7 +227,7 @@ public class InfoActivity extends AppCompatActivity {
                 },
                 {//43. 通識教育中心,
 
-                        R.drawable.ifnullpic
+                        R.drawable.img_90
                 },
                 {//44. 海山學研究中心,//64,78,
 
@@ -259,7 +259,7 @@ public class InfoActivity extends AppCompatActivity {
                 },
                 {//66. 學務處,
 
-                        R.drawable.ifnullpic
+                        R.drawable.img_91
                 },
                 {//67. 生活輔導組,//50,
 
@@ -347,11 +347,11 @@ public class InfoActivity extends AppCompatActivity {
                 },
                 {//88. 國際合作組,
 
-                        R.drawable.ifnullpic
+                        R.drawable.img_51,R.drawable.img_60
                 },
                 {//89. 國際學生組,
 
-                        R.drawable.ifnullpic
+                        R.drawable.img_51,R.drawable.img_60
                 },
                 {//90. 圖書館,//71,
 
@@ -375,19 +375,19 @@ public class InfoActivity extends AppCompatActivity {
                 },
                 {//95. 教學研究組,
 
-                        R.drawable.ifnullpic
+                        R.drawable.img_51,R.drawable.img_61
                 },
                 {//96. 競賽活動組,
 
-                        R.drawable.ifnullpic
+                        R.drawable.img_51,R.drawable.img_61
                 },
                 {//97. 場地器材組,
 
-                        R.drawable.ifnullpic
+                        R.drawable.img_51,R.drawable.img_61
                 },
                 {//98. 秘書室,
 
-                        R.drawable.ifnullpic
+                        R.drawable.img_92
                 },
                 {//99. 人事室,//59,
 
@@ -395,7 +395,7 @@ public class InfoActivity extends AppCompatActivity {
                 },
                 {//100. 主計室,
 
-                        R.drawable.ifnullpic
+                        R.drawable.img_93
                 },
                 {//101. 資訊中心,//28,
 

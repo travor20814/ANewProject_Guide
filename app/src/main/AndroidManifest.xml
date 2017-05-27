@@ -44,6 +44,10 @@
             android:theme="@style/NoActionBar"
             android:screenOrientation="portrait"
             />
+        <activity android:name=".NoticeActivity"
+            android:theme="@style/NoActionBar"
+            android:screenOrientation="portrait"
+            />
     </application>
 
 </manifest>

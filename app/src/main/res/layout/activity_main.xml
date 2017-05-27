@@ -35,13 +35,22 @@
             android:layout_height="wrap_content">
 
             <Button
-                android:layout_width="fill_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/toSchool"
                 android:id="@+id/drawer_toSchool"
                 android:background="@drawable/drawer_button"
                 style="@style/ButtonText"
                />
+
+            <Button
+                android:id="@+id/drawer_notice"
+                style="@style/ButtonNotice"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:background="@drawable/drawer_button"
+                android:text="@string/notice" />
         </TableRow>
 
         <ExpandableListView android:id="@+id/main_leftList_teach"

@@ -72,12 +72,10 @@ public class MainActivity extends Activity implements LocationListener  {
 
     @Override
     public void onProviderDisabled(String arg0) {//當GPS或網路定位功能關閉時
-        // TODO 自動產生的方法 Stub
         Toast.makeText(this, "請開啟gps或3G網路", Toast.LENGTH_SHORT).show();
     }
     @Override
     public void onProviderEnabled(String arg0) { //當GPS或網路定位功能開啟
-        // TODO 自動產生的方法 Stub
         locationServiceInitial();
         //Log.e("GPS","enable");
     }
@@ -214,6 +212,16 @@ public class MainActivity extends Activity implements LocationListener  {
                 closeDrawer();
             }
         });
+        Button notice  = (Button) findViewById(R.id.drawer_notice);
+        notice.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent i = new Intent();
+                i.setClass(MainActivity.this,NoticeActivity.class);
+                startActivity(i);
+            }
+        });
+
     }
     public void closeDrawer(){
         DrawerLayout drawerLayout = (DrawerLayout) findViewById(R.id.main_drawer) ;

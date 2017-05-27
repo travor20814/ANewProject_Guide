@@ -46,6 +46,5 @@ public class floorDialog extends DialogFragment {
     @Override
     public void onCancel (DialogInterface dialog){
         dismiss();
-
     }
 }
