@@ -25,7 +25,7 @@ public class floorDialog extends DialogFragment {
     {  //******************************
         final int number = getArguments().getInt("number");
 //        final int[] floorPlans={R.mipmap.floor_plan_csie};
-        String floorPlanImage = "ntpu_" + String.valueOf(number) + ".png";
+        String floorPlanImage = "ntpu_" + String.valueOf(number) + ".jpg";
         final View view = inflater.inflate(R.layout.floor_dialog, container);
         WebView webView = (WebView) view.findViewById(R.id.floorplan);
         webView.loadUrl("file:///android_asset/images/floors/" + floorPlanImage);
