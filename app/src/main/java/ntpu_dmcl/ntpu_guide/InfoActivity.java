@@ -233,6 +233,12 @@ public class InfoActivity extends AppCompatActivity {
 
                         R.drawable.img_64,R.drawable.img_78
                 },
+                {//45. 日本研究中心,
+                        R.drawable.img_95
+                },
+                {//46. 大數據與智慧城市研究中心,
+                        R.drawable.ifnullpic
+                },
                 {//60. 教務處,//51,52,
 
                         R.drawable.img_51,R.drawable.img_52
@@ -561,9 +567,9 @@ public class InfoActivity extends AppCompatActivity {
                 int[][] imagearray = imageArray();
                 int index = Integer.parseInt(data[4]);
                 if (index >= 60 && index < 120) {
-                    index = index - 15;
+                    index = index - 13;
                 } else if (index > 119) {
-                    index = index - 28;
+                    index = index - 26;
                 }
                 int[] img = imagearray[index - 1];
                 //int[] img = new int[] { R.mipmap.ic_action_refresh,R.mipmap.ic_launcher,R.mipmap.image_go,R.drawable.d0262};
