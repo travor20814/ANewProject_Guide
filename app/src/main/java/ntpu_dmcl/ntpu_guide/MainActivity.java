@@ -183,24 +183,46 @@ public class MainActivity extends Activity implements LocationListener  {
 
 
      */
-    private void Drawerset(ArrayList<String> parentItems_A, ArrayList<Object> childItems_A,ArrayList<String> parentItems_T, ArrayList<Object> childItems_T){
-/*admin list set*/
+    private void Drawerset(final ArrayList<String> parentItems_A, final ArrayList<Object> childItems_A,final ArrayList<String> parentItems_T, final ArrayList<Object> childItems_T){
 
-        ViewGroup header_a =(ViewGroup) getLayoutInflater().inflate(R.layout.drawer_header_admin,null);
-        ExpandableListView expandableListView_a = (ExpandableListView) findViewById(R.id.main_leftList_admin);
-        expandableListView_a.addHeaderView(header_a,null,false);
-        ExpandListAdapter adapter_a = new ExpandListAdapter(parentItems_A,childItems_A);
-        adapter_a.setInflater((LayoutInflater)getSystemService(Context.LAYOUT_INFLATER_SERVICE),this);
-        expandableListView_a.setAdapter(adapter_a);
+        //ViewGroup header_t =(ViewGroup) getLayoutInflater().inflate(R.layout.drawer_header_teach,null);
+        ExpandableListView expandableListView_t = (ExpandableListView) findViewById(R.id.main_leftList);
+        //expandableListView_t.addHeaderView(header_t,null,false);
+        ExpandListAdapter adapter_t = new ExpandListAdapter(parentItems_T,childItems_T);
+        adapter_t.setInflater((LayoutInflater)getSystemService(Context.LAYOUT_INFLATER_SERVICE),MainActivity.this);
+        expandableListView_t.setAdapter(adapter_t);
+
+/*admin list set*/
+        Button setadmin = (Button) findViewById(R.id.admin);
+        Button setteach = (Button) findViewById(R.id.teach);
+
+
+        setadmin.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //ViewGroup header_a =(ViewGroup) getLayoutInflater().inflate(R.layout.drawer_header_admin,null);
+                ExpandableListView expandableListView_a = (ExpandableListView) findViewById(R.id.main_leftList);
+                expandableListView_a.setBackgroundResource(R.drawable.drawer_admin_list);
+                //expandableListView_a.addHeaderView(header_a,null,false);
+                ExpandListAdapter adapter_a = new ExpandListAdapter(parentItems_A,childItems_A);
+                adapter_a.setInflater((LayoutInflater)getSystemService(Context.LAYOUT_INFLATER_SERVICE),MainActivity.this);
+                expandableListView_a.setAdapter(adapter_a);
+            }
+        });
 
 /*teach list set*/
-
-        ViewGroup header_t =(ViewGroup) getLayoutInflater().inflate(R.layout.drawer_header_teach,null);
-        ExpandableListView expandableListView_t = (ExpandableListView) findViewById(R.id.main_leftList_teach);
-        expandableListView_t.addHeaderView(header_t,null,false);
-        ExpandListAdapter adapter_t = new ExpandListAdapter(parentItems_T,childItems_T);
-        adapter_t.setInflater((LayoutInflater)getSystemService(Context.LAYOUT_INFLATER_SERVICE),this);
-        expandableListView_t.setAdapter(adapter_t);
+        setteach.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //ViewGroup header_t =(ViewGroup) getLayoutInflater().inflate(R.layout.drawer_header_teach,null);
+                ExpandableListView expandableListView_t = (ExpandableListView) findViewById(R.id.main_leftList);
+                //expandableListView_t.addHeaderView(header_t,null,false);
+                expandableListView_t.setBackgroundResource(R.drawable.drawer_teach_list);
+                ExpandListAdapter adapter_t = new ExpandListAdapter(parentItems_T,childItems_T);
+                adapter_t.setInflater((LayoutInflater)getSystemService(Context.LAYOUT_INFLATER_SERVICE),MainActivity.this);
+                expandableListView_t.setAdapter(adapter_t);
+            }
+        });
 
 /*buuton set*/
         Button toSchool = (Button) findViewById(R.id.drawer_toSchool);
