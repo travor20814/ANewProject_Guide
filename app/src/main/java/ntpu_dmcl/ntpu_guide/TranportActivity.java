@@ -15,7 +15,12 @@ public class TranportActivity extends Activity{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.transport);
         WebView tr_map ;
+        String url = getIntent().getStringExtra("LINK");
         tr_map = (WebView)findViewById(R.id.transportPage);
-        tr_map.loadUrl("http://www.ntpu.edu.tw/chinese/about/contact6.php");
+        if (url != null) {
+            tr_map.loadUrl(url); // get links from database
+        } else {
+            tr_map.loadUrl("http://www.ntpu.edu.tw/chinese/about/contact6.php");
+        }
     }
 }

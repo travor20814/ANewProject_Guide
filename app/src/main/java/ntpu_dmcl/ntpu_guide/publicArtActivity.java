@@ -24,9 +24,12 @@ public class publicArtActivity extends AppCompatActivity {
         WebSettings settings = wv.getSettings();
         settings.setSupportZoom(true);
         settings.setBuiltInZoomControls(true);
-        wv.loadUrl("http://www.ntpu.edu.tw/repair/art_02_01.html");
-
-
+        String url = getIntent().getStringExtra("LINK");
+        if (url != null) {
+            wv.loadUrl(url); // get links from database
+        } else {
+            wv.loadUrl("http://61.60.143.100/plesk-site-preview/publicart.sukeli.com.tw/61.60.143.100/a/map.html");
+        }
     }
 
     public void toolbarSet(){
