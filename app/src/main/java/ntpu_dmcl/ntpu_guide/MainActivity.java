@@ -129,6 +129,7 @@ public class MainActivity extends Activity implements LocationListener  {
     @Override
     protected void onResume(){
         super.onResume();
+        isConnected();
         LocationManager locationManager
                 = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
         if(locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
