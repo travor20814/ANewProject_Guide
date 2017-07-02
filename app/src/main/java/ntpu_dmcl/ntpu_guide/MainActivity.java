@@ -43,15 +43,9 @@ public class MainActivity extends Activity implements LocationListener  {
     private boolean startUse = false;
     private boolean userback = false;
     private String oldPlace="";
+    private String transportLink = "";
+    private String publicArtLink = "";
 
-
-        /*
-    @Override
-
-
-
-
-     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -68,6 +62,7 @@ public class MainActivity extends Activity implements LocationListener  {
         wv_map.setWebChromeClient(new WebChromeClient()); //allow javascript alert
         wv_map.loadUrl("file:///android_asset/GMap.html");
         new catchListName().execute();
+        new catchWebLinks().execute();
     }
 
     @Override
@@ -462,6 +457,39 @@ public class MainActivity extends Activity implements LocationListener  {
         }
     }
 
+    private class catchWebLinks extends AsyncTask<Integer,Void,String> {
+        @Override
+        protected void onPreExecute(){
+            super.onPreExecute();
+        }
+        @Override
+        protected  String doInBackground(Integer... param) {
+            return new getSqlString("select * from links" ).getServerConnect();
+        }
+        @Override
+        protected void onPostExecute( String result) {
+            super.onPostExecute(result);
+            String[] linkWrap = result.split("@@@@@");
+            for (int i = 0; i < linkWrap.length; i++) {
+                String[] content = linkWrap[i].split("###");
+
+                switch (content[0]) {
+                    case "交通資訊": {
+                        transportLink = content[1];
+                        break;
+                    }
+                    case "公共藝術": {
+                        publicArtLink = content[1];
+                        break;
+                    }
+                    default: {
+                        break;
+                    }
+                }
+            }
+        }
+    }
+
     /*
     @JavascriptInterface
 
@@ -500,6 +528,7 @@ public class MainActivity extends Activity implements LocationListener  {
         {
             Intent i = new Intent();
             i.setClass(MainActivity.this, publicArtActivity.class);
+            i.putExtra("LINK", publicArtLink);
             startActivity(i);
         }
         else {
@@ -516,6 +545,7 @@ public class MainActivity extends Activity implements LocationListener  {
         isConnected();
         Intent i = new Intent();
         i.setClass(MainActivity.this, TranportActivity.class);
+        i.putExtra("LINK", transportLink);
         startActivity(i);
     }
     @JavascriptInterface
